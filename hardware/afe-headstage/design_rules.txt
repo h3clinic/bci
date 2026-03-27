@@ -1,0 +1,255 @@
+# Design Rules - Neural AFE Headstage (Rev 2.0)
+# KiCad DRC Configuration
+# 128-Channel, 30kS/s, DDR SPI passthrough to carrier FPGA
+# No MCU, no LVDS on headstage
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                              DESIGN RULES
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# These rules are tuned for neural signal acquisition where noise is critical.
+# More conservative than typical digital boards.
+
+# ───────────────────────────────────────────────────────────────────────────────
+#                           GLOBAL DEFAULTS
+# ───────────────────────────────────────────────────────────────────────────────
+
+[Global]
+min_trace_width_mm = 0.15
+min_clearance_mm = 0.15
+min_via_drill_mm = 0.3
+min_via_pad_mm = 0.5
+min_annular_ring_mm = 0.1
+min_hole_to_hole_mm = 0.25
+copper_to_edge_mm = 0.3
+silk_to_pad_mm = 0.1
+silk_to_silk_mm = 0.15
+
+# ───────────────────────────────────────────────────────────────────────────────
+#                           NET CLASSES
+# ───────────────────────────────────────────────────────────────────────────────
+
+[NetClass_Default]
+name = "Default"
+trace_width_mm = 0.15
+clearance_mm = 0.15
+via_drill_mm = 0.3
+via_pad_mm = 0.5
+description = "Standard digital signals"
+
+[NetClass_Analog]
+name = "Analog"
+trace_width_mm = 0.20
+clearance_mm = 0.25
+via_drill_mm = 0.3
+via_pad_mm = 0.5
+description = "Analog signals - electrode inputs, AFE connections"
+color = "orange"
+nets = """
+  CH1, CH2, CH3, ... CH128
+  REF1, REF2, REF3, REF4, REF5, REF6, REF7, REF8
+  VREF
+  CAL_OUT
+"""
+rules = """
+  - Route on Layer 1 ONLY
+  - Maximum length: 10mm from connector to AFE
+  - Keep 3mm from clock traces
+  - Keep 2mm from digital signals
+  - No vias in signal path (connector to AFE input)
+"""
+
+[NetClass_SPI]
+name = "SPI"
+trace_width_mm = 0.15
+clearance_mm = 0.20
+via_drill_mm = 0.3
+via_pad_mm = 0.5
+description = "DDR SPI bus - SCLK, MOSI, CS, MISO_A/B (3.3V LVCMOS)"
+color = "blue"
+nets = """
+  SCLK
+  MOSI
+  CS1, CS2
+  MISO1_A, MISO1_B
+  MISO2_A, MISO2_B
+"""
+rules = """
+  - 50Ω controlled impedance (microstrip on L4 over L5 GND)
+  - Route on Layer 4 ONLY
+  - Keep ≥3 mm from analog electrode traces on L1
+  - No layer transitions in SPI signal path
+  - SCLK length match to U1 vs U2: ±2 mm
+  - MISO trace length: <20 mm (IC to B2B pad)
+  - Series damping resistor footprints at driver side (DNI default)
+  - Guard vias optional along SPI traces (0.8 mm spacing)
+"""
+
+[NetClass_Power]
+name = "Power"
+trace_width_mm = 0.50
+clearance_mm = 0.30
+via_drill_mm = 0.35
+via_pad_mm = 0.6
+description = "Power distribution traces"
+color = "red"
+nets = """
+  VIN
+  AVDD
+  DVDD_AFE
+  +3.3V
+"""
+rules = """
+  - Minimum width based on current: 0.5mm for 100mA+
+  - Use multiple vias for plane connections
+  - Keep power traces away from sensitive analog
+"""
+
+[NetClass_Clock]
+name = "Clock"
+trace_width_mm = 0.20
+clearance_mm = 0.30
+via_drill_mm = 0.3
+via_pad_mm = 0.5
+description = "Clock signals - 20 MHz and derivatives"
+color = "purple"
+nets = """
+  SCLK
+"""
+rules = """
+  - 50Ω controlled impedance (microstrip on L4 over L5 GND)
+  - Route on Layer 4 over Layer 5 ground
+  - Keep ≥3 mm from analog inputs
+  - No layer transitions
+  - Series termination at carrier FPGA output (33Ω)
+  - Length-match SCLK to U1 and U2 within ±2 mm
+  - Star topology from B2B pad to both AFE chips (no stubs)
+"""
+
+[NetClass_Ground]
+name = "Ground"
+trace_width_mm = 0.50
+clearance_mm = 0.20
+via_drill_mm = 0.3
+via_pad_mm = 0.5
+description = "Ground connections"
+color = "black"
+nets = """
+  GND
+  AGND
+  DGND
+"""
+
+# ───────────────────────────────────────────────────────────────────────────────
+#                        DIFFERENTIAL PAIRS
+# ───────────────────────────────────────────────────────────────────────────────
+
+# [DiffPair_LVDS] — REMOVED (Rev 2.0)
+# No LVDS on headstage. All differential pairs moved to carrier board.
+# SPI signals are single-ended 3.3V LVCMOS, not differential.
+
+# ───────────────────────────────────────────────────────────────────────────────
+#                          LAYER RULES
+# ───────────────────────────────────────────────────────────────────────────────
+
+[Layer_Rules]
+
+[Layer1_Rules]
+name = "Top - Analog"
+allowed_net_classes = ["Analog", "Ground", "Power"]
+forbidden_net_classes = ["Clock", "SPI"]
+notes = """
+  This layer is ANALOG ONLY.
+  - Electrode inputs
+  - AFE component placement (top side)
+  - Analog power distribution
+  - NO digital signals
+  - NO SPI or clock routing
+"""
+
+[Layer4_Rules]
+name = "Inner - Digital"
+allowed_net_classes = ["SPI", "Clock", "Default", "Ground"]
+forbidden_net_classes = ["Analog"]
+notes = """
+  This layer is DIGITAL ONLY.
+  - SPI bus (SCLK, MOSI, CS, MISO) from B2B to AFE chips
+  - Clock distribution (SCLK)
+  - B2B connector digital routing
+  - NO analog signals
+  - Reference plane: L5 (solid DGND)
+"""
+
+[Layer6_Rules]
+name = "Bottom - Components/Power"
+allowed_net_classes = ["Power", "Default", "Ground"]
+forbidden_net_classes = ["Analog"]
+notes = """
+  - Bottom-side component placement (decoupling caps under AFE ICs)
+  - Digital power traces (DVDD_AFE)
+  - B2B connector pads (if bottom-mount)
+  - NO analog signals
+  - NO LVDS (removed in Rev 2.0)
+"""
+
+# ───────────────────────────────────────────────────────────────────────────────
+#                        PLACEMENT RULES
+# ───────────────────────────────────────────────────────────────────────────────
+
+[Placement]
+
+analog_island_components = """
+  U1 (RHD2164)
+  U2 (RHD2164)
+  J1, J2, J3, J4 (Electrode connectors)
+  U_LDO1 (Analog LDO)
+  C_AVDD* (Analog decoupling)
+  D_ESD* (Input ESD)
+  R_BIAS* (Input bias)
+"""
+
+digital_island_components = """
+  J5 (B2B connector to carrier)
+  FB2 (DVDD_AFE ferrite)
+  C_DVDD* (DVDD_AFE decoupling)
+  R_D* (SPI damping resistors)
+  TP_SCLK, TP_MISO* (SPI test points)
+"""
+# DELETED from Rev 1.0 digital island:
+# U_MCU (STM32G431) — no MCU
+# U_LVDS (DS90LV047A) — no LVDS
+# Y1 (Oscillator) — no local clock
+# U_LDO2 (AP2112K) — no digital LDO
+
+bridge_components = """
+  FB1 (Ferrite bead A/D bridge)
+  R_ISO* (Isolation resistors)
+"""
+
+# ───────────────────────────────────────────────────────────────────────────────
+#                          DRC CHECKS
+# ───────────────────────────────────────────────────────────────────────────────
+
+[DRC_Custom]
+
+# Analog input length check
+check_analog_input_length = true
+max_analog_input_length_mm = 10
+analog_input_nets = "CH*"
+
+# Clock to analog clearance
+check_clock_analog_clearance = true
+min_clock_analog_clearance_mm = 3
+
+# Ground plane continuity
+check_ground_plane_cuts = true
+forbidden_cuts_under = ["CH*", "SCLK", "MISO*", "MOSI", "CS*"]
+
+# Decoupling placement
+check_decoupling_distance = true
+max_decoupling_distance_mm = 3
+
+# Via stitching
+check_via_stitching = true
+max_stitch_spacing_mm = 3
+stitch_regions = ["Analog_Island_Perimeter", "Digital_Island_Perimeter"]

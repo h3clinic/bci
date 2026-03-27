@@ -1,0 +1,28 @@
+PRINT NOTES — AFE Headstage v1 Enclosure
+=========================================
+
+Parts: 2 (bottom tray + lid)
+Units: mm
+Material: PLA or PETG (PETG preferred for temperature stability)
+Tolerance: ±0.2 mm on all dimensions
+Layer height: 0.20 mm
+Infill: 20%
+
+Critical dimensions:
+  - Internal cavity: 30.8 × 24.8 mm (must fit 30.0 × 24.0 mm PCB)
+  - Connector cutout: 16.0 × 5.0 mm (must clear Omnetics A79024 + cable)
+  - Ledge width: 1.0 mm (PCB support shelf)
+  - Lid lip: fits inside tray opening with 0.15 mm clearance per side
+
+Orientation:
+  - Bottom tray: print with open face UP (no supports needed)
+  - Lid: print flat (bottom face down, lip pointing up)
+
+Supports: NOT required for either part.
+
+Quantity: 3 of each (1 good + 2 spare)
+
+Notes:
+  - Do NOT scale. Print at 1:1.
+  - Connector cutout on one short edge — do not block.
+  - If tolerance is poor (>0.3mm), increase CLEARANCE parameter in script.

@@ -1,0 +1,26 @@
+[
+  {
+    "model": "CUSUM",
+    "inference_ms": 37.5,
+    "memory_mb": 11.5,
+    "model_size_params": 0,
+    "model_size_kb": 0.0,
+    "real_time_capable_at_khz": 533.4
+  },
+  {
+    "model": "RF",
+    "inference_ms": 4.86,
+    "memory_mb": 0.1,
+    "model_size_params": 854,
+    "model_size_kb": 95.3,
+    "real_time_capable_at_khz": 4113.6
+  },
+  {
+    "model": "Deep",
+    "inference_ms": 15.02,
+    "memory_mb": 0.0,
+    "model_size_params": 76045,
+    "model_size_kb": 307.8,
+    "real_time_capable_at_khz": 1331.8
+  }
+]

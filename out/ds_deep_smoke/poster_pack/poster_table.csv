@@ -1,0 +1,4 @@
+model,worst_auroc,worst_auroc_shift,worst_fpr_at_tpr90,worst_fpr_shift,avg_auroc_domain_b,avg_ece_domain_b,latency_median_s,inference_ms,memory_mb,model_size_params,real_time_capable_at_khz
+CUSUM,0.0000,n/a,1.0000,n/a,0.0000,0.0000,,40.30,11.51,0,496.2
+RF,0.0000,n/a,1.0000,n/a,0.0000,0.0000,,5.50,0.11,854,3639.4
+Deep,0.5208,rate_decrease,1.0000,sixty_hz,0.5972,0.0272,,14.96,0.00,76045,1336.7

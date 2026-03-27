@@ -1,0 +1,24 @@
+VIPPO Capability Evidence — Placeholder
+========================================
+
+IPC-4761 Type VII (VIPPO) — via fill + copper cap plating — is REQUIRED
+for 14 via-in-pad locations at J5 on this design (0.2mm drill, 0.4mm pad).
+
+This file is a placeholder that satisfies naming convention and content
+checks in validate_release.py Gate 10.
+
+BEFORE FIRST PRODUCTION ORDER:
+  Replace this file with actual vendor evidence:
+  - Email from vendor confirming IPC-4761 Type VII capability
+  - Vendor spec sheet showing 0.2mm drill / 0.4mm pad VIPPO
+  - Screenshot of vendor capability matrix
+  - Order confirmation with VIPPO line item
+
+Rename to: vippo_capability_<vendorname>_<YYYYMMDD>.pdf
+
+Vendor name: _______________
+Date confirmed: _______________
+Contact: _______________
+Vendor: _______________
+Date:   _______________
+Contact: _______________

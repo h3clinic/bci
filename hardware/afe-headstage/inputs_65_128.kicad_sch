@@ -1,0 +1,41 @@
+(kicad_sch
+  (version 20231120)
+  (generator "eeschema")
+  (generator_version "8.0")
+  (uuid "inputs-65-128-uuid")
+  (paper "A3")
+  (title_block
+    (title "Electrode Inputs - Channels 65-128")
+    (date "2026-02-16")
+    (rev "1.0")
+    (company "BCIInterface")
+    (comment 1 "Neural AFE Headstage - Input Stage")
+    (comment 2 "ESD + Bias network for channels 65-128")
+  )
+
+  (lib_symbols)
+
+  (text "═══════════════════════════════════════════════════════════════════════════\n                   ELECTRODE INPUT STAGE - CHANNELS 65-128\n═══════════════════════════════════════════════════════════════════════════\n\nINPUT CONNECTOR: Omnetics NPD-36 (×2 connectors for 64 channels)\n  • J3: Channels 65-96\n  • J4: Channels 97-128\n  • REF pins: Reference electrodes\n  • GND pins: Shield/ground\n\nPER-CHANNEL CIRCUIT: (Same as channels 1-64)\n────────────────────────────────────────────────────────────────────────────\n\n                        ESD Protection      To AFE (RHD2164 U2)\n                             │                    │\n  Electrode ─────┬───────[D_ESD]───────┬──────────┼──────► IN[n]\n  (from J3/J4)   │                     │          │\n                 │                     │          │\n                 │                   [Rbias]      │\n                 │                   10MΩ         │\n                 │                     │          │\n                 │                     ▼          │\n                 │                   VBIAS        │\n                 │                  (1.65V)       │\n                 │                                │\n                 └─── Shield (if used) ──► AGND  │\n\n────────────────────────────────────────────────────────────────────────────"
+    (exclude_from_sim no)
+    (at 20 25)
+    (effects
+      (font (size 1.27 1.27))
+      (justify left)
+    )
+  )
+
+  (text "CONNECTOR J3 PINOUT - Channels 65-96 (Omnetics NPD-36)\n─────────────────────────────────────────────────────────\nPin  Signal    Pin  Signal    Pin  Signal    Pin  Signal\n─────────────────────────────────────────────────────────\n1    CH65      10   CH74      19   CH83      28   CH92\n2    CH66      11   CH75      20   CH84      29   CH93\n3    CH67      12   CH76      21   CH85      30   CH94\n4    CH68      13   CH77      22   CH86      31   CH95\n5    CH69      14   CH78      23   CH87      32   CH96\n6    CH70      15   CH79      24   CH88      33   REF5\n7    CH71      16   CH80      25   CH89      34   REF6\n8    CH72      17   CH81      26   CH90      35   GND\n9    CH73      18   CH82      27   CH91      36   SHIELD\n─────────────────────────────────────────────────────────\n\nCONNECTOR J4 PINOUT - Channels 97-128 (Omnetics NPD-36)\n─────────────────────────────────────────────────────────\nPin  Signal    Pin  Signal    Pin  Signal    Pin  Signal\n─────────────────────────────────────────────────────────\n1    CH97      10   CH106     19   CH115     28   CH124\n2    CH98      11   CH107     20   CH116     29   CH125\n3    CH99      12   CH108     21   CH117     30   CH126\n4    CH100     13   CH109     22   CH118     31   CH127\n5    CH101     14   CH110     23   CH119     32   CH128\n6    CH102     15   CH111     24   CH120     33   REF7\n7    CH103     16   CH112     25   CH121     34   REF8\n8    CH104     17   CH113     26   CH122     35   GND\n9    CH105     18   CH114     27   CH123     36   SHIELD\n─────────────────────────────────────────────────────────"
+    (exclude_from_sim no)
+    (at 20 100)
+    (effects
+      (font (size 1.1 1.1))
+      (justify left)
+    )
+  )
+
+  (sheet_instances
+    (path "/inputs_65_128"
+      (page "4")
+    )
+  )
+)

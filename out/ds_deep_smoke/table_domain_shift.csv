@@ -1,0 +1,5 @@
+model,shift,severity,domain,auroc,binary_accuracy,fpr_at_tpr90,ece,latency_median_s,latency_iqr_lo,latency_iqr_hi,detection_rate,holdout_accuracy,n_train,n_test,status
+Deep,sixty_hz,0.6,A,0.5556,0.5000,1.0000,0.0403,,,,0.0000,0.0000,27,27,ok
+Deep,sixty_hz,0.6,B,0.6736,0.5000,1.0000,0.0137,,,,0.0000,0.0000,27,27,ok
+Deep,rate_decrease,0.6,A,0.5556,0.5000,1.0000,0.0403,,,,0.0000,0.0000,27,27,ok
+Deep,rate_decrease,0.6,B,0.5208,0.5000,1.0000,0.0407,,,,0.0000,0.0000,27,27,ok

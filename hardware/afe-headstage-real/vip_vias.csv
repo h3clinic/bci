@@ -1,0 +1,29 @@
+# VIP Via Coordinate List — AFE Headstage v1
+# Generated: 2026-03-01
+# Coordinate system: KiCad PCB absolute coordinates, millimeters
+# Origin: KiCad page origin (top-left of drawing sheet)
+# Reference: fab_notes.txt Section 4 (CLAUSE VIP-1)
+#
+# These 14 vias are located directly under SMD pads of J5 (Omnetics A79024-001).
+# ALL require IPC-4761 Type VII processing (epoxy plug + copper cap + planarize).
+# Via spec: 0.20 mm finished drill, 0.40 mm pad diameter, through-hole F.Cu to B.Cu.
+#
+# Pad size at J5: 0.381 x 1.016 mm (row A) or 0.381 x 0.762 mm (row B)
+# Via is centered on pad.  Via pad (0.40 mm) fits within connector pad width (0.381 mm
+# is the copper pad; mask opening is wider).
+#
+X_mm,Y_mm,Net,J5_Pad,Drill_mm,Via_Pad_mm,Layer_From,Layer_To,KiCad_UUID
+112.1425,100.484,CH9,10,0.20,0.40,F.Cu,B.Cu,d5e0448a-da77-4ef6-997b-d0c6f5dac342
+112.7775,99.341,CH10,11,0.20,0.40,F.Cu,B.Cu,e1bf2c6a-2637-48d8-9ff6-60913b5bf07f
+112.7775,100.484,CH11,12,0.20,0.40,F.Cu,B.Cu,9a413b25-7ec6-4caa-8802-ca21a63f5ddc
+113.4125,99.341,CH12,13,0.20,0.40,F.Cu,B.Cu,bcdd2459-252c-4f7a-9720-a2a01622fb01
+113.4125,100.484,CH13,14,0.20,0.40,F.Cu,B.Cu,d1872c79-2b73-484d-8e9e-1c1a94094923
+114.0475,99.341,CH14,15,0.20,0.40,F.Cu,B.Cu,1c6e9325-384c-47b7-980d-1caa0cb0d4c3
+114.0475,100.484,CH15,16,0.20,0.40,F.Cu,B.Cu,1a021afe-99d9-4911-abe1-5aee32ff485d
+114.6825,99.341,CH16,17,0.20,0.40,F.Cu,B.Cu,bd8e951d-ca1b-4716-b982-be27e4ebf04a
+114.6825,100.484,CH17,18,0.20,0.40,F.Cu,B.Cu,676b142d-ee93-4227-b272-582d1fcff260
+115.3175,99.341,CH18,19,0.20,0.40,F.Cu,B.Cu,0c16e566-f8db-4436-ab0d-01687abe31b2
+115.3175,100.484,CH19,20,0.20,0.40,F.Cu,B.Cu,775c3fb0-e4f7-486d-8335-0a011332bc4a
+115.9525,99.341,CH20,21,0.20,0.40,F.Cu,B.Cu,43ab3601-eb61-462e-bfdc-9746ec0048c0
+115.9525,100.484,CH21,22,0.20,0.40,F.Cu,B.Cu,7d897427-e1aa-4788-a9c0-5618c4c2090f
+116.5875,99.341,CH22,23,0.20,0.40,F.Cu,B.Cu,da974f42-e7ad-4123-859a-5d27c116df89

@@ -1,0 +1,681 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "a0000001-0000-0000-0000-000000000001")
+	(paper "A3")
+	(title_block
+		(title "MEA DAQ 64-Channel System")
+		(date "2025-06-28")
+		(rev "0.1")
+		(company "BCIInterface")
+		(comment 1 "64-ch in-vitro MEA neurotoxicity screening DAQ")
+		(comment 2 "RHD2164 + iCE40UP5K + FT2232H")
+		(comment 3 "40x50mm 4-layer")
+		(comment 4 "")
+	)
+	(lib_symbols)
+
+	(text "MEA DAQ 64-Channel System\nTop-Level Hierarchy"
+		(exclude_from_sim no)
+		(at 148 25 0)
+		(effects
+			(font
+				(size 3 3)
+				(bold yes)
+			)
+			(justify left)
+		)
+		(uuid "b0000001-0000-0000-0000-000000000001")
+	)
+
+	(text "Data Flow:\nUSB-C → Power → LDOs → AFE + FPGA\nElectrodes → FPC → RHD2164 → SPI → iCE40UP5K → Sync FIFO → FT2232H → USB"
+		(exclude_from_sim no)
+		(at 148 40 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+			)
+			(justify left)
+		)
+		(uuid "b0000002-0000-0000-0000-000000000001")
+	)
+
+	(sheet
+		(at 30 65)
+		(size 50 30)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.2)
+			(type solid)
+			(color 0 0 0 1)
+		)
+		(fill
+			(color 255 255 200 1)
+		)
+		(uuid "c0000001-0000-0000-0000-000000000001")
+		(property "Sheetname" "Power Supply"
+			(at 30 64.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "01_power.kicad_sch"
+			(at 30 95.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "VBUS_5V" output
+			(at 80 70 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000001-0001-0000-0000-000000000001")
+		)
+		(pin "VDD_A_1V8" output
+			(at 80 74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000001-0002-0000-0000-000000000001")
+		)
+		(pin "VDD_A_3V3" output
+			(at 80 78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000001-0003-0000-0000-000000000001")
+		)
+		(pin "VDD_D_3V3" output
+			(at 80 82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000001-0004-0000-0000-000000000001")
+		)
+		(pin "VDD_D_1V2" output
+			(at 80 86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000001-0005-0000-0000-000000000001")
+		)
+		(pin "PWR_GOOD" output
+			(at 80 90 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000001-0006-0000-0000-000000000001")
+		)
+	)
+
+	(sheet
+		(at 30 110)
+		(size 50 40)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.2)
+			(type solid)
+			(color 0 0 0 1)
+		)
+		(fill
+			(color 200 255 200 1)
+		)
+		(uuid "c0000002-0000-0000-0000-000000000001")
+		(property "Sheetname" "Analog Front End"
+			(at 30 109.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "02_afe.kicad_sch"
+			(at 30 150.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "SPI_MOSI" input
+			(at 80 115 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000002-0001-0000-0000-000000000001")
+		)
+		(pin "SPI_MISO" output
+			(at 80 119 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000002-0002-0000-0000-000000000001")
+		)
+		(pin "SPI_SCLK" input
+			(at 80 123 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000002-0003-0000-0000-000000000001")
+		)
+		(pin "SPI_CS_N" input
+			(at 80 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000002-0004-0000-0000-000000000001")
+		)
+		(pin "AFE_INTAN_N" output
+			(at 80 133 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000002-0005-0000-0000-000000000001")
+		)
+		(pin "ELEC_A[0..31]" input
+			(at 30 120 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000002-0006-0000-0000-000000000001")
+		)
+		(pin "ELEC_B[0..31]" input
+			(at 30 130 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000002-0007-0000-0000-000000000001")
+		)
+		(pin "ELEC_REF" input
+			(at 30 140 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000002-0008-0000-0000-000000000001")
+		)
+	)
+
+	(sheet
+		(at 120 65)
+		(size 55 50)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.2)
+			(type solid)
+			(color 0 0 0 1)
+		)
+		(fill
+			(color 200 200 255 1)
+		)
+		(uuid "c0000003-0000-0000-0000-000000000001")
+		(property "Sheetname" "FPGA + Digital"
+			(at 120 64.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "03_fpga.kicad_sch"
+			(at 120 115.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "SPI_MOSI" output
+			(at 120 70 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000003-0001-0000-0000-000000000001")
+		)
+		(pin "SPI_MISO" input
+			(at 120 74 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000003-0002-0000-0000-000000000001")
+		)
+		(pin "SPI_SCLK" output
+			(at 120 78 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000003-0003-0000-0000-000000000001")
+		)
+		(pin "SPI_CS_N" output
+			(at 120 82 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000003-0004-0000-0000-000000000001")
+		)
+		(pin "FT_D[0..7]" bidirectional
+			(at 175 70 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000003-0005-0000-0000-000000000001")
+		)
+		(pin "FT_RXF_N" input
+			(at 175 74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000003-0006-0000-0000-000000000001")
+		)
+		(pin "FT_TXE_N" input
+			(at 175 78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000003-0007-0000-0000-000000000001")
+		)
+		(pin "FT_WR_N" output
+			(at 175 82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000003-0008-0000-0000-000000000001")
+		)
+		(pin "FT_RD_N" output
+			(at 175 86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000003-0009-0000-0000-000000000001")
+		)
+		(pin "FT_OE_N" output
+			(at 175 90 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000003-0010-0000-0000-000000000001")
+		)
+		(pin "FT_CLKOUT" input
+			(at 175 94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000003-0011-0000-0000-000000000001")
+		)
+		(pin "FT_SIWU_N" output
+			(at 175 98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000003-0012-0000-0000-000000000001")
+		)
+		(pin "UART_TX" output
+			(at 175 104 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000003-0013-0000-0000-000000000001")
+		)
+		(pin "UART_RX" input
+			(at 175 108 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000003-0014-0000-0000-000000000001")
+		)
+		(pin "AFE_INTAN_N" input
+			(at 120 88 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000003-0015-0000-0000-000000000001")
+		)
+	)
+
+	(sheet
+		(at 210 65)
+		(size 55 50)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.2)
+			(type solid)
+			(color 0 0 0 1)
+		)
+		(fill
+			(color 255 200 200 1)
+		)
+		(uuid "c0000004-0000-0000-0000-000000000001")
+		(property "Sheetname" "USB Bridge"
+			(at 210 64.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "04_usb.kicad_sch"
+			(at 210 115.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "FT_D[0..7]" bidirectional
+			(at 210 70 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000004-0001-0000-0000-000000000001")
+		)
+		(pin "FT_RXF_N" output
+			(at 210 74 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000004-0002-0000-0000-000000000001")
+		)
+		(pin "FT_TXE_N" output
+			(at 210 78 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000004-0003-0000-0000-000000000001")
+		)
+		(pin "FT_WR_N" input
+			(at 210 82 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000004-0004-0000-0000-000000000001")
+		)
+		(pin "FT_RD_N" input
+			(at 210 86 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000004-0005-0000-0000-000000000001")
+		)
+		(pin "FT_OE_N" input
+			(at 210 90 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000004-0006-0000-0000-000000000001")
+		)
+		(pin "FT_CLKOUT" output
+			(at 210 94 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000004-0007-0000-0000-000000000001")
+		)
+		(pin "FT_SIWU_N" input
+			(at 210 98 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000004-0008-0000-0000-000000000001")
+		)
+		(pin "UART_TX" input
+			(at 210 104 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000004-0009-0000-0000-000000000001")
+		)
+		(pin "UART_RX" output
+			(at 210 108 180)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+			(uuid "d0000004-0010-0000-0000-000000000001")
+		)
+		(pin "USB_DP" bidirectional
+			(at 265 80 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000004-0011-0000-0000-000000000001")
+		)
+		(pin "USB_DM" bidirectional
+			(at 265 84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000004-0012-0000-0000-000000000001")
+		)
+	)
+
+	(sheet
+		(at 30 165)
+		(size 50 40)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.2)
+			(type solid)
+			(color 0 0 0 1)
+		)
+		(fill
+			(color 255 230 200 1)
+		)
+		(uuid "c0000005-0000-0000-0000-000000000001")
+		(property "Sheetname" "MEA Connector"
+			(at 30 164.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "05_connector.kicad_sch"
+			(at 30 205.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "ELEC_A[0..31]" output
+			(at 80 175 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000005-0001-0000-0000-000000000001")
+		)
+		(pin "ELEC_B[0..31]" output
+			(at 80 185 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000005-0002-0000-0000-000000000001")
+		)
+		(pin "ELEC_REF" output
+			(at 80 195 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+			(uuid "d0000005-0003-0000-0000-000000000001")
+		)
+	)
+
+	(sheet
+		(at 210 135)
+		(size 55 30)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.2)
+			(type dash)
+			(color 128 128 128 1)
+		)
+		(fill
+			(color 230 230 230 1)
+		)
+		(uuid "c0000006-0000-0000-0000-000000000001")
+		(property "Sheetname" "Isolation (v2)"
+			(at 210 134.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "06_isolation.kicad_sch"
+			(at 210 165.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+	)
+)

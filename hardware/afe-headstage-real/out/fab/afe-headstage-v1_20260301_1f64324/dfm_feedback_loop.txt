@@ -1,0 +1,128 @@
+================================================================================
+ DFM FEEDBACK LOOP — PROCESS & TEMPLATE
+ Board:    AFE Headstage v1 (afe-headstage-v1)
+ Revision: 1.0
+ Date:     2026-03-01
+ Contact:  [engineer email]
+================================================================================
+
+1. PURPOSE
+----------
+  This document defines the process for handling vendor CAM feedback,
+  DFM (Design for Manufacturability) review requests, and tracking
+  design-fab-assembly feedback across revisions.
+
+  Every vendor interaction that results in a design question, process
+  clarification, or modification request shall be recorded here.
+
+2. PROCESS
+----------
+  2.1  Vendor submits CAM review feedback (email, portal, or PDF).
+
+  2.2  Engineer logs feedback in Section 5 (Feedback Log) below.
+
+  2.3  Engineer evaluates each item:
+       ACCEPT  — modify design or fab notes per vendor request
+       REJECT  — provide written justification to vendor
+       DEFER   — carry forward to next revision
+
+  2.4  If design files change: re-export fab package, increment
+       revision, update git tag, re-submit to vendor.
+
+  2.5  Vendor confirms resolution of all open items before fabrication
+       proceeds.
+
+3. FEEDBACK STORAGE
+--------------------
+  Location:  hardware/afe-headstage-real/dfm_feedback/
+  Naming:    <vendor>_<date>_<subject>.pdf  (or .txt, .png)
+  Examples:
+    jlcpcb_20260315_vippo_query.pdf
+    pcbway_20260320_mask_expansion.txt
+
+  All feedback artifacts shall be committed to the repository.
+
+4. REVISION TRACKING
+---------------------
+  Each fab package submission is tagged:
+
+    fab/<revision>/<date>
+
+  Example: fab/v1.0/20260301
+
+  If vendor feedback causes a re-spin:
+    - Increment minor revision (v1.0 → v1.1)
+    - Re-run make_fab_package.py
+    - Tag new commit
+    - Reference previous submission in feedback log
+
+5. FEEDBACK LOG
+----------------
+  Record all vendor feedback items below.  One row per item.
+
+  ID  | Date       | Vendor  | Category     | Description                    | Resolution | Rev
+  ----+------------+---------+--------------+--------------------------------+------------+----
+  001 | YYYY-MM-DD | [name]  | [see below]  | [vendor's question or request] | [A/R/D]    | —
+  002 |            |         |              |                                |            |
+  003 |            |         |              |                                |            |
+
+  Categories:
+    DRILL     — drill size, aspect ratio, plating questions
+    MASK      — soldermask expansion, tenting, opening queries
+    VIP       — via-in-pad fill, cap, planarity concerns
+    STACKUP   — layer count, thickness, copper weight
+    IMPEDANCE — controlled impedance (N/A for this board)
+    MATERIAL  — substrate, finish, Tg questions
+    PANEL     — panelization, routing, V-score
+    GENERAL   — other
+
+  Resolution codes:
+    A = ACCEPT (design or notes modified per vendor request)
+    R = REJECT (vendor request declined with justification)
+    D = DEFER  (carry to next revision)
+
+6. COMMON DFM QUESTIONS AND PRE-APPROVED RESPONSES
+----------------------------------------------------
+  The following are anticipated vendor questions with pre-approved
+  responses.  Use these verbatim.
+
+  Q: "Can we use resin plug without copper cap for VIP vias?"
+  A: NO. IPC-4761 Type VII required. Copper cap mandatory.
+     Reject order if cap plating unavailable. See fab_notes.txt §4.
+
+  Q: "Can we adjust soldermask expansion on J5 pads?"
+  A: NO. Mask openings shall remain as provided in Gerbers.
+     See fab_notes.txt §3.
+
+  Q: "Minimum drill 0.20 mm — can we upsize to 0.25 mm?"
+  A: NO. Via pad size is fixed at 0.40 mm. Upsizing drill reduces
+     annular ring below minimum. Do not modify drill sizes.
+
+  Q: "NPTH drill file is empty — is this correct?"
+  A: YES. No unplated holes in this design. Empty NPTH file is
+     intentional.
+
+  Q: "B.Mask Gerber has no apertures — is this correct?"
+  A: YES. All components are front-side SMD only. No B.Cu pads
+     require mask openings. Empty B.Mask is intentional.
+
+  Q: "Can we substitute FR4 with CEM-3 or other dielectric?"
+  A: NO. FR4 with Tg ≥ 150 °C required. No material substitutions
+     without written approval. See fab_notes.txt §1.
+
+  Q: "Board is small — can we panelize?"
+  A: YES, with ≥ 2 mm clearance from board edge to nearest copper.
+     See fab_notes.txt §8.
+
+7. ESCALATION
+--------------
+  If vendor feedback cannot be resolved by the DFM categories above,
+  or if vendor proposes a process change that affects VIPPO, contact:
+
+    [engineer email / project lead]
+
+  Do not authorize process deviations without written approval.
+
+================================================================================
+ END OF DFM FEEDBACK LOOP
+================================================================================

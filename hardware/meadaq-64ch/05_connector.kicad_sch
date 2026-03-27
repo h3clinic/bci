@@ -1,0 +1,121 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "a0050000-0000-0000-0000-000000000001")
+	(paper "A3")
+	(title_block
+		(title "05 — MEA Connector + ESD Protection")
+		(date "2025-06-28")
+		(rev "0.2")
+		(company "BCIInterface / meadaq-64ch")
+		(comment 1 "68-pin FPC (0.5mm pitch) + TPD8S009 ESD arrays + 4.7kΩ series R")
+		(comment 2 "64 electrode channels + REF + GND + SHIELD + AUX_STIM")
+	)
+	(lib_symbols)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; HIERARCHICAL LABELS — electrode buses (to AFE sheet)
+	;; ════════════════════════════════════════════════════════════════
+
+	(hierarchical_label "ELEC_A[0..31]"
+		(shape output)
+		(at 280 50 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0050001-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "ELEC_B[0..31]"
+		(shape output)
+		(at 280 90 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0050002-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "ELEC_REF"
+		(shape output)
+		(at 280 130 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0050003-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: FPC Connector — J3 (68-pin, 0.5mm pitch, bottom-contact)
+	;;
+	;; PIN ASSIGNMENTS:
+	;; ──────────────────────────────────────────────
+	;; FPC.01  → E01 → ELEC_A00 → RHD2164 IN_A_00 → CH01
+	;; FPC.02  → E02 → ELEC_A01 → RHD2164 IN_A_01 → CH02
+	;; ...
+	;; FPC.32  → E32 → ELEC_A31 → RHD2164 IN_A_31 → CH32
+	;; FPC.33  → E33 → ELEC_B00 → RHD2164 IN_B_00 → CH33
+	;; FPC.34  → E34 → ELEC_B01 → RHD2164 IN_B_01 → CH34
+	;; ...
+	;; FPC.64  → E64 → ELEC_B31 → RHD2164 IN_B_31 → CH64
+	;; FPC.65  → REF  → ELEC_REF → RHD2164 REF_ELEC (pin 64)
+	;; FPC.66  → GND  → GND_A (analog ground)
+	;; FPC.67  → SHIELD → chassis/shield ground via 1MΩ
+	;; FPC.68  → AUX_STIM → test point (future stimulation)
+	;;
+	;; Mechanical: ZIF, actuator on top, contacts on bottom
+	;; Mating FPC cable: 68-conductor, 0.5mm pitch, polyimide flex
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── FPC Connector (J3) ───\n68-pin, 0.5mm pitch, bottom-contact ZIF\n\n=== Pin Mapping ===\nFPC.01-32:  E01-E32 → Bank A (CH01-CH32)\nFPC.33-64:  E33-E64 → Bank B (CH33-CH64)\nFPC.65:     REF electrode\nFPC.66:     Analog GND\nFPC.67:     Shield GND (1MΩ to GND)\nFPC.68:     AUX_STIM (TP, future use)\n\nEach electrode pin path:\n  FPC.xx → TPD8S009 TVS → 4.7kΩ series R → ELEC_x_yy → RHD2164"
+		(exclude_from_sim no)
+		(at 30 30 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0050001-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: ESD Protection — TPD8S009 × 8 (U10–U17)
+	;; 8-channel TVS diode arrays
+	;; IEC 61000-4-2: ±8kV contact, ±15kV air
+	;; Ultra-low capacitance: 3.5 pF per channel
+	;; Package: USON-18 (2.0×3.5mm)
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── ESD Protection — TPD8S009 × 8 ───\n\n=== Array Assignment ===\nU10: ELEC_A[0..7]   — FPC.01-08 (CH01-CH08)\nU11: ELEC_A[8..15]  — FPC.09-16 (CH09-CH16)\nU12: ELEC_A[16..23] — FPC.17-24 (CH17-CH24)\nU13: ELEC_A[24..31] — FPC.25-32 (CH25-CH32)\nU14: ELEC_B[0..7]   — FPC.33-40 (CH33-CH40)\nU15: ELEC_B[8..15]  — FPC.41-48 (CH41-CH48)\nU16: ELEC_B[16..23] — FPC.49-56 (CH49-CH56)\nU17: ELEC_B[24..31] — FPC.57-64 (CH57-CH64)\n\nEach TPD8S009:\n  IN1-IN8 ← electrode lines (FPC side)\n  OUT1-OUT8 → 4.7kΩ series R → AFE side\n  VCC → VDD_A_3V3 (clamp reference)\n  GND → GND_A\n\nSpec: ±8kV contact, 3.5pF/ch, USON-18\nCout: 100nF on each VCC"
+		(exclude_from_sim no)
+		(at 30 95 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0050002-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: Series Resistors — R_E01..R_E64 (4.7kΩ, 0402)
+	;; Current-limiting resistors between ESD clamp and AFE input
+	;; Also provides RF filtering with RHD2164 input capacitance
+	;; τ = 4.7kΩ × 12pF (input cap) = 56.4ns → fc ≈ 2.8 MHz
+	;; Well above 20 kHz signal BW; preserves impedance meas. to 1 MHz
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── Series Resistors (R_E01..R_E64) ───\n64 × 4.7kΩ, 0402 size, ±1%\n\nPurpose:\n  1. ESD current limiting (< 3.2mA at ±15V HBM)\n  2. RF filter with RHD2164 Cin (12pF)\n     τ = 4.7kΩ × 12pF = 56.4ns\n     fc = 1/(2πτ) = 2.82 MHz (>> 20 kHz BW)\n     Preserves impedance measurement to 1 MHz\n  3. Isolation between channels\n\nPlacement: between TPD8S009 OUT and h-label bus\nGrouped in 8s, matching ESD array grouping\n\nREF resistor: R_REF = 4.7kΩ (FPC.65 → ELEC_REF)\n\nCDR-1: Changed from 10kΩ → 4.7kΩ to improve HF bandwidth"
+		(exclude_from_sim no)
+		(at 30 185 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0050003-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: Test Points
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── Test Points ───\nTP_E01:  electrode CH01 (post-resistor, for probe)\nTP_E33:  electrode CH33 (bank B first channel)\nTP_REF:  reference electrode\nTP_GND_A: analog ground\nTP_STIM:  AUX_STIM (FPC.68)\n\nAll: 1.0mm pad, solder-side accessible"
+		(exclude_from_sim no)
+		(at 30 235 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0050004-0000-0000-0000-000000000001")
+	)
+)

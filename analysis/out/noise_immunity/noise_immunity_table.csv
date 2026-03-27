@@ -1,0 +1,31 @@
+condition,severity,description,detected,n_alerts,n_neurotox,n_artifact,n_uncertain,false_alarms,correct_classification,triaged_label,mahal_distance,latency_median_s,latency_p90_s,confidence_mean,ms_per_s,realtime_factor
+60Hz+harmonics+drift,0.3,60Hz 25µV + 2 harmonics + ±0.1Hz drift,Y,1,0,1,0,0,Y,artifact,84.53,1.000,1.000,0.490,5.325,188
+60Hz+harmonics+drift,0.6,60Hz 40µV + 2 harmonics + ±0.3Hz drift,Y,1,0,1,0,0,Y,artifact,122.19,1.000,1.000,0.480,4.752,210
+60Hz+harmonics+drift,0.9,60Hz 55µV + 2 harmonics + ±0.5Hz drift,Y,1,0,0,1,0,Y,uncertain,40.92,1.000,1.000,0.501,4.922,203
+EMI_bursts,0.3,4 bursts @ 60µV RMS,Y,1,1,0,0,0,N,suppression-like,25.37,15.000,15.000,0.968,5.218,192
+EMI_bursts,0.6,6 bursts @ 90µV RMS,Y,1,1,0,0,0,N,suppression-like,46.29,2.000,2.000,0.981,4.962,202
+EMI_bursts,0.9,9 bursts @ 120µV RMS,Y,1,0,0,1,0,Y,uncertain,27.60,6.000,6.000,0.680,5.100,196
+ADC_clipping,0.3,Clip at ±5056µV,N,0,0,0,0,0,N,,0.00,,,0.000,0.207,4835
+ADC_clipping,0.6,Clip at ±3712µV,N,0,0,0,0,0,N,,0.00,,,0.000,0.196,5097
+ADC_clipping,0.9,Clip at ±2368µV,Y,1,1,0,0,0,N,suppression-like,26.35,17.000,17.000,0.965,4.090,244
+channel_dropout,0.3,Drop 30% channels → 0,Y,1,0,0,1,0,Y,uncertain,1000000.00,3.000,3.000,0.990,5.985,167
+channel_dropout,0.6,Drop 60% channels → 0,Y,1,0,0,1,0,Y,uncertain,1000000.00,1.000,1.000,0.973,5.750,174
+channel_dropout,0.9,Drop 90% channels → 0,Y,1,0,0,1,0,Y,uncertain,1000000.00,1.000,1.000,0.996,6.030,166
+coupling_shift,0.3,Crosstalk coupling 2.5%,N,0,0,0,0,0,N,,0.00,,,0.000,0.193,5180
+coupling_shift,0.6,Crosstalk coupling 4.0%,Y,1,0,0,1,0,Y,uncertain,53.19,19.000,19.000,0.980,2.129,470
+coupling_shift,0.9,Crosstalk coupling 5.5%,Y,1,1,0,0,0,N,suppression-like,22.31,12.000,12.000,0.969,4.896,204
+sample_rate_mismatch,0.3,Rate mismatch 1.015×,N,0,0,0,0,0,N,,0.00,,,0.000,0.201,4980
+sample_rate_mismatch,0.6,Rate mismatch 1.030×,Y,1,0,0,1,0,Y,uncertain,147.83,20.000,20.000,0.936,2.043,489
+sample_rate_mismatch,0.9,Rate mismatch 1.045×,Y,1,1,0,0,0,N,suppression-like,17.75,12.000,12.000,0.996,5.552,180
+quantization_change,0.3,LSB=0.78µV (vs 0.195 nominal),N,0,0,0,0,0,N,,0.00,,,0.000,0.205,4887
+quantization_change,0.6,LSB=1.36µV (vs 0.195 nominal),N,0,0,0,0,0,N,,0.00,,,0.000,0.191,5240
+quantization_change,0.9,LSB=1.95µV (vs 0.195 nominal),N,0,0,0,0,0,N,,0.00,,,0.000,0.205,4889
+bandpass_mismatch,0.3,Narrower bandpass at sev=0.3,N,0,0,0,0,0,N,,0.00,,,0.000,0.185,5415
+bandpass_mismatch,0.6,Narrower bandpass at sev=0.6,Y,1,1,0,0,0,N,suppression-like,47.05,18.000,18.000,0.879,3.129,320
+bandpass_mismatch,0.9,Narrower bandpass at sev=0.9,Y,1,1,0,0,0,N,suppression-like,54.12,2.000,2.000,0.879,8.919,112
+spike_suppression,0.3,Amplitude ×0.76,Y,1,1,0,0,0,Y,suppression-like,94.40,1.000,1.000,0.936,5.222,192
+spike_suppression,0.6,Amplitude ×0.52,Y,1,1,0,0,0,Y,suppression-like,26.99,1.000,1.000,0.984,5.108,196
+spike_suppression,0.9,Amplitude ×0.28,Y,1,1,0,0,0,Y,suppression-like,73.82,1.000,1.000,0.991,4.899,204
+rate_decrease,0.3,Smoothing kernel=7,Y,1,1,0,0,0,Y,suppression-like,25.91,2.000,2.000,0.888,5.535,181
+rate_decrease,0.6,Smoothing kernel=13,Y,1,1,0,0,0,Y,suppression-like,76.32,1.000,1.000,0.852,5.737,174
+rate_decrease,0.9,Smoothing kernel=19,Y,1,1,0,0,0,Y,suppression-like,49.32,1.000,1.000,0.871,5.385,186

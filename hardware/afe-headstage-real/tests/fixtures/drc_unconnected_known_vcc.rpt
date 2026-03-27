@@ -1,0 +1,22 @@
+** Found 12 DRC violations **
+
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(108.00 mm, 119.00 mm): Pad 19 [VCC] of J5 on F.Cu
+    @(108.00 mm, 121.00 mm): Pad 20 [VCC] of J5 on F.Cu
+    @(108.00 mm, 127.00 mm): Pad 23 [VCC] of J5 on F.Cu
+    @(108.00 mm, 129.00 mm): Pad 24 [VCC] of J5 on F.Cu
+    @(120.00 mm, 120.00 mm): Pad 3 [VCC] of U2 on F.Cu
+
+** Found 5 unconnected pads **
+
+[clearance]: Clearance violation ...
+    @(110.50 mm, 91.00 mm): Pad 1 [/CH0] of TP4 on F.Cu
+    @(110.20 mm, 91.30 mm): Pad 1 [/CH1] of TP5 on F.Cu
+
+[silk_overlap]: Silk text overlaps another item on layer "F.SilkS"; ...
+    @(120.00 mm, 98.00 mm): Text "R1" on F.SilkS
+    @(121.00 mm, 98.00 mm): Text "R2" on F.SilkS
+
+[silk_over_copper]: Silkscreen clipped by solder mask ...
+    @(113.00 mm, 93.00 mm): Text "R1" on F.SilkS

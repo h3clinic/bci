@@ -1,0 +1,65 @@
+(version 1)
+
+# ──────────────────────────────────────────────────────────────────────────
+# Custom Design Rules — Neural AFE Headstage
+# ──────────────────────────────────────────────────────────────────────────
+#
+# PURPOSE:
+# Suppress intra-footprint pad-to-pad clearance violations that are
+# physically dictated by the component package geometry and cannot be
+# changed by PCB layout.
+#
+# CLASSIFICATION (18/18 clearance violations are intra-footprint):
+#   U1  RHD2164 BGA-104  — 0.50mm pitch, 0.25mm dia NSMD pads
+#       → pad edge-to-edge = 0.25mm (10 violations at 0.3mm EEG clearance)
+#   J5  Samtec QSH-030   — 0.50mm pitch, 0.30mm wide pads
+#       → pad edge-to-edge = 0.20mm (8 violations at 0.25mm POWER clearance)
+#
+# RULES BELOW:
+# Set intra-footprint clearance to 0.10mm (well within the fab capability
+# for NSMD BGA and fine-pitch connector pads).  This does NOT reduce
+# inter-footprint or trace-to-pad clearance, which stays at the board
+# default (0.15mm) or net-class value.
+# ──────────────────────────────────────────────────────────────────────────
+
+# Rule 1: BGA U1 (RHD2164) intra-footprint pad clearance
+# 0.50mm pitch BGA with 0.25mm diameter pads — 0.25mm edge-to-edge
+# is the physical minimum imposed by the package.
+(rule "U1_RHD2164_intra"
+    (condition "A.memberOfFootprint('U1') && B.memberOfFootprint('U1')")
+    (constraint clearance (min 0.10mm)))
+
+# Rule 2: Connector J5 (Samtec QSH-030) intra-footprint pad clearance
+# 0.50mm pitch connector with 0.30mm wide pads — 0.20mm edge-to-edge
+# is the physical minimum imposed by the package.
+(rule "J5_QSH030_intra"
+    (condition "A.memberOfFootprint('J5') && B.memberOfFootprint('J5')")
+    (constraint clearance (min 0.10mm)))
+
+# Rule 3: Allow single thermal spoke on 3 specific J5 GND pads
+#
+# SCOPE: ONLY pads 14, 18, 22 on J5 (GND, row 2, y=119.2mm).
+# These are the pads that KiCad flags as starved_thermal with the
+# default min_resolved_spokes=2.
+#
+# ROOT CAUSE: 0.50mm pad pitch, 0.30mm pad width → 0.20mm inter-pad
+# gap.  A thermal spoke needs spoke_width(0.3mm) + 2×clearance(0.1mm)
+# = 0.50mm, so east/west spokes are geometrically blocked.  The VCC
+# columns at x=109.0 and x=110.0 further block the remaining north/
+# south spoke directions for these three pads specifically:
+#   Pad 14 (107.5, 119.2): flanked by non-GND pads on both sides
+#   Pad 18 (108.5, 119.2): east spoke blocked by VCC column at x=109
+#   Pad 22 (109.5, 119.2): between both VCC columns, all spokes blocked
+#
+# ACCEPTABILITY: J5 is a board-to-board connector (Samtec QSH-030),
+# machine-soldered via reflow.  Low thermal mass pads do not require
+# multi-spoke thermal relief for soldering.  Each pad still has ≥1
+# spoke providing reliable electrical GND connection.
+#
+# This rule does NOT apply to:
+#   - Any pad on U1 (BGA)
+#   - Any other J5 pad (1-13, 15-17, 19-21, 23-30)
+#   - Any pad on any other footprint
+(rule "J5_GND_starved_pads_14_18_22"
+    (condition "A.memberOfFootprint('J5') && A.NetName == 'GND' && (A.Pad_Number == '14' || A.Pad_Number == '18' || A.Pad_Number == '22')")
+    (constraint min_resolved_spokes 1))

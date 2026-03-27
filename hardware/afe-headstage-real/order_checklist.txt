@@ -1,0 +1,80 @@
+ORDER CHECKLIST — afe-headstage-v1
+====================================
+
+Complete this checklist BEFORE submitting the fab package to a vendor.
+Every item must be checked.  If ANY item is not checked, do not submit.
+
+──────────────────────────────────────────────────────────────────────
+
+□ 1. VIPPO CAPABILITY CONFIRMED
+    Vendor has confirmed IPC-4761 Type VII (epoxy plug + copper cap)
+    capability for 0.20 mm drill, 0.40 mm pad.
+    Vendor contact name: _______________
+    Date confirmed: _______________
+
+□ 2. FAB NOTES ACKNOWLEDGED
+    Vendor has received and acknowledged fab_notes.txt.
+    Vendor confirmed they will follow §4 VIPPO requirements exactly.
+    Vendor contact name: _______________
+    Date acknowledged: _______________
+
+□ 3. NO MATERIAL SUBSTITUTIONS
+    Vendor agrees to the no-substitution clause in fab_notes.txt §4:
+    "Mask tenting, resin plug without copper cap, or partial fill is
+    NOT acceptable as a substitute for IPC-4761 Type VII."
+
+□ 4. SOLDERMASK EXPANSION LOCKED
+    Vendor confirms they will NOT modify soldermask expansion values
+    from the Gerber files.  Any deviation requires written approval.
+
+□ 5. VIP VIAS CSV REVIEWED
+    vip_vias.csv has been reviewed by the vendor's CAM engineer.
+    All 14 VIP vias at J5 are identified and flagged for VIPPO.
+
+□ 6. FIRST-ARTICLE MICROSECTION AGREED
+    Vendor agrees to provide first-article destructive cross-section
+    of at least one J5 VIP via (per fab_notes.txt §10).
+    Report format: photo at 20× minimum, with via fill measurement.
+
+□ 7. STACKUP CONFIRMED
+    Vendor confirms 4-layer stackup per fab_profile.yaml:
+    - 1.6 mm ±10% total thickness
+    - 1 oz (35 µm) copper all layers
+    - FR4 Tg ≥ 150°C
+    - ENIG finish
+
+□ 8. DRILL TABLE VERIFIED
+    Vendor CAM engineer confirms drill table matches:
+    - T1: 0.200 mm (28 hits) — signal vias, VIPPO flagged
+    - T2: 0.300 mm (9 hits) — QFN thermal vias
+    No additional drill sizes without written approval.
+
+□ 9. QUANTITY AND LEAD TIME
+    Quantity ordered: _______________
+    Lead time quoted: _______________
+    First-article due date: _______________
+    Production lot due date: _______________
+
+□ 10. PACKAGE CONTENTS VERIFIED
+    The following files are in the submitted ZIP:
+    □ gerbers/ (9 files: F.Cu, In1.Cu, In2.Cu, B.Cu, F.Mask, B.Mask,
+                F.Silkscreen, B.Silkscreen, Edge.Cuts)
+    □ drill/ (Excellon + drill map PDF)
+    □ fab_notes.txt
+    □ fab_profile.yaml
+    □ vip_vias.csv
+    □ bringup_checklist.txt
+    □ assembly_constraints.txt
+    □ dfm_feedback_loop.txt
+    □ order_checklist.txt (this file)
+    □ README_FAB.md
+
+──────────────────────────────────────────────────────────────────────
+
+SUBMITTER SIGN-OFF
+
+Name: _______________
+Date: _______________
+Signature: _______________
+
+Vendor PO / Quote #: _______________

@@ -1,0 +1,414 @@
+(kicad_sym_lib
+  (version 20231120)
+  (generator "kicad_symbol_editor")
+  (generator_version "8.0")
+
+  ;; ═══════════════════════════════════════════════════════════════════════════
+  ;;                          RHD2164 - 64-Channel Neural AFE
+  ;; ═══════════════════════════════════════════════════════════════════════════
+  (symbol "RHD2164"
+    (pin_names (offset 0.254))
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+
+    (property "Reference" "U"
+      (at 0 26 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "RHD2164"
+      (at 0 24 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Package_BGA:BGA-100_10x10_8.5x8.5mm"
+      (at 0 -26 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "https://intantech.com/files/Intan_RHD2164_datasheet.pdf"
+      (at 0 -28 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Description" "64-Channel Low-Noise Biopotential AFE with ADC"
+      (at 0 -30 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Manufacturer" "Intan Technologies"
+      (at 0 -32 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+
+    ;; Symbol body
+    (symbol "RHD2164_1_0"
+      (rectangle
+        (start -15 22)
+        (end 15 -22)
+        (stroke (width 0.254) (type solid))
+        (fill (type background))
+      )
+
+      ;; Power pins - Left side top
+      (pin power_in line
+        (at -20 20 0)
+        (length 5)
+        (name "VDD1" (effects (font (size 1 1))))
+        (number "A1" (effects (font (size 1 1))))
+      )
+      (pin power_in line
+        (at -20 18 0)
+        (length 5)
+        (name "VDD2" (effects (font (size 1 1))))
+        (number "A2" (effects (font (size 1 1))))
+      )
+      (pin power_in line
+        (at -20 16 0)
+        (length 5)
+        (name "VDD3" (effects (font (size 1 1))))
+        (number "A3" (effects (font (size 1 1))))
+      )
+      (pin power_in line
+        (at -20 12 0)
+        (length 5)
+        (name "VDDD1" (effects (font (size 1 1))))
+        (number "B1" (effects (font (size 1 1))))
+      )
+      (pin power_in line
+        (at -20 10 0)
+        (length 5)
+        (name "VDDD2" (effects (font (size 1 1))))
+        (number "B2" (effects (font (size 1 1))))
+      )
+
+      ;; Ground pins - Left side bottom
+      (pin power_in line
+        (at -20 -16 0)
+        (length 5)
+        (name "GND1" (effects (font (size 1 1))))
+        (number "J1" (effects (font (size 1 1))))
+      )
+      (pin power_in line
+        (at -20 -18 0)
+        (length 5)
+        (name "GND2" (effects (font (size 1 1))))
+        (number "J2" (effects (font (size 1 1))))
+      )
+      (pin power_in line
+        (at -20 -20 0)
+        (length 5)
+        (name "GND3" (effects (font (size 1 1))))
+        (number "J3" (effects (font (size 1 1))))
+      )
+
+      ;; SPI Interface - Right side top
+      (pin input line
+        (at 20 20 180)
+        (length 5)
+        (name "CS" (effects (font (size 1 1))))
+        (number "C10" (effects (font (size 1 1))))
+      )
+      (pin input line
+        (at 20 18 180)
+        (length 5)
+        (name "SCLK" (effects (font (size 1 1))))
+        (number "D10" (effects (font (size 1 1))))
+      )
+      (pin input line
+        (at 20 16 180)
+        (length 5)
+        (name "MOSI" (effects (font (size 1 1))))
+        (number "E10" (effects (font (size 1 1))))
+      )
+      (pin output line
+        (at 20 14 180)
+        (length 5)
+        (name "MISO" (effects (font (size 1 1))))
+        (number "F10" (effects (font (size 1 1))))
+      )
+
+      ;; Analog reference
+      (pin passive line
+        (at 20 8 180)
+        (length 5)
+        (name "VREF" (effects (font (size 1 1))))
+        (number "G10" (effects (font (size 1 1))))
+      )
+      (pin input line
+        (at 20 6 180)
+        (length 5)
+        (name "REF_ELEC" (effects (font (size 1 1))))
+        (number "H10" (effects (font (size 1 1))))
+      )
+
+      ;; Input channels (simplified - show bus)
+      (pin input line
+        (at -20 6 0)
+        (length 5)
+        (name "IN[0..31]" (effects (font (size 1 1))))
+        (number "IN_A" (effects (font (size 1 1))))
+      )
+      (pin input line
+        (at -20 2 0)
+        (length 5)
+        (name "IN[32..63]" (effects (font (size 1 1))))
+        (number "IN_B" (effects (font (size 1 1))))
+      )
+
+      ;; Aux
+      (pin input line
+        (at 20 -10 180)
+        (length 5)
+        (name "AUX_IN" (effects (font (size 1 1))))
+        (number "A10" (effects (font (size 1 1))))
+      )
+    )
+  )
+
+  ;; ═══════════════════════════════════════════════════════════════════════════
+  ;;                          ADP151 - Low Noise LDO
+  ;; ═══════════════════════════════════════════════════════════════════════════
+  (symbol "ADP151-3.3"
+    (pin_names (offset 0.254))
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+
+    (property "Reference" "U"
+      (at 0 5 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "ADP151-3.3"
+      (at 0 3 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Package_CSP:WLCSP-4_0.8x0.8mm_P0.4mm"
+      (at 0 -8 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "https://www.analog.com/media/en/technical-documentation/data-sheets/ADP150_151.pdf"
+      (at 0 -10 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Description" "Ultralow Noise, 200mA LDO, 3.3V Fixed Output"
+      (at 0 -12 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+
+    (symbol "ADP151-3.3_1_0"
+      (rectangle
+        (start -5 2)
+        (end 5 -5)
+        (stroke (width 0.254) (type solid))
+        (fill (type background))
+      )
+      (pin power_in line
+        (at -10 0 0)
+        (length 5)
+        (name "VIN" (effects (font (size 1 1))))
+        (number "A1" (effects (font (size 1 1))))
+      )
+      (pin power_out line
+        (at 10 0 180)
+        (length 5)
+        (name "VOUT" (effects (font (size 1 1))))
+        (number "B1" (effects (font (size 1 1))))
+      )
+      (pin power_in line
+        (at 0 -10 90)
+        (length 5)
+        (name "GND" (effects (font (size 1 1))))
+        (number "A2" (effects (font (size 1 1))))
+      )
+      (pin input line
+        (at -10 -3 0)
+        (length 5)
+        (name "EN" (effects (font (size 1 1))))
+        (number "B2" (effects (font (size 1 1))))
+      )
+    )
+  )
+
+  ;; ═══════════════════════════════════════════════════════════════════════════
+  ;;                          PESD5V0S1BL - ESD Protection
+  ;; ═══════════════════════════════════════════════════════════════════════════
+  (symbol "PESD5V0S1BL"
+    (pin_names (offset 0.254))
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+
+    (property "Reference" "D"
+      (at 0 4 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "PESD5V0S1BL"
+      (at 0 2 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-23"
+      (at 0 -4 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Description" "Low capacitance ESD protection, <3pF, <1nA leakage"
+      (at 0 -6 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+
+    (symbol "PESD5V0S1BL_1_0"
+      (polyline
+        (pts (xy -2 0) (xy 0 1.5) (xy 0 -1.5) (xy -2 0))
+        (stroke (width 0.254) (type solid))
+        (fill (type none))
+      )
+      (polyline
+        (pts (xy 0 1.5) (xy 0 -1.5))
+        (stroke (width 0.254) (type solid))
+        (fill (type none))
+      )
+      (pin passive line
+        (at -5 0 0)
+        (length 3)
+        (name "IO" (effects (font (size 1 1))))
+        (number "1" (effects (font (size 1 1))))
+      )
+      (pin passive line
+        (at 5 0 180)
+        (length 5)
+        (name "GND" (effects (font (size 1 1))))
+        (number "2" (effects (font (size 1 1))))
+      )
+    )
+  )
+
+  ;; ═══════════════════════════════════════════════════════════════════════════
+  ;;                          DS90LV047A - LVDS Driver
+  ;; ═══════════════════════════════════════════════════════════════════════════
+  (symbol "DS90LV047A"
+    (pin_names (offset 0.254))
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+
+    (property "Reference" "U"
+      (at 0 12 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "DS90LV047A"
+      (at 0 10 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Package_SO:TSSOP-16_4.4x5mm_P0.65mm"
+      (at 0 -14 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Description" "Quad LVDS Driver, 400Mbps"
+      (at 0 -16 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+
+    (symbol "DS90LV047A_1_0"
+      (rectangle
+        (start -8 8)
+        (end 8 -10)
+        (stroke (width 0.254) (type solid))
+        (fill (type background))
+      )
+
+      ;; Inputs
+      (pin input line (at -13 6 0) (length 5) (name "IN0" (effects (font (size 1 1)))) (number "2" (effects (font (size 1 1)))))
+      (pin input line (at -13 3 0) (length 5) (name "IN1" (effects (font (size 1 1)))) (number "4" (effects (font (size 1 1)))))
+      (pin input line (at -13 0 0) (length 5) (name "IN2" (effects (font (size 1 1)))) (number "6" (effects (font (size 1 1)))))
+      (pin input line (at -13 -3 0) (length 5) (name "IN3" (effects (font (size 1 1)))) (number "14" (effects (font (size 1 1)))))
+
+      ;; LVDS outputs
+      (pin output line (at 13 6 180) (length 5) (name "OUT0+" (effects (font (size 1 1)))) (number "1" (effects (font (size 1 1)))))
+      (pin output line (at 13 5 180) (length 5) (name "OUT0-" (effects (font (size 1 1)))) (number "16" (effects (font (size 1 1)))))
+      (pin output line (at 13 3 180) (length 5) (name "OUT1+" (effects (font (size 1 1)))) (number "3" (effects (font (size 1 1)))))
+      (pin output line (at 13 2 180) (length 5) (name "OUT1-" (effects (font (size 1 1)))) (number "5" (effects (font (size 1 1)))))
+      (pin output line (at 13 0 180) (length 5) (name "OUT2+" (effects (font (size 1 1)))) (number "7" (effects (font (size 1 1)))))
+      (pin output line (at 13 -1 180) (length 5) (name "OUT2-" (effects (font (size 1 1)))) (number "9" (effects (font (size 1 1)))))
+      (pin output line (at 13 -3 180) (length 5) (name "OUT3+" (effects (font (size 1 1)))) (number "13" (effects (font (size 1 1)))))
+      (pin output line (at 13 -4 180) (length 5) (name "OUT3-" (effects (font (size 1 1)))) (number "15" (effects (font (size 1 1)))))
+
+      ;; Power
+      (pin power_in line (at 0 13 270) (length 5) (name "VCC" (effects (font (size 1 1)))) (number "8" (effects (font (size 1 1)))))
+      (pin power_in line (at 0 -15 90) (length 5) (name "GND" (effects (font (size 1 1)))) (number "10" (effects (font (size 1 1)))))
+      (pin input line (at -13 -6 0) (length 5) (name "EN" (effects (font (size 1 1)))) (number "11" (effects (font (size 1 1)))))
+    )
+  )
+
+  ;; ═══════════════════════════════════════════════════════════════════════════
+  ;;                          Omnetics NPD-36 - Electrode Connector
+  ;; ═══════════════════════════════════════════════════════════════════════════
+  (symbol "Omnetics_NPD-36"
+    (pin_names (offset 0.254))
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+
+    (property "Reference" "J"
+      (at 0 22 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Value" "NPD-36"
+      (at 0 20 0)
+      (effects (font (size 1.27 1.27)))
+    )
+    (property "Footprint" "Connector_Omnetics:NPD-36-AA-GS"
+      (at 0 -22 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Description" "36-pin Nano Dual Row Connector for Neural Electrodes"
+      (at 0 -24 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+
+    (symbol "Omnetics_NPD-36_1_0"
+      (rectangle
+        (start -4 18)
+        (end 4 -18)
+        (stroke (width 0.254) (type solid))
+        (fill (type background))
+      )
+      
+      ;; Pins 1-18 on left
+      (pin passive line (at -9 17 0) (length 5) (name "1" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 15 0) (length 5) (name "2" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 13 0) (length 5) (name "3" (effects (font (size 0.8 0.8)))) (number "3" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 11 0) (length 5) (name "4" (effects (font (size 0.8 0.8)))) (number "4" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 9 0) (length 5) (name "5" (effects (font (size 0.8 0.8)))) (number "5" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 7 0) (length 5) (name "6" (effects (font (size 0.8 0.8)))) (number "6" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 5 0) (length 5) (name "7" (effects (font (size 0.8 0.8)))) (number "7" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 3 0) (length 5) (name "8" (effects (font (size 0.8 0.8)))) (number "8" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 1 0) (length 5) (name "9" (effects (font (size 0.8 0.8)))) (number "9" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 -1 0) (length 5) (name "10" (effects (font (size 0.8 0.8)))) (number "10" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 -3 0) (length 5) (name "11" (effects (font (size 0.8 0.8)))) (number "11" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 -5 0) (length 5) (name "12" (effects (font (size 0.8 0.8)))) (number "12" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 -7 0) (length 5) (name "13" (effects (font (size 0.8 0.8)))) (number "13" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 -9 0) (length 5) (name "14" (effects (font (size 0.8 0.8)))) (number "14" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 -11 0) (length 5) (name "15" (effects (font (size 0.8 0.8)))) (number "15" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 -13 0) (length 5) (name "16" (effects (font (size 0.8 0.8)))) (number "16" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 -15 0) (length 5) (name "17" (effects (font (size 0.8 0.8)))) (number "17" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at -9 -17 0) (length 5) (name "18" (effects (font (size 0.8 0.8)))) (number "18" (effects (font (size 0.8 0.8)))))
+
+      ;; Pins 19-36 on right
+      (pin passive line (at 9 17 180) (length 5) (name "19" (effects (font (size 0.8 0.8)))) (number "19" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 15 180) (length 5) (name "20" (effects (font (size 0.8 0.8)))) (number "20" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 13 180) (length 5) (name "21" (effects (font (size 0.8 0.8)))) (number "21" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 11 180) (length 5) (name "22" (effects (font (size 0.8 0.8)))) (number "22" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 9 180) (length 5) (name "23" (effects (font (size 0.8 0.8)))) (number "23" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 7 180) (length 5) (name "24" (effects (font (size 0.8 0.8)))) (number "24" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 5 180) (length 5) (name "25" (effects (font (size 0.8 0.8)))) (number "25" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 3 180) (length 5) (name "26" (effects (font (size 0.8 0.8)))) (number "26" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 1 180) (length 5) (name "27" (effects (font (size 0.8 0.8)))) (number "27" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 -1 180) (length 5) (name "28" (effects (font (size 0.8 0.8)))) (number "28" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 -3 180) (length 5) (name "29" (effects (font (size 0.8 0.8)))) (number "29" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 -5 180) (length 5) (name "30" (effects (font (size 0.8 0.8)))) (number "30" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 -7 180) (length 5) (name "31" (effects (font (size 0.8 0.8)))) (number "31" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 -9 180) (length 5) (name "32" (effects (font (size 0.8 0.8)))) (number "32" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 -11 180) (length 5) (name "33/REF1" (effects (font (size 0.8 0.8)))) (number "33" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 -13 180) (length 5) (name "34/REF2" (effects (font (size 0.8 0.8)))) (number "34" (effects (font (size 0.8 0.8)))))
+      (pin power_in line (at 9 -15 180) (length 5) (name "35/GND" (effects (font (size 0.8 0.8)))) (number "35" (effects (font (size 0.8 0.8)))))
+      (pin passive line (at 9 -17 180) (length 5) (name "36/SHLD" (effects (font (size 0.8 0.8)))) (number "36" (effects (font (size 0.8 0.8)))))
+    )
+  )
+
+)

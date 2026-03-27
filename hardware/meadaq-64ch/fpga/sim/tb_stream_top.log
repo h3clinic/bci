@@ -1,0 +1,56 @@
+[DIAG] t=344000 fill=0 free=32768 prod=0 commit=0 drop=0 out=0
+[DIAG] t=1000280000 fill=0 free=32768 prod=19 commit=19 drop=0 out=19
+[DIAG] t=2000216000 fill=0 free=32768 prod=39 commit=39 drop=0 out=39
+[TXE] Phase 2: stall begins at t=2000262000
+[DIAG] t=3000152000 fill=2560 free=30208 prod=59 commit=59 drop=0 out=39
+[DIAG] t=4000088000 fill=5120 free=27648 prod=79 commit=79 drop=0 out=39
+[DIAG] t=5000024000 fill=7680 free=25088 prod=99 commit=99 drop=0 out=39
+[DIAG] t=5999960000 fill=10240 free=22528 prod=119 commit=119 drop=0 out=39
+[DIAG] t=6999896000 fill=12800 free=19968 prod=139 commit=139 drop=0 out=39
+[DIAG] t=7999832000 fill=15360 free=17408 prod=159 commit=159 drop=0 out=39
+[DIAG] t=8999768000 fill=17920 free=14848 prod=179 commit=179 drop=0 out=39
+[DIAG] t=9999704000 fill=20480 free=12288 prod=199 commit=199 drop=0 out=39
+[DIAG] t=10999640000 fill=23040 free=9728 prod=219 commit=219 drop=0 out=39
+[DIAG] t=11999576000 fill=25600 free=7168 prod=239 commit=239 drop=0 out=39
+[DIAG] t=12999512000 fill=28160 free=4608 prod=259 commit=259 drop=0 out=39
+[DIAG] t=13999448000 fill=30720 free=2048 prod=279 commit=279 drop=0 out=39
+[DIAG] t=14999384000 fill=32768 free=0 prod=299 commit=295 drop=4 out=39
+[DIAG] t=15999320000 fill=32768 free=0 prod=319 commit=295 drop=24 out=39
+[DIAG] t=16999256000 fill=32768 free=0 prod=339 commit=295 drop=44 out=39
+[DIAG] t=17999192000 fill=32768 free=0 prod=359 commit=295 drop=64 out=39
+[DIAG] t=18999128000 fill=32768 free=0 prod=379 commit=295 drop=84 out=39
+[DIAG] t=19999064000 fill=32768 free=0 prod=399 commit=295 drop=104 out=39
+[DIAG] t=20999000000 fill=32768 free=0 prod=419 commit=295 drop=124 out=39
+[DIAG] t=21998936000 fill=32768 free=0 prod=439 commit=295 drop=144 out=39
+[TXE] Phase 3: resume at t=21999462000
+[DIAG] t=22998872000 fill=23207 free=9561 prod=459 commit=314 drop=145 out=132
+[DIAG] t=23998808000 fill=13768 free=19000 prod=479 commit=334 drop=145 out=226
+[DIAG] t=24998744000 fill=4328 free=28440 prod=499 commit=354 drop=145 out=320
+[DIAG] t=25998680000 fill=0 free=32768 prod=519 commit=374 drop=145 out=374
+[DIAG] t=26998616000 fill=0 free=32768 prod=539 commit=394 drop=145 out=394
+[DIAG] t=27998552000 fill=0 free=32768 prod=559 commit=414 drop=145 out=414
+[DIAG] t=28998488000 fill=0 free=32768 prod=579 commit=434 drop=145 out=434
+[DIAG] t=29998424000 fill=0 free=32768 prod=599 commit=454 drop=145 out=454
+[DIAG] t=30998360000 fill=0 free=32768 prod=619 commit=474 drop=145 out=474
+[DIAG] t=31998296000 fill=0 free=32768 prod=639 commit=494 drop=145 out=494
+[TXE] Phase 4: stop SPI, drain at t=31999062000
+[DIAG] t=32998232000 fill=0 free=32768 prod=640 commit=495 drop=145 out=495
+[DIAG] t=33998168000 fill=0 free=32768 prod=640 commit=495 drop=145 out=495
+[DIAG] t=34998104000 fill=0 free=32768 prod=640 commit=495 drop=145 out=495
+[DIAG] t=35998040000 fill=0 free=32768 prod=640 commit=495 drop=145 out=495
+[DIAG] t=36997976000 fill=0 free=32768 prod=640 commit=495 drop=145 out=495
+[TXE] Deterministic TXE test finished at t=36998862000
+[DIAG] t=37997912000 fill=0 free=32768 prod=640 commit=495 drop=145 out=495
+
+=== INTEGRATION TB RESULTS ===
+  Frames produced:  640
+  Frames serialized:495
+  Frames dropped:   145
+  Frames received:  495
+  Bytes received:   63360
+  Bridge stalls:    1199997
+  FIFO overflow:    0
+  fill_level final: 0
+
+ALL 3 CHECKERS PASSED.
+/Users/aharshi/BCIInterface/hardware/meadaq-64ch/fpga/sim/tb_stream_top.v:338: $finish called at 37998821653 (1ps)

@@ -1,0 +1,204 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "a0040000-0000-0000-0000-000000000001")
+	(paper "A3")
+	(title_block
+		(title "04 — USB Bridge (FT2232H)")
+		(date "2025-06-28")
+		(rev "0.1")
+		(company "BCIInterface / meadaq-64ch")
+		(comment 1 "FTDI FT2232H: USB 2.0 HS dual-channel, QFN-64 (10×10mm)")
+		(comment 2 "Channel A: Synchronous 245 FIFO mode, Channel B: UART")
+	)
+	(lib_symbols)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; HIERARCHICAL LABELS — Sync FIFO bus (from FPGA sheet)
+	;; ════════════════════════════════════════════════════════════════
+
+	(hierarchical_label "FT_D[0..7]"
+		(shape bidirectional)
+		(at 20 40 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0040001-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "FT_RXF_N"
+		(shape output)
+		(at 20 48 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0040002-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "FT_TXE_N"
+		(shape output)
+		(at 20 56 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0040003-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "FT_WR_N"
+		(shape input)
+		(at 20 64 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0040004-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "FT_RD_N"
+		(shape input)
+		(at 20 72 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0040005-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "FT_OE_N"
+		(shape input)
+		(at 20 80 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0040006-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "FT_CLKOUT"
+		(shape output)
+		(at 20 88 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0040007-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "FT_SIWU_N"
+		(shape input)
+		(at 20 96 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0040008-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; HIERARCHICAL LABELS — UART (from FPGA sheet Ch B)
+	;; ════════════════════════════════════════════════════════════════
+
+	(hierarchical_label "UART_TX"
+		(shape input)
+		(at 20 110 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0040009-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "UART_RX"
+		(shape output)
+		(at 20 118 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0040010-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; HIERARCHICAL LABELS — USB PHY (to power sheet / connector)
+	;; ════════════════════════════════════════════════════════════════
+
+	(hierarchical_label "USB_DP"
+		(shape bidirectional)
+		(at 280 50 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0040011-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "USB_DM"
+		(shape bidirectional)
+		(at 280 58 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0040012-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: FT2232H — U8 (QFN-64, 10×10mm, 0.5mm pitch)
+	;;
+	;; PIN ASSIGNMENTS — SYNCHRONOUS 245 FIFO MODE (Channel A):
+	;; ──────────────────────────────────────────────────────
+	;; USB:
+	;;   DM    (pin 7)  ↔ USB D-
+	;;   DP    (pin 8)  ↔ USB D+
+	;;
+	;; Channel A — Sync 245 FIFO:
+	;;   ADBUS0 (pin 16) ↔ FT_D0      data bit 0
+	;;   ADBUS1 (pin 17) ↔ FT_D1      data bit 1
+	;;   ADBUS2 (pin 18) ↔ FT_D2      data bit 2
+	;;   ADBUS3 (pin 19) ↔ FT_D3      data bit 3
+	;;   ADBUS4 (pin 21) ↔ FT_D4      data bit 4
+	;;   ADBUS5 (pin 22) ↔ FT_D5      data bit 5
+	;;   ADBUS6 (pin 23) ↔ FT_D6      data bit 6
+	;;   ADBUS7 (pin 24) ↔ FT_D7      data bit 7
+	;;   ACBUS0 (pin 26) → FT_RXF_N   RX FIFO not empty
+	;;   ACBUS1 (pin 27) → FT_TXE_N   TX FIFO not full
+	;;   ACBUS2 (pin 28) ← FT_RD_N    read strobe
+	;;   ACBUS3 (pin 29) ← FT_WR_N    write strobe
+	;;   ACBUS4 (pin 30) ← FT_SIWU_N  send immediate / wake up
+	;;   ACBUS5 (pin 32) → FT_CLKOUT  60 MHz clock output
+	;;   ACBUS6 (pin 33) ← FT_OE_N    output enable
+	;;   ACBUS7 (pin 34) — NC (PWRSAV#, tie high)
+	;;
+	;; Channel B — Async UART:
+	;;   BDBUS0 (pin 38) → UART_RX    TXD (FT→FPGA, FPGA sees as RX)
+	;;   BDBUS1 (pin 39) ← UART_TX    RXD (FPGA→FT, FPGA drives TX)
+	;;   BDBUS2-7         — NC (no flow control needed)
+	;;   BCBUS0-7         — NC
+	;;
+	;; Oscillator:
+	;;   OSCI   (pin 1)  ← 12 MHz crystal
+	;;   OSCO   (pin 2)  → 12 MHz crystal
+	;;
+	;; Configuration:
+	;;   EECS   (pin 44) → 93C46 EEPROM CS
+	;;   EESK   (pin 45) → 93C46 EEPROM CLK
+	;;   EEDI   (pin 46) → 93C46 EEPROM DI
+	;;   EEDO   (pin 47) ← 93C46 EEPROM DO
+	;;
+	;; Power:
+	;;   VCORE  (pins 12, 37, 64) — 1.8V internal core (from LDO)
+	;;   VCCIO  (pins 20, 25, 35, 42, 48, 53) — 3.3V I/O
+	;;   VPLL   (pin 9)   — 1.8V PLL
+	;;   VPHY   (pin 3)   — 3.3V PHY
+	;;   VREGIN (pin 50)  — 3.3V→internal 1.8V regulator input
+	;;   GND    (pins 10, 11, 13, 15, 36, 41, 43, 49, 52, 63)
+	;;   EPAD   (pin 65)  — thermal GND
+	;;
+	;; Reset / Test:
+	;;   RESET# (pin 14) ← 10kΩ to VDD + 100nF to GND (RC reset)
+	;;   TEST   (pin 51) → GND (normal mode)
+	;;
+	;; Mode selection:
+	;;   EEPROM bit: ACBUS5 = CLKOUT, Channel A = Sync 245 FIFO
+	;;   Must program 93C46 EEPROM to set mode
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── FT2232H (U8) — USB 2.0 HS Bridge ───\nQFN-64 (10×10mm), dual channel\n\n=== Channel A: Synchronous 245 FIFO ===\n  ADBUS[0:7] (pins 16-24) ↔ FT_D[0:7]    8-bit bus\n  ACBUS0 (pin 26) → FT_RXF_N   host has data\n  ACBUS1 (pin 27) → FT_TXE_N   room to write\n  ACBUS2 (pin 28) ← FT_RD_N    read strobe\n  ACBUS3 (pin 29) ← FT_WR_N    write strobe\n  ACBUS4 (pin 30) ← FT_SIWU_N  send immediate\n  ACBUS5 (pin 32) → FT_CLKOUT  60 MHz ref clock\n  ACBUS6 (pin 33) ← FT_OE_N    output enable\n\n  Timing: WR_N↓ on CLKOUT↑, data latched on CLKOUT↑\n  Throughput: 60 MB/s max (we need 2.72 MB/s)\n\n=== Channel B: UART (debug/config) ===\n  BDBUS0 (pin 38) → UART_RX (to FPGA)\n  BDBUS1 (pin 39) ← UART_TX (from FPGA)\n  115200 baud, 8N1\n\n=== USB PHY ===\n  DP (pin 8) ↔ USB connector D+\n  DM (pin 7) ↔ USB connector D-\n  Series R: 27Ω on DP, 27Ω on DM (matched)\n\n=== Crystal ===\n  Y2: 12 MHz, 18pF load, ±30ppm\n  OSCI (pin 1), OSCO (pin 2)\n  C_load: 2 × 27pF + trace cap ≈ 18pF effective"
+		(exclude_from_sim no)
+		(at 30 30 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0040001-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: 93C46 EEPROM — U9 (SOIC-8)
+	;; Stores FT2232H configuration: VID/PID, mode, strings
+	;; Programs Channel A to Sync 245 FIFO mode
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── 93C46 EEPROM (U9) ───\nSOIC-8, 1Kbit Microwire\n\nPin map:\n  CS   (pin 1) ← FT2232H EECS (pin 44)\n  CLK  (pin 2) ← FT2232H EESK (pin 45)\n  DI   (pin 3) ← FT2232H EEDI (pin 46)\n  DO   (pin 4) → FT2232H EEDO (pin 47)\n  GND  (pin 5) → GND\n  NC   (pin 6)\n  NC   (pin 7)\n  VCC  (pin 8) → VDD_D_3V3\n\nEEPROM content (programmed via FT_PROG):\n  VID:  0x0403 (FTDI)\n  PID:  0x6010 (FT2232H)\n  Mode A: Sync 245 FIFO (byte 0x00 = 0x40)\n  Mode B: Async UART\n  CLKOUT: enable on ACBUS5\n  Self-powered: no (bus-powered)\n  Max power: 200 mA"
+		(exclude_from_sim no)
+		(at 30 175 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0040002-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: FT2232H Decoupling & Power
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── FT2232H Power & Decoupling ───\n\nVREGIN (pin 50): VDD_D_3V3 → internal 1.8V regulator\n  Cout: 100nF + 10µF on VREGOUT (pin 49→GND)\n\nVCORE (pins 12, 37, 64): from VREGOUT (internal 1.8V)\n  100nF on each pin\n\nVCCIO (pins 20, 25, 35, 42, 48, 53): VDD_D_3V3\n  100nF on each pin\n\nVPLL (pin 9): 3.3V, 100nF + 10nF\nVPHY (pin 3): 3.3V, 100nF + 4.7µF\n\nRESET# (pin 14): 10kΩ to VDD + 100nF to GND\nTEST (pin 51): → GND direct\n\nUSB series R: 27Ω ±1% on DP, 27Ω ±1% on DM\nFerrite bead: on VBUS to VPHY for USB noise isolation\n\nEPAD: via array to GND plane"
+		(exclude_from_sim no)
+		(at 30 235 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0040003-0000-0000-0000-000000000001")
+	)
+)

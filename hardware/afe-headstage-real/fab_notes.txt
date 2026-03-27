@@ -1,0 +1,151 @@
+================================================================================
+ FABRICATION NOTES — AFE Headstage v1
+ Part Number:  afe-headstage-v1
+ Revision:     1.0
+ Date:         2026-03-01
+ Contact:      [engineer email]
+================================================================================
+
+1. BOARD SPECIFICATION
+----------------------
+  Layers:                4 (F.Cu / In1.Cu / In2.Cu / B.Cu)
+  Finished thickness:    1.6 mm ±10%
+  Copper weight outer:   1 oz (35 µm) — F.Cu and B.Cu
+  Copper weight inner:   1 oz (35 µm) — In1.Cu and In2.Cu
+  Dielectric:            FR4, Tg ≥ 150 °C
+  Board dimensions:      30.0 × 24.0 mm
+  Surface finish:        ENIG
+  Soldermask:            Both sides, green
+  Silkscreen:            Front side only, white
+
+  No material substitutions without written approval.
+
+2. DESIGN RULES
+---------------
+  Minimum trace width:   0.15 mm
+  Minimum clearance:     0.20 mm
+  Minimum finished PTH drill: 0.20 mm
+  Maximum via aspect ratio:   8:1
+  All plated holes are through-hole. No blind or buried vias.
+
+3. SOLDERMASK & VIA TENTING
+----------------------------
+  All non-VIP vias shall be soldermask tented both sides.
+
+  CLAUSE SM-1: DO NOT MODIFY SOLDERMASK EXPANSION RULES.
+  Mask openings over J5 pads shall remain as provided in Gerbers.
+  Do not auto-adjust or override mask openings on any pad or via.
+
+  EXCEPTION: Via-in-pad vias at J5 — see Section 4.
+
+  CLAUSE SM-2: U1 THERMAL VIAS — COMPONENT-SIDE TENTING REQUIRED.
+  The 9 thermal vias (0.30 mm drill) under U1 QFN-56 exposed pad sit
+  inside the mask opening for the exposed pad.  These vias MUST be
+  soldermask tented on the component side (F.Cu) to prevent solder
+  paste from wicking into the via barrels during reflow.
+  Gerber data includes tenting flags on these vias — do not remove.
+  Bottom side (B.Cu) tenting is also specified in Gerbers; preserve it.
+  Do not open mask over U1 thermal vias on either side.
+
+4. VIA-IN-PAD — VIPPO (MANDATORY)
+-----------------------------------
+  Component:   J5 (Omnetics A79024-001, 36-pin nano-strip connector)
+  Nets:        CH9, CH10, CH11, CH12, CH13, CH14, CH15, CH16,
+               CH17, CH18, CH19, CH20, CH21, CH22 (14 nets)
+  Via count:   14
+  Via spec:    0.20 mm finished drill, 0.40 mm pad, through-hole
+
+  CLAUSE VIP-1: VIPPO REQUIRED PER IPC-4761 TYPE VII ON J5 OMNETICS PADS.
+
+  These 14 vias are located directly under SMD pads of J5.
+  Solder mask opens over J5 pads. Vias are exposed on the component side.
+
+  REQUIRED PROCESS: IPC-4761 Type VII (VIPPO)
+    1. Epoxy plug via barrel (non-conductive)
+    2. Copper cap plate over plug
+    3. Planarize — final surface flush and solderable
+    4. Coplanarity: ±25 µm maximum
+
+  ACCEPTANCE CRITERIA:
+    - No depression or ridge detectable at 20× magnification on capped surface
+    - Maximum void diameter in epoxy fill: 25 µm (verified by microsection)
+    - Copper cap thickness: ≥ 15 µm
+    - No resin shrinkback, delamination, or bleed beyond pad boundary
+
+  No voiding or resin shrinkback permitted.
+  Vias shall not be left unfilled, partially filled, or tented-only.
+
+  CLAUSE SUB-1: NO MATERIAL SUBSTITUTIONS WITHOUT WRITTEN APPROVAL.
+    Mask tenting, resin plug without copper cap, or partial fill is
+    NOT acceptable as a substitute for IPC-4761 Type VII.
+    Any process that does not include copper cap plating and
+    planarization shall be rejected.
+
+  Exact via coordinates: see vip_vias.csv (included in package).
+
+  VENDOR ORDER FORM:
+    JLC PCB:  "Via in pad plated over (VIPPO)" — Advanced Options
+    PCBWay:   Via Process → "Resin Plug + Cap Plating"
+    Generic:  "IPC-4761 Type VII: epoxy filled, copper capped, planarized"
+
+5. DRILL TABLE
+--------------
+  PTH Excellon file contains two tool sizes:
+
+    Tool  | Finished Ø | Count | Description
+    ------+------------+-------+-------------------------------------------
+    T1    | 0.20 mm    |    28 | Signal vias (14 at J5 = VIPPO per §4)
+    T2    | 0.30 mm    |     9 | QFN-56 thermal vias at U1 exposed pad
+
+  NPTH file: empty. No unplated holes in this design.
+  All holes are plated through-hole unless explicitly marked NPTH.
+
+6. IMPEDANCE CONTROL
+---------------------
+  No controlled impedance requirements.
+
+7. INNER LAYERS
+---------------
+  In1.Cu and In2.Cu: solid GND copper pour. No split planes.
+  No signal routing on inner layers.
+
+8. PANELIZATION
+---------------
+  No panelization required.
+  If vendor panelizes: maintain ≥ 2 mm clearance from board edge
+  to nearest copper feature.
+
+9. VIPPO ORDERABILITY GATE (DO NOT SKIP)
+------------------------------------------
+  If VIPPO (IPC-4761 Type VII) is not available from your facility:
+
+    ► REJECT THE ORDER.
+    ► Do NOT substitute with tented, unfilled, or partially filled vias.
+    ► Contact customer before proceeding.
+
+  VENDOR CONFIRMATION (initial each line before fabrication):
+
+  [ ] VIP vias at J5 are epoxy plugged and copper capped
+  [ ] Planarization achieved (±25 µm coplanarity)
+  [ ] First article: vendor shall provide at least one microsection
+      image showing VIP fill structure (epoxy, cap, barrel) before
+      lot release
+  [ ] VIP vias identified in CAM per vip_vias.csv coordinates
+
+  If confirmation cannot be provided, do not fabricate.
+
+  Contact: [engineer email]
+
+10. QUALITY & INSPECTION
+-------------------------
+  Standard:         IPC-6012 Class 2
+  Electrical test:  100 % netlist (flying probe or bed-of-nails)
+  First article:    CLAUSE FA-1: FIRST ARTICLE MICROSECTION REQUIRED.
+                    Vendor shall provide microsection image of at
+                    least one VIP via (through J5 region) showing
+                    fill integrity and cap planarization. This is
+                    REQUIRED for first article — not optional.
+
+================================================================================
+ END OF FABRICATION NOTES
+================================================================================

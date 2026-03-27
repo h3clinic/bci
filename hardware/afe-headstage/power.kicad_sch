@@ -1,0 +1,133 @@
+(kicad_sch
+  (version 20231120)
+  (generator "eeschema")
+  (generator_version "8.0")
+  (uuid "power-sheet-uuid")
+  (paper "A4")
+  (title_block
+    (title "Power Distribution (AFE-Only)")
+    (date "2026-02-17")
+    (rev "2.0")
+    (company "BCIInterface")
+    (comment 1 "Neural AFE Headstage - Power Sheet")
+    (comment 2 "Rails: VIN(3.3–5V) → AVDD(3.3V) + DVDD_AFE(3.3V filtered)")
+  )
+
+  (lib_symbols)
+
+  (text "═══════════════════════════════════════════════════════════════════════════
+                       POWER ARCHITECTURE (Rev 2.0 — AFE Only)
+═══════════════════════════════════════════════════════════════════════════
+
+ARCHITECTURE CHANGE (Rev 2.0):
+──────────────────────────────────────────────────────────────────────────
+  Rev 1.0: VIN → ADP151 (AVDD) + AP2112K (DVDD for MCU/LVDS)
+  Rev 2.0: VIN → ADP151 (AVDD) + Ferrite filter (DVDD_AFE for RHD2164)
+           AP2112K DELETED — no MCU on headstage.
+
+  DELETED:
+    • U_LDO2 (AP2112K-3.3) — MCU/LVDS digital LDO removed
+    • C3, C4 (DVDD LDO input/output caps) — removed
+    • TP_DVDD (digital rail test point) — renamed to TP_DVDD_AFE
+    • R_ISO2 (DVDD isolation resistor) — removed
+
+──────────────────────────────────────────────────────────────────────────
+
+INPUT: 3.3V–5V from carrier via board-to-board connector (J5)
+  • Carrier provides regulated power
+  • Headstage power consumption: <120 mA typical
+
+RAIL STRUCTURE:
+┌─────────────────────────────────────────────────────────────────────┐
+│                                                                     │
+│  VIN ──┬──[D1: TVS]──► Input protection (PESD5V0S1BL)              │
+│  from  │                                                            │
+│  B2B   ├──[C_VIN_BULK: 10µF]──► Local bulk storage                 │
+│        │                                                            │
+│        ├──[R_ISO1: 0Ω]──► [LDO: ADP151-3.3] ──► AVDD (3.3V)       │
+│        │                    Low noise, PSRR >70dB @ 1kHz            │
+│        │                    Cin: 1µF, Cout: 1µF ceramic             │
+│        │                    Load: RHD2164 VDD pins (analog)         │
+│        │                                                            │
+│        └──[FB2: Ferrite 600Ω@100MHz]──► DVDD_AFE (3.3V filtered)   │
+│                    + [C_DVDD1: 100nF] + [C_DVDD2: 10µF]            │
+│                    Load: RHD2164 VDDD pins (digital I/O)            │
+│                                                                     │
+│  NOTE: If VIN = 3.3V from carrier, ADP151 needs ≥3.5V input.       │
+│        In that case, bypass ADP151 with 0Ω and use VIN directly     │
+│        as AVDD (requires low-noise carrier regulator).              │
+│        OR: Carrier provides 5V, headstage regulates down.           │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+
+GROUND STRATEGY (unchanged from Rev 1.0):
+  • Single ground plane (GND), partitioned by layout
+  • Analog and digital grounds connected at single star point
+    near power entry from B2B connector
+  • No ground plane cuts under signal traces
+
+CURRENT BUDGET:
+  Rail        Typical   Max       Source         Load
+  ──────────────────────────────────────────────────────────
+  AVDD        60 mA     100 mA    ADP151        RHD2164 VDD (×2)
+  DVDD_AFE    20 mA     40 mA     Ferrite+cap   RHD2164 VDDD (×2)
+  ADG1414     8 mA      16 mA     VIN direct    Input shorting switches
+  VIN total   90 mA     160 mA    Carrier B2B
+
+DECOUPLING STRATEGY:
+  • VIN entry: 10µF bulk + 100nF HF at B2B connector pad
+  • ADP151: 1µF input, 1µF output (per datasheet)
+  • DVDD_AFE: 100nF + 10µF after ferrite bead
+  • Per-IC decoupling: see AFE_ADC sheet (100nF per pin + 10µF bulk)
+
+═══════════════════════════════════════════════════════════════════════════"
+    (exclude_from_sim no)
+    (at 20 30)
+    (effects
+      (font (size 1.27 1.27))
+      (justify left)
+    )
+  )
+
+  (text "BILL OF MATERIALS - POWER (Rev 2.0)
+───────────────────────────────────────────────────────────────────────
+Ref      Value       Package    Part Number        Notes
+───────────────────────────────────────────────────────────────────────
+U_LDO1   ADP151      WLCSP-4   ADP151AUJZ-3.3-R7  Low-noise analog LDO
+C_VIN1   100nF       0402      GRM155R71H104KE14D  VIN HF decoupling
+C_VIN2   10µF        0603      GRM188R61A106ME69D  VIN bulk
+C_AIN    1µF         0402      GRM155R61A105KE15D  AVDD LDO input
+C_AOUT   1µF         0402      GRM155R61A105KE15D  AVDD LDO output
+FB1      600Ω@100M   0402      BLM15AG601SN1D      Analog/digital bridge
+FB2      600Ω@100M   0402      BLM15AG601SN1D      DVDD_AFE filter
+C_DVDD1  100nF       0402      GRM155R71H104KE14D  DVDD_AFE HF
+C_DVDD2  10µF        0603      GRM188R61A106ME69D  DVDD_AFE bulk
+D1       5.6V TVS    SOT-23    PESD5V0S1BL         VIN protection
+R_ISO1   0Ω          0402      -                   AVDD isolation (debug)
+
+DELETED from Rev 1.0:
+  U_LDO2 (AP2112K-3.3)   — no MCU digital supply needed
+  C3 (1µF DVDD input)    — removed with LDO
+  C4 (2.2µF DVDD output) — removed with LDO
+───────────────────────────────────────────────────────────────────────
+
+TEST POINTS:
+  TP_VIN      — Input voltage from carrier
+  TP_AVDD     — Analog supply rail (measure noise here)
+  TP_DVDD_AFE — Filtered digital supply for AFE VDDD pins
+  TP_GND      — Ground reference for oscilloscope probe
+───────────────────────────────────────────────────────────────────────"
+    (exclude_from_sim no)
+    (at 20 145)
+    (effects
+      (font (size 1.1 1.1))
+      (justify left)
+    )
+  )
+
+  (sheet_instances
+    (path "/power"
+      (page "2")
+    )
+  )
+)

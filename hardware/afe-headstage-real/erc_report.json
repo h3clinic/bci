@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-02-26T23:05:16-0500",
+    "kicad_version": "9.0.7",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/5da32e17-03f3-4376-946a-4fc925dc1ef2",
+            "violations": [
+                {
+                    "description": "Global label not connected anywhere else in the schematic",
+                    "items": [
+                        {
+                            "description": "Global Label 'REF_ELEC'",
+                            "pos": {
+                                "x": 0.9779,
+                                "y": 1.8034
+                            },
+                            "uuid": "7a70d1c1-1650-4065-9aa0-891f2e430dc1"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "global_label_dangling"
+                }
+            ]
+        }
+    ],
+    "source": "afe-headstage-v1.kicad_sch"
+}

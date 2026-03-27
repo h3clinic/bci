@@ -1,0 +1,106 @@
+# Fab Profile — single source of truth for manufacturing capability limits.
+#
+# This file is read by test_electrical_sanity.py at runtime.
+# When you change fabs, update this file — tests auto-adapt.
+#
+# Do NOT scatter fab constants in Python code.
+
+fab:
+  name: "JLC 4-layer Advanced (VIPPO + fine drill)"
+  tier: "JLC7628 4-layer 1.6mm stackup — VIPPO option required"
+  url: "https://jlcpcb.com/capabilities/pcb-capabilities"
+  last_verified: "2026-02-15"
+
+  # VENDOR CAPABILITY GATE — must be confirmed before ordering.
+  # This board is NOT orderable as "standard 4-layer."
+  # The following advanced capabilities are required:
+  #   1. Via-in-pad plated over (VIPPO / IPC-4761 Type VII)
+  #   2. 0.20 mm finished PTH drill at 1.6 mm board thickness
+  #      (aspect ratio = 8.0:1 — at the mechanical drill limit)
+  #   3. ENIG surface finish
+  # Vendor must explicitly confirm support for items 1 and 2
+  # before order is placed.  Do not assume "standard" pricing
+  # or capability covers these requirements.
+  vendor_capability_gate:
+    vippo_required: true
+    min_finished_drill_mm: 0.20
+    board_thickness_mm: 1.6
+    aspect_ratio: 8.0
+    confirmation_required: true
+
+limits:
+  min_drill_mm: 0.15                # JLC: 0.15mm mechanical, 0.10mm laser
+  min_annular_ring_mm: 0.075        # IPC-6012 Class 2 external; JLC ≥ 0.075
+  max_aspect_ratio: 10.0            # JLC: 10:1 mechanical drill
+  min_trace_width_mm: 0.10          # JLC: 0.09mm (inner), 0.10mm (outer)
+  min_clearance_mm: 0.10            # JLC: 0.09mm; we round up to 0.10
+  min_via_via_edge_mm: 0.15         # PCBWay: 0.15mm; JLC: 0.254mm; use tighter
+
+via_fill_policy:
+  # 14 vias are via-in-pad (VIP) at J5 (Omnetics A79024) SMD connector pads.
+  #
+  # WHY VIP IS REQUIRED (cannot dogbone):
+  #   Omnetics A79024 pad pitch is 0.635mm, pad size 0.381×1.016mm.
+  #   Via diameter is 0.4mm.  Dogbone off-pad is geometrically blocked:
+  #     X-dogbone: max via ∅ = 0.104mm (below any fab capability)
+  #     Y-dogbone: via collides with B.Cu stagger horizontals (gap 0.317 < 0.475 needed)
+  #     Inter-row: only 0.127mm edge-to-edge between row pads
+  #   Proof: hardware/afe-headstage-real/docs/vip_dogbone_infeasibility.md (TODO)
+  #
+  # WHY FILL IS REQUIRED:
+  #   J5 pads are SMD on F.Cu with layers "F.Cu" "F.Paste" "F.Mask".
+  #   F.Mask in the pad layer list means solder mask OPENS over the pad.
+  #   Any via sitting inside that mask opening is EXPOSED — not tented —
+  #   regardless of global tenting flags.  Exposed VIP causes solder wicking,
+  #   voids, and intermittent connections during reflow.
+  #   Therefore: epoxy plug + cap plating (VIPPO) is mandatory.
+  #
+  # ASSEMBLY NOTE:
+  #   Fab order must include:  "Via-in-pad: plugged with epoxy, cap plated"
+  #   on J5 connector pads (14 vias, 0.2mm drill, nets CH9–CH22).
+  vip_allowed: true
+  require_fill_on_smd_pad: true
+  fill_type: "epoxy_plug_cap"        # IPC-4761 Type VII (filled and capped)
+
+  # Vendor-supported fill types.  fill_type MUST be one of these.
+  # Update when switching fabs — not all vendors support all types.
+  allowed_fill_types:
+    - "epoxy_plug_cap"               # IPC-4761 Type VII — epoxy fill + copper cap plate
+    - "copper_plug_cap"              # IPC-4761 Type VII variant — conductive fill + cap
+
+  # Vendor-specific ordering terminology (for fab notes / order form).
+  vendor_notes:
+    jlcpcb: "Select 'Via in pad plated over (VIPPO)' in Advanced Options"
+    pcbway: "Via Process → 'Resin Plug + Cap Plating', mark J5 region in README"
+    generic: "IPC-4761 Type VII: filled (non-conductive epoxy) and capped (copper plated), planarized"
+
+# Fab notes file — tests verify this artifact exists and contains VIPPO callout.
+fab_notes:
+  path: "fab_notes.txt"              # relative to project root
+  required_keywords:
+    - "VIPPO"
+    - "IPC-4761"
+    - "Type VII"
+    - "J5"
+    - "Omnetics"
+    - "epoxy"
+    - "CH9"
+    - "CH22"
+    - "CLAUSE SM-1"
+    - "CLAUSE VIP-1"
+    - "CLAUSE SUB-1"
+    - "CLAUSE FA-1"
+    - "do not fabricate"
+    - "vip_vias.csv"
+
+# Violation types from KiCad DRC that constitute electrical faults.
+# Tests gate CH-net violations ONLY on these types.
+# Cosmetic types (courtyard, silk, etc.) are excluded.
+drc_electrical_violation_types:
+  - "shorting_items"
+  - "clearance"
+  - "via_dangling"
+  - "tracks_crossing"
+  - "copper_edge_clearance"
+  - "starved_thermal"
+  - "zone_has_empty_net"

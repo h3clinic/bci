@@ -1,0 +1,119 @@
+═══ Persistent FP Diagnostic ═══
+
+RF binary feature importances (top 10):
+   1. bp_mid_mean               0.1909
+   2. rms_mean                  0.1547
+   3. bp_high_mean              0.1291
+   4. bp_low_mean               0.1082
+   5. rms_max                   0.0703
+   6. spike_rate_max            0.0665
+   7. spectral_edge_freq        0.0449
+   8. spectral_flatness_hb      0.0441
+   9. kurtosis_mean             0.0420
+  10. spike_rate_mean           0.0345
+
+─── Neurotox (true positives) ───
+
+  spike_suppression sev=0.3  P(neurotox)=0.892
+    bp_high_mean              imp=0.1291  val=27.198  base=51.103  contrib=0.1866
+    bp_low_mean               imp=0.1082  val=2.243  base=4.120  contrib=0.1442
+    rms_mean                  imp=0.1547  val=8.233  base=11.088  contrib=0.0488
+    rms_max                   imp=0.0703  val=22.333  base=28.024  contrib=0.0467
+    bp_mid_std                imp=0.0335  val=8.470  base=15.141  contrib=0.0413
+
+  spike_suppression sev=0.6  P(neurotox)=0.959
+    bp_high_mean              imp=0.1291  val=13.790  base=51.103  contrib=0.2912
+    bp_low_mean               imp=0.1082  val=1.122  base=4.120  contrib=0.2302
+    rms_max                   imp=0.0703  val=6.775  base=28.024  contrib=0.1744
+    rms_mean                  imp=0.1547  val=5.171  base=11.088  contrib=0.1011
+    bp_mid_std                imp=0.0335  val=4.379  base=15.141  contrib=0.0667
+
+  spike_suppression sev=0.9  P(neurotox)=0.985
+    bp_high_mean              imp=0.1291  val=3.933  base=51.103  contrib=0.3681
+    bp_low_mean               imp=0.1082  val=0.326  base=4.120  contrib=0.2914
+    spike_rate_max            imp=0.0665  val=0.000  base=8.800  contrib=0.2805
+    rms_max                   imp=0.0703  val=3.691  base=28.024  contrib=0.1998
+    rms_mean                  imp=0.1547  val=2.765  base=11.088  contrib=0.1422
+
+  rate_decrease sev=0.3  P(neurotox)=0.709
+    bp_high_mean              imp=0.1291  val=37.159  base=51.103  contrib=0.1088
+    spectral_flatness_hb      imp=0.0441  val=0.029  base=0.195  contrib=0.0996
+    rms_max                   imp=0.0703  val=17.794  base=28.024  contrib=0.0840
+    spectral_edge_freq        imp=0.0449  val=871.094  base=4468.750  contrib=0.0703
+    kurtosis_mean             imp=0.0420  val=370.262  base=271.772  contrib=0.0406
+
+  rate_decrease sev=0.6  P(neurotox)=0.776
+    bp_high_mean              imp=0.1291  val=26.338  base=51.103  contrib=0.1933
+    rms_max                   imp=0.0703  val=14.521  base=28.024  contrib=0.1108
+    spectral_flatness_hb      imp=0.0441  val=0.015  base=0.195  contrib=0.1081
+    spectral_edge_freq        imp=0.0449  val=722.656  base=4468.750  contrib=0.0732
+    rms_mean                  imp=0.1547  val=8.268  base=11.088  contrib=0.0482
+
+  rate_decrease sev=0.9  P(neurotox)=0.782
+    bp_high_mean              imp=0.1291  val=17.915  base=51.103  contrib=0.2590
+    rms_max                   imp=0.0703  val=10.198  base=28.024  contrib=0.1463
+    spectral_flatness_hb      imp=0.0441  val=0.010  base=0.195  contrib=0.1110
+    spectral_edge_freq        imp=0.0449  val=576.172  base=4468.750  contrib=0.0760
+    rms_mean                  imp=0.1547  val=7.250  base=11.088  contrib=0.0656
+
+─── Persistent FPs (artifact → suppression-like) ───
+
+  ADC_clipping sev=0.9  P(neurotox)=0.877
+    rms_max                   imp=0.0703  val=15.887  base=28.024  contrib=0.0996
+    rms_mean                  imp=0.1547  val=10.112  base=11.088  contrib=0.0167
+    spatial_cv_rms            imp=0.0039  val=0.231  base=0.411  contrib=0.0137
+    spike_rate_std            imp=0.0227  val=2.015  base=1.832  contrib=0.0124
+    bp_high_mean              imp=0.1291  val=49.536  base=51.103  contrib=0.0122
+
+  coupling_shift sev=0.9  P(neurotox)=0.910
+    rms_max                   imp=0.0703  val=14.117  base=28.024  contrib=0.1142
+    spike_rate_max            imp=0.0665  val=10.200  base=8.800  contrib=0.0446
+    bp_mid_std                imp=0.0335  val=19.694  base=15.141  contrib=0.0282
+    bp_high_mean              imp=0.1291  val=48.085  base=51.103  contrib=0.0236
+    spike_rate_std            imp=0.0227  val=2.178  base=1.832  contrib=0.0234
+
+  sample_rate_mismatch sev=0.9  P(neurotox)=0.920
+    rms_max                   imp=0.0703  val=13.162  base=28.024  contrib=0.1220
+    bp_low_mean               imp=0.1082  val=3.354  base=4.120  contrib=0.0588
+    bp_high_mean              imp=0.1291  val=44.703  base=51.103  contrib=0.0499
+    rms_mean                  imp=0.1547  val=9.574  base=11.088  contrib=0.0259
+    spike_rate_max            imp=0.0665  val=9.600  base=8.800  contrib=0.0255
+
+  bandpass_mismatch sev=0.6  P(neurotox)=0.815
+    bp_low_mean               imp=0.1082  val=0.403  base=4.120  contrib=0.2854
+    rms_max                   imp=0.0703  val=13.351  base=28.024  contrib=0.1205
+    spectral_edge_freq        imp=0.0449  val=1058.594  base=4468.750  contrib=0.0666
+    kurtosis_mean             imp=0.0420  val=186.625  base=271.772  contrib=0.0351
+    bp_low_std                imp=0.0120  val=0.220  base=1.698  contrib=0.0293
+
+  bandpass_mismatch sev=0.9  P(neurotox)=0.843
+    bp_low_mean               imp=0.1082  val=0.028  base=4.120  contrib=0.3142
+    rms_max                   imp=0.0703  val=12.468  base=28.024  contrib=0.1277
+    spectral_edge_freq        imp=0.0449  val=1027.344  base=4468.750  contrib=0.0672
+    kurtosis_mean             imp=0.0420  val=161.407  base=271.772  contrib=0.0455
+    rms_mean                  imp=0.1547  val=9.047  base=11.088  contrib=0.0349
+
+─── Feature frequency in top-5 across 5 FPs ───
+  rms_max                   appears in 5/5 FPs
+  rms_mean                  appears in 3/5 FPs
+  bp_high_mean              appears in 3/5 FPs
+  bp_low_mean               appears in 3/5 FPs
+  spike_rate_std            appears in 2/5 FPs
+  spike_rate_max            appears in 2/5 FPs
+  spectral_edge_freq        appears in 2/5 FPs
+  kurtosis_mean             appears in 2/5 FPs
+  spatial_cv_rms            appears in 1/5 FPs
+  bp_mid_std                appears in 1/5 FPs
+  bp_low_std                appears in 1/5 FPs
+
+─── Interpretation ───
+Features that appear in most FPs are the ones being fooled.
+Persistent hardware artifacts produce the SAME directional
+changes (↓ RMS, ↓ variability, ↓ spatial CV) as neurotox.
+Implemented artifact-discriminating features (Option B):
+  ✓ line_power_ratio (60Hz band / total) — separates EMI ✓
+  ✓ clip_fraction (% at ADC rail) — separates ADC clipping
+  ✓ spectral_flatness_hb (spike band) — separates resampling
+Remaining candidates for future work:
+  • granular band ratios — separates bandpass mismatch
+  • cross-channel phase coherence — separates coupling

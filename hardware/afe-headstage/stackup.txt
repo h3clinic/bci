@@ -1,0 +1,239 @@
+# 6-Layer Stackup Definition
+# Neural AFE Headstage - 128 Channel
+# Target: 1.6mm total, controlled impedance
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                              LAYER STACKUP
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+#  Layer   Type        Thickness   Copper    Purpose
+#  ─────────────────────────────────────────────────────────────────────────────
+#  L1      Signal      35 µm       1 oz      Analog signals, AFE, inputs
+#          Prepreg     200 µm      FR4       (adjust for 50Ω microstrip)
+#  L2      Ground      35 µm       1 oz      AGND (solid, no cuts)
+#          Core        360 µm      FR4       
+#  L3      Power       17 µm       0.5 oz    AVDD plane
+#          Prepreg     200 µm      FR4       
+#  L4      Signal      35 µm       1 oz      Digital signals, SPI to B2B
+#          Core        360 µm      FR4       
+#  L5      Ground      35 µm       1 oz      DGND (solid, no cuts)
+#          Prepreg     200 µm      FR4       (adjust for 50Ω microstrip)
+#  L6      Signal      35 µm       1 oz      Bottom components, digital power
+#  ─────────────────────────────────────────────────────────────────────────────
+#  Total:  ~1.6 mm
+#
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[General]
+board_thickness_mm = 1.6
+layer_count = 6
+material = FR4
+dielectric_constant = 4.3
+loss_tangent = 0.02
+
+[Layer1_Top]
+name = "Top - Analog Signals"
+type = signal
+copper_weight_oz = 1
+copper_thickness_um = 35
+purpose = """
+  - Electrode input traces (CH1-128)
+  - AFE IC placement (RHD2164 x2)
+  - Analog decoupling capacitors
+  - Input connectors (J1-J4)
+"""
+routing_rules = """
+  - Electrode inputs only on this layer
+  - Maximum trace length to AFE: 10mm
+  - Keep 3mm clearance from Layer 4 vias
+  - No digital signals on this layer
+"""
+
+[Prepreg_1_2]
+type = prepreg
+thickness_um = 200
+dielectric_constant = 4.2
+notes = "Adjust for 50Ω microstrip on L1 ref L2"
+
+[Layer2_GND1]
+name = "Ground Plane - Analog"
+type = plane
+copper_weight_oz = 1
+copper_thickness_um = 35
+net = "AGND"
+purpose = """
+  - Solid ground reference for analog signals
+  - Return path for electrode inputs
+  - Shield between L1 and L3
+"""
+rules = """
+  - NO CUTS in analog island region
+  - Via stitching every 3mm at perimeter
+  - Single connection point to DGND at power entry
+"""
+
+[Core_2_3]
+type = core
+thickness_um = 360
+dielectric_constant = 4.5
+
+[Layer3_Power]
+name = "Power Plane - Analog"
+type = plane
+copper_weight_oz = 0.5
+copper_thickness_um = 17
+net = "AVDD"
+purpose = """
+  - AVDD distribution to AFE ICs
+  - Analog regulator output distribution
+"""
+rules = """
+  - Keep plane within analog island footprint
+  - No DVDD on this layer
+  - Clearance to board edge: 0.5mm
+"""
+
+[Prepreg_3_4]
+type = prepreg
+thickness_um = 200
+dielectric_constant = 4.2
+
+[Layer4_Inner_Signal]
+name = "Inner Signal - Digital"
+type = signal
+copper_weight_oz = 1
+copper_thickness_um = 35
+purpose = """
+  - SPI bus to B2B connector (SCLK, MOSI, CS1, CS2, MISO1_A/B, MISO2_A/B)
+  - Clock distribution (carrier-sourced SCLK)
+  - Damping resistor routing
+"""
+routing_rules = """
+  - Digital signals only
+  - No analog signals
+  - Reference to L5 (DGND) for return path
+  - Clock traces: 50Ω controlled impedance
+"""
+
+[Core_4_5]
+type = core
+thickness_um = 360
+dielectric_constant = 4.5
+
+[Layer5_GND2]
+name = "Ground Plane - Digital"
+type = plane
+copper_weight_oz = 1
+copper_thickness_um = 35
+net = "DGND"
+purpose = """
+  - Solid ground reference for digital signals
+  - SPI return path
+  - Shield between L4 and L6
+"""
+rules = """
+  - NO CUTS under SPI routing (SCLK, MISO, MOSI, CS)
+  - Via stitching every 3mm at perimeter
+  - Connect to AGND at single point (power entry)
+"""
+
+[Prepreg_5_6]
+type = prepreg
+thickness_um = 200
+dielectric_constant = 4.2
+notes = "Adjust for 50Ω microstrip on L6 ref L5"
+
+[Layer6_Bottom]
+name = "Bottom - Digital/Power"
+type = signal
+copper_weight_oz = 1
+copper_thickness_um = 35
+purpose = """
+  - B2B connector (J5_CARRIER) footprint
+  - DVDD_AFE distribution traces
+  - Decoupling capacitors (bottom placement)
+  - Test points
+"""
+routing_rules = """
+  - SPI signals: 50Ω single-ended impedance (if routed on L6)
+  - Power traces: 0.5mm minimum width
+  - B2B connector fanout with matched ground vias
+"""
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                           IMPEDANCE TARGETS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[Impedance]
+# Single-ended microstrip (L1 over L2, L6 over L5)
+microstrip_50ohm_trace_width_mm = 0.30
+microstrip_50ohm_clearance_mm = 0.20
+
+# Differential microstrip — REMOVED (Rev 2.0: no LVDS on headstage)
+# diff_100ohm_trace_width_mm = 0.127   # Not applicable
+# diff_100ohm_spacing_mm = 0.127       # Not applicable
+# diff_100ohm_pair_clearance_mm = 0.30 # Not applicable
+
+# Note: Exact values depend on fab house prepreg/core specs
+# Request impedance calculation from fab with your stackup
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                              VIA DEFINITIONS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[Vias]
+# Standard through-hole via
+standard_drill_mm = 0.3
+standard_pad_mm = 0.5
+standard_annular_ring_mm = 0.1
+
+# Power via (larger for current)
+power_drill_mm = 0.35
+power_pad_mm = 0.6
+
+# Stitching via (ground plane connection)
+stitch_drill_mm = 0.25
+stitch_pad_mm = 0.45
+stitch_spacing_mm = 3.0
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                         FABRICATION NOTES
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[Fabrication]
+pcb_class = "Class 2"
+surface_finish = "ENIG"
+solder_mask = "Green LPI"
+silkscreen = "White"
+minimum_trace_mm = 0.127
+minimum_space_mm = 0.127
+minimum_drill_mm = 0.25
+
+notes = """
+SEND TO FAB HOUSE:
+1. This stackup document
+2. Request impedance modeling for:
+   - 50Ω single-ended microstrip (L1-L2, L6-L5)
+   - (No differential pairs — LVDS removed in Rev 2.0)
+3. Request controlled impedance testing
+4. Specify finished board thickness: 1.6mm ±10%
+"""
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#                         CROSS-SECTION DIAGRAM
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+#    ▲
+#    │  ═══════════════════════════════════════════  L1: Top (Analog signals)
+#    │  ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄  Prepreg 200µm
+#    │  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  L2: GND (Analog reference)
+#    │  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  Core 360µm
+#    │  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  L3: AVDD (Analog power)
+# 1.6mm ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄  Prepreg 200µm
+#    │  ═══════════════════════════════════════════  L4: Inner (Digital signals)
+#    │  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓  Core 360µm
+#    │  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  L5: GND (Digital reference)
+#    │  ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄  Prepreg 200µm
+#    ▼  ═══════════════════════════════════════════  L6: Bottom (Components, Power)
+#
+# ═══════════════════════════════════════════════════════════════════════════════

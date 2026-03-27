@@ -1,0 +1,949 @@
+\documentclass[11pt,a4paper]{article}
+
+% ─── Packages ────────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+% ─── Code listing style ─────────────────────────────────────────────────────
+\definecolor{codebg}{HTML}{F5F5F5}
+\definecolor{codeframe}{HTML}{CCCCCC}
+\definecolor{keyword}{HTML}{0000FF}
+\definecolor{comment}{HTML}{008000}
+\definecolor{string}{HTML}{A31515}
+
+\lstdefinestyle{pythonstyle}{
+    language=Python,
+    basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{codebg},
+    frame=single,
+    rulecolor=\color{codeframe},
+    keywordstyle=\color{keyword}\bfseries,
+    commentstyle=\color{comment}\itshape,
+    stringstyle=\color{string},
+    showstringspaces=false,
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=4,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    numbersep=8pt,
+    xleftmargin=2em,
+    framexleftmargin=1.5em,
+    captionpos=b,
+}
+
+\lstdefinestyle{tomlstyle}{
+    basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{codebg},
+    frame=single,
+    rulecolor=\color{codeframe},
+    keywordstyle=\color{keyword}\bfseries,
+    commentstyle=\color{comment}\itshape,
+    stringstyle=\color{string},
+    showstringspaces=false,
+    breaklines=true,
+    tabsize=4,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    numbersep=8pt,
+    xleftmargin=2em,
+    framexleftmargin=1.5em,
+    captionpos=b,
+}
+
+\lstdefinestyle{shellstyle}{
+    basicstyle=\ttfamily\footnotesize,
+    backgroundcolor=\color{codebg},
+    frame=single,
+    rulecolor=\color{codeframe},
+    showstringspaces=false,
+    breaklines=true,
+    tabsize=4,
+    xleftmargin=1em,
+    framexleftmargin=0.5em,
+    captionpos=b,
+}
+
+\lstset{style=pythonstyle}
+
+% ─── Header/Footer ──────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{BCI Interface --- AFE Headstage}}
+\fancyhead[R]{\small\textsc{CI Guardrails Report}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ─── Title ───────────────────────────────────────────────────────────────────
+\title{%
+    \textbf{Hermetic CI Guardrails for Neural AFE PCB\\Design Rule Check Pipeline}\\[0.5em]
+    \large Design, Implementation, and Verification Report\\[0.3em]
+    \normalsize BCI Interface Project --- AFE Headstage Real
+}
+\author{%
+    Hardware Verification Team\\
+    \texttt{hardware/afe-headstage-real/}
+}
+\date{February 26, 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This report documents the design, iterative implementation, and verification of a
+hermetic continuous integration (CI) governance framework for the neural analog
+front-end (AFE) headstage PCB's Design Rule Check (DRC) pipeline. The system
+enforces structured parsing of KiCad~9 DRC reports with regression thresholds,
+canonical source file formatting, single-source-of-truth regex invariants,
+a tiered static analysis policy via Ruff, and a standalone CI policy guard script
+that prevents ``green by suppression'' --- the common failure mode where lint
+configurations silently hide real defects. The final system comprises 1{,}425~lines
+across four artifacts, passes a five-stage CI verification chain, and enforces
+policy through 27~automated tests covering parser correctness, mutation detection,
+format canonicalization, and configuration governance.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Introduction}
+\label{sec:intro}
+
+\subsection{Motivation}
+
+Brain--computer interface (BCI) headstage PCBs demand high-reliability electrical
+verification. KiCad~9's built-in Design Rule Check (DRC) produces text reports
+enumerating violations across clearance, unconnected nets, via connectivity,
+silkscreen overlaps, and library footprint mismatches. Manually reviewing these
+reports is error-prone and does not scale across design revisions.
+
+A common failure mode in hardware CI is \emph{green by suppression}: lint or DRC
+configurations are progressively weakened (via broad ignore rules, file exclusions,
+or suppressed violation families) until the pipeline reports zero errors --- not
+because defects are fixed, but because they are hidden. This is particularly
+dangerous for safety-critical categories like unconnected pads on signal nets.
+
+\subsection{Objectives}
+
+This work establishes a CI governance framework with four properties:
+
+\begin{enumerate}[label=\textbf{P\arabic*}]
+    \item \textbf{Structured DRC Parsing:} Parse KiCad~9 \texttt{.rpt} files into
+          typed histograms with cross-checked section totals and regression thresholds.
+    \item \textbf{Invariant Enforcement:} Guarantee canonical source file headers,
+          single-source-of-truth regex definitions, and AST-verified module structure.
+    \item \textbf{Tiered Static Analysis:} Apply Ruff lint/format rules with a
+          tiered policy --- strict for CI-critical files, cosmetic-only tolerances
+          for legacy generators --- with no suppression of correctness rules (F-family).
+    \item \textbf{Configuration Governance:} A standalone policy guard that
+          structurally parses \texttt{pyproject.toml} via TOML and rejects any
+          configuration that could weaken F-rule enforcement, including bypass
+          vectors such as \texttt{exclude}, \texttt{extend\-exclude},
+          \texttt{extend\-per\-file\-ignores}, and \texttt{select} manipulation.
+\end{enumerate}
+
+\subsection{Toolchain}
+
+\begin{table}[H]
+\centering
+\caption{Development and CI toolchain versions.}
+\label{tab:toolchain}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Tool} & \textbf{Version} & \textbf{Role} \\
+\midrule
+Python       & 3.14.3  & Runtime, \texttt{tomllib} (stdlib), \texttt{ast} module \\
+Ruff         & 0.15.2  & Linting (E/F/I families), import sorting, formatting \\
+pytest       & 9.0.2   & Test framework (27 tests) \\
+KiCad        & 9.x     & DRC report generator (upstream) \\
+\texttt{tomllib} & stdlib & TOML parsing for policy guards \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Architecture}
+\label{sec:arch}
+
+The system consists of four artifacts totaling 1{,}425~lines of code:
+
+\begin{table}[H]
+\centering
+\caption{Artifact inventory.}
+\label{tab:artifacts}
+\begin{tabular}{@{}llrl@{}}
+\toprule
+\textbf{File} & \textbf{Role} & \textbf{Lines} & \textbf{Category} \\
+\midrule
+\texttt{parse\_drc.py}       & DRC report parser       & 494 & Parser \\
+\texttt{test\_parse\_drc.py} & Test suite (27 tests)   & 750 & Verification \\
+\texttt{ci\_lint\_policy.py} & CI policy guard         & 158 & Governance \\
+\texttt{pyproject.toml}      & Ruff configuration      &  23 & Configuration \\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{Total}} & \textbf{1{,}425} & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The CI execution order is strict and non-negotiable:
+
+\begin{lstlisting}[style=shellstyle,caption={CI execution chain (5 stages).},label={lst:ci-chain}]
+python ci_lint_policy.py          # Stage 1: Policy guard
+python -m compileall . -q         # Stage 2: Syntax check
+ruff check .                      # Stage 3: Lint
+ruff format --check *.py          # Stage 4: Format check
+pytest -q test_parse_drc.py       # Stage 5: Tests (27)
+\end{lstlisting}
+
+Stage~1 \emph{must} precede Stage~3: the policy guard validates that the Ruff
+configuration itself has not been weakened before Ruff is allowed to run.
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{DRC Report Parser}
+\label{sec:parser}
+
+\subsection{KiCad 9 Report Structure}
+
+KiCad~9 DRC reports contain three independently counted sections:
+
+\begin{enumerate}
+    \item \texttt{** Found N DRC violations **} --- clearance, silkscreen,
+          via dangling, library footprint issues
+    \item \texttt{** Found M unconnected pads **} --- missing net connections
+    \item \texttt{** Found P Footprint errors **} --- component footprint mismatches
+\end{enumerate}
+
+Each violation is a multi-line block beginning with a bracketed type key
+(e.g., \texttt{[clearance]}, \texttt{[unconnected\_items]}) followed by
+indented body lines containing coordinate/pad/net annotations.
+
+\subsection{Parser Design}
+
+\texttt{parse\_drc.py} (494~lines) implements:
+
+\begin{itemize}
+    \item \textbf{Block-scoped parsing:} Violations are only counted when their
+          \texttt{[type\_key]} header is encountered. Pad lines outside a
+          recognized block are ignored (mutation-tested, see \S\ref{sec:mutation}).
+    \item \textbf{Cross-checked totals:} Parsed histogram counts are reconciled
+          against KiCad's declared section totals.
+    \item \textbf{Net extraction:} Net names are extracted from bracket annotations
+          (\texttt{[NET\_NAME]}) with layer-span filtering (\texttt{F.Cu - B.Cu}
+          is not a net name).
+    \item \textbf{Unconnected identity extraction:} For \texttt{[unconnected\_items]}
+          blocks, structured \texttt{(ref, pad, net, layer)} tuples are extracted
+          via \texttt{PAD\_LINE\_RE}.
+\end{itemize}
+
+\subsection{Key Regex: \texttt{PAD\_LINE\_RE}}
+
+A single module-level compiled regex handles pad identity extraction:
+
+\begin{lstlisting}[caption={\texttt{PAD\_LINE\_RE} --- single source of truth (line 40).},label={lst:pad-re}]
+PAD_LINE_RE = re.compile(
+    r"""
+    @\(\s*
+        (?P<x>-?\d+(?:\.\d+)?)\s*mm\s*,\s*
+        (?P<y>-?\d+(?:\.\d+)?)\s*mm
+    \s*\)\s*:\s*
+    Pad\s+(?P<pad>[A-Za-z0-9_.-]+)\s*
+    \[\s*(?P<net>[^\]]+?)\s*\]\s*
+    of\s+(?P<ref>[A-Za-z0-9_.-]+)\s+
+    on\s+(?P<layer>[A-Za-z0-9. ]+?)\s*,?\s*$
+    """,
+    re.VERBOSE,
+)
+\end{lstlisting}
+
+The tolerant layer pattern \texttt{[A-Za-z0-9.\textbackslash{} ]+?} and optional
+trailing comma handle KiCad format drift across minor versions.
+
+\subsection{Regression Thresholds}
+
+The parser enforces version-tagged ceiling constants:
+
+\begin{itemize}
+    \item \texttt{UNCONNECTED\_CEILING} --- maximum allowed unconnected pad count
+    \item \texttt{LIB\_FOOTPRINT\_ISSUES\_CEILING} --- maximum library footprint issues
+    \item \texttt{VIA\_DANGLING\_ALLOWLIST} --- frozen set of \texttt{(x, y, net)} tuples
+          (empty since v35: all stitch vias connect via GND pours)
+    \item \texttt{EXPECTED\_DEFAULT\_CLEARANCE} --- board clearance sanity bound
+\end{itemize}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Test Suite}
+\label{sec:tests}
+
+The test suite (\texttt{test\_parse\_drc.py}, 750~lines) contains 27~tests
+organized into six categories:
+
+{\small
+\begin{longtable}{@{}p{5.2cm}p{1.6cm}p{5.8cm}@{}}
+\caption{Test suite inventory (27 tests, all passing).}
+\label{tab:tests} \\
+\toprule
+\textbf{Test Name} & \textbf{Cat.} & \textbf{What It Verifies} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Test Name} & \textbf{Cat.} & \textbf{What It Verifies} \\
+\midrule
+\endhead
+\texttt{test\_basic\_counts} & Parser & Section total reconciliation \\
+\texttt{test\_net\_extraction} & Parser & Net name extraction, layer filter \\
+\texttt{test\_unconnected\_allowlist} & Parser & Power nets pass allowlist \\
+\texttt{test\_signal\_net\_unconn\_flagged} & Parser & Signal nets flagged \\
+\texttt{test\_count\_mismatch\_detected} & Parser & Declared vs.\ parsed mismatch \\
+\texttt{test\_empty\_report\_raises} & Parser & Empty file $\to$ RuntimeError \\
+\texttt{test\_whitespace\_only\_raises} & Parser & Whitespace-only $\to$ RuntimeError \\
+\texttt{test\_missing\_drc\_header\_raises} & Parser & No header $\to$ RuntimeError \\
+\texttt{test\_zero\_violations} & Parser & Clean report handling \\
+\texttt{test\_multi\_nets\_in\_violation} & Parser & Multi-net block \\
+\texttt{test\_baseline\_consts\_positive} & Sanity & Ceiling $\geq 0$, version tag \\
+\texttt{test\_via\_dangle\_allow\_frozen} & Sanity & Type/shape invariant \\
+\texttt{test\_via\_dangle\_allow\_empty} & Sanity & v35 invariant \\
+\texttt{test\_via\_dangle\_non\_allow\_det} & Parser & Non-allowlisted flagged \\
+\texttt{test\_via\_dangle\_wrong\_net\_rej} & Parser & Coordinate match, net mismatch \\
+\texttt{test\_lib\_fp\_counted\_separately} & Parser & Separate histogram bucket \\
+\texttt{test\_default\_clearance\_sane} & Sanity & $0.05 \leq c \leq 0.5$ \\
+\texttt{test\_unconn\_extracts\_expected} & Fixture & Real fixture identity check \\
+\texttt{test\_unconn\_format\_drift\_\dots} & Robust. & 6 format variants \\
+\texttt{test\_strict\_unconn\_empty\_\dots} & Fixture & Empty fixture $\to \emptyset$ \\
+\texttt{test\_strict\_unconn\_rejects\_mut} & Mutation & Injected pad detected \\
+\texttt{test\_pad\_outside\_block\_not\_ct} & Mutation & Block scope enforced \\
+\texttt{test\_future\_import\_unique} & Format & \texttt{\_\_future\_\_} line 1 \\
+\texttt{test\_single\_pad\_line\_re\_def} & Format & One \texttt{PAD\_LINE\_RE =} \\
+\texttt{test\_docstring\_after\_future} & Format & AST: stmt[1] is docstring \\
+\texttt{test\_no\_f\_suppress\_legacy} & Gov. & No F* in per-file-ignores \\
+\texttt{test\_exclude\_knobs\_forbidden} & Gov. & No exclude/extend-exclude keys \\
+\bottomrule
+\end{longtable}
+}
+
+\subsection{Mutation Testing}
+\label{sec:mutation}
+
+Two tests implement targeted mutation testing without a mutation framework:
+
+\begin{enumerate}
+    \item \textbf{\texttt{test\_pad\_line\_outside\_block\_not\_counted}}: Injects a
+          valid \texttt{Pad} line \emph{outside} any \texttt{[unconnected\_items]}
+          block into a real fixture file. Asserts the parser does not count it.
+          Then injects the same line \emph{inside} a block and asserts it is counted.
+    \item \textbf{\texttt{test\_strict\_unconnected\_rejects\_mutation\_on\_empty\_fixture}}:
+          Takes a zero-unconnected fixture, injects a fake unconnected pad entry,
+          and asserts the resulting identity set is non-empty (i.e., the mutation
+          is detected).
+\end{enumerate}
+
+\subsection{Format Drift Robustness}
+
+\texttt{test\_unconnected\_pad\_line\_format\_drift\_variants\_parse\_same} tests
+six spacing/punctuation variants of the same pad line:
+
+\begin{lstlisting}[caption={Format drift test variants.},label={lst:drift}]
+"@(123.5000 mm, 100.5000 mm): Pad M16 [GND] of U1 on F.Cu"
+"@( 123.5000mm,100.5000mm ):  Pad   M16   [GND]  of   U1  on  F.Cu "
+"@(123.5000 mm, 100.5000 mm): Pad M16 [GND] of U1 on F.Cu,"
+"    @(123.5000 mm, 100.5000 mm): Pad M16 [GND] of U1 on F.Cu"
+"@(123.5000 mm, 100.5000 mm): Pad M16-2 [GND] of U1-1 on F.Cu,"
+"@(123.5000 mm, 100.5000 mm): Pad M16.2 [GND] of U1.1 on F.Cu,"
+\end{lstlisting}
+
+All six must parse to the same identity tuple, ensuring the regex survives
+minor KiCad formatting changes.
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{CI Lint Policy}
+\label{sec:lint-policy}
+
+\subsection{Tiered Ruff Configuration}
+
+The Ruff linter is configured with a tiered policy in \texttt{pyproject.toml}:
+
+\begin{lstlisting}[style=tomlstyle,caption={Ruff configuration (pyproject.toml).},label={lst:pyproject}]
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E402", "E741"]
+
+[tool.ruff.lint.per-file-ignores]
+"fill_zones.py" = ["E501"]
+"gen_*.py" = ["E501", "E401", "I001"]
+"verify_*.py" = ["E501", "E401", "I001"]
+"test_*.py" = ["E501"]
+
+[tool.ruff.lint.isort]
+known-local-folder = ["parse_drc"]
+\end{lstlisting}
+
+\textbf{Design principle:} Legacy generator/verifier scripts (\texttt{gen\_*.py},
+\texttt{verify\_*.py}) are allowed only \emph{cosmetic} tolerances (long lines,
+import ordering). No F-family rules (unused imports, unused variables, f-string
+placeholders) are suppressed anywhere. This forces actual cleanup of dead code
+rather than hiding it.
+
+\subsection{Policy Guard Script}
+\label{sec:guard}
+
+\texttt{ci\_lint\_policy.py} (158~lines) is the authoritative CI governance
+mechanism. It parses \texttt{pyproject.toml} via \texttt{tomllib} and enforces
+five guards:
+
+\begin{table}[H]
+\centering
+\caption{Policy guard inventory.}
+\label{tab:guards}
+\begin{tabular}{@{}clp{7.5cm}@{}}
+\toprule
+\textbf{Guard} & \textbf{Name} & \textbf{What It Enforces} \\
+\midrule
+0a & Select union & $\texttt{select} \cup \texttt{extend-select}$ must include
+     \texttt{"F"} or \texttt{"ALL"} \\
+0b & Exclude ban & \texttt{exclude}, \texttt{extend-exclude},
+     \texttt{force-exclude} forbidden under both \texttt{[tool.ruff]} and
+     \texttt{[tool.ruff.lint]} \\
+0c & Extend-per-file ban & \texttt{extend-per-file-ignores} forbidden \\
+1  & Global F* ban & \texttt{ignore} and \texttt{extend-ignore} cannot contain
+     any code starting with \texttt{"F"} \\
+2  & Legacy per-file F* ban & Per-file-ignores keys whose basename starts with
+     \texttt{gen\_} or \texttt{verify\_} cannot contain any \texttt{F*} code;
+     invalid value types hard-fail \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Basename Matching}
+
+Per-file-ignores keys are TOML strings that may contain path prefixes or glob
+patterns (e.g., \texttt{"**/verify\_*.py"}, \texttt{"scripts/gen\_pcb.py"}).
+The guard extracts the basename before prefix matching:
+
+\begin{lstlisting}[caption={Basename extraction for glob-safe legacy key matching.},label={lst:basename}]
+def _is_legacy_key(key: str) -> bool:
+    last = key.replace("\\", "/").split("/")[-1]
+    return any(last.startswith(p) for p in LEGACY_KEY_PREFIXES)
+\end{lstlisting}
+
+This prevents bypass via path-qualified keys.
+
+\subsubsection{Union Select Check}
+
+Guard~0a evaluates the \emph{combined} effective selection, not each field
+independently. This correctly accepts configurations like:
+
+\begin{lstlisting}[style=tomlstyle]
+select = ["E", "I"]
+extend-select = ["F"]
+\end{lstlisting}
+
+\noindent while rejecting:
+
+\begin{lstlisting}[style=tomlstyle]
+select = ["E", "I"]
+# No extend-select => F not in union => FAIL
+\end{lstlisting}
+
+\subsubsection{Type Safety}
+
+The \texttt{\_iter\_codes()} helper handles three TOML value shapes:
+
+\begin{itemize}
+    \item \texttt{str} --- single code (returns \texttt{([val], True)})
+    \item \texttt{list[str]} --- code list (returns \texttt{(list(val), True)})
+    \item anything else --- returns \texttt{([], False)}, triggering a hard
+          failure (exit~2) rather than silent skip
+\end{itemize}
+
+\subsection{Exit Code Semantics}
+
+\begin{table}[H]
+\centering
+\caption{\texttt{ci\_lint\_policy.py} exit codes.}
+\label{tab:exit}
+\begin{tabular}{@{}cl@{}}
+\toprule
+\textbf{Code} & \textbf{Meaning} \\
+\midrule
+0 & Policy clean \\
+1 & Policy violation (forbidden suppression detected) \\
+2 & Structural error (missing file, invalid TOML shape) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Threat Model}
+\label{sec:threats}
+
+Table~\ref{tab:threats} enumerates known bypass vectors and their mitigations:
+
+\begin{longtable}{@{}p{4cm}p{2cm}p{7cm}@{}}
+\caption{Bypass threat model and mitigations.}
+\label{tab:threats} \\
+\toprule
+\textbf{Bypass Vector} & \textbf{Guard} & \textbf{Mitigation} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Bypass Vector} & \textbf{Guard} & \textbf{Mitigation} \\
+\midrule
+\endhead
+Add \texttt{F401} to global ignore &
+    Guard~1 & Scans \texttt{ignore} and \texttt{extend-ignore} for F* prefix \\
+\addlinespace
+Add F841 to legacy per-file-ignores &
+    Guard~2 & Scans legacy-bucket values for F* prefix \\
+\addlinespace
+Path-qualified key (e.g.\ \texttt{**/gen\_*.py}) &
+    Guard~2 & Basename extraction via \texttt{split("/")} \\
+\addlinespace
+Remove \texttt{F} from \texttt{select} &
+    Guard~0a & Union check on select $\cup$ extend-select \\
+\addlinespace
+Add \texttt{exclude} array &
+    Guard~0b & All exclude variants banned outright \\
+\addlinespace
+Add \texttt{extend-exclude} &
+    Guard~0b & Checked alongside exclude/force-exclude \\
+\addlinespace
+Add \texttt{extend-per-file-ignores} &
+    Guard~0c & Key banned outright \\
+\addlinespace
+Duplicate \texttt{PAD\_LINE\_RE} &
+    Test & Regex count test (single definition) \\
+\addlinespace
+Pad line outside block &
+    Test & Block-scope mutation test \\
+\addlinespace
+Move docstring after code &
+    Test & AST-based position test \\
+\addlinespace
+Non-str value in per-file-ignores &
+    Guard~2 & \texttt{\_iter\_codes} returns \texttt{ok=False} $\to$ exit~2 \\
+\addlinespace
+Run ruff before policy guard &
+    CI order & Policy is Stage~1; Ruff is Stage~3 \\
+\bottomrule
+\end{longtable}
+
+\subsection{Residual Risks}
+
+\begin{enumerate}
+    \item \textbf{Inline \texttt{\# noqa: F401} comments:} Per-line suppressions
+          within source files are not currently blocked by the policy guard.
+          Mitigation: code review + future \texttt{grep}-based guard.
+    \item \textbf{\texttt{[tool.ruff] src} manipulation:} Changing the source
+          root could affect which files Ruff sees. Low risk given the flat
+          directory structure.
+    \item \textbf{CI script itself being skipped:} If the GitHub Actions workflow
+          is modified to remove Stage~1, governance is lost. Mitigation: the pytest
+          backstop tests (\texttt{test\_no\_f\_rule\_suppression...},
+          \texttt{test\_exclude\_knobs\_forbidden}) provide a secondary check
+          during Stage~5.
+\end{enumerate}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Legacy Code Cleanup}
+\label{sec:cleanup}
+
+Prior to establishing the tiered policy, legacy files contained numerous
+F-family violations that would have been suppressed under a naive configuration.
+These were fixed, not suppressed:
+
+\begin{table}[H]
+\centering
+\caption{Legacy file cleanup summary.}
+\label{tab:cleanup}
+\begin{tabular}{@{}llrl@{}}
+\toprule
+\textbf{File} & \textbf{Rule} & \textbf{Count} & \textbf{Fix} \\
+\midrule
+\texttt{gen\_pcb.py}          & F541 & 31 & Removed empty f-string prefixes \\
+\texttt{gen\_pcb.py}          & ---  &  1 & Deleted dead \texttt{\_R\_PAD\_HW\_X} symbol \\
+\texttt{gen\_schematic.py}    & F401 &  1 & Removed unused \texttt{textwrap} import \\
+\texttt{gen\_schematic.py}    & F841 &  3 & Removed 3 dead variables \\
+\texttt{gen\_schematic\_v3.py}& F401 &  1 & Removed unused \texttt{math} import \\
+\texttt{verify\_schematic.py} & F841 &  1 & Removed dead \texttt{net\_code} variable \\
+\texttt{verify\_pcb\_guards.py}& F541 & 5 & Removed empty f-string prefixes \\
+\texttt{fill\_zones.py}       & F541 &  1 & Removed empty f-string prefix \\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{Total fixes}} & \textbf{44} & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Verification Results}
+\label{sec:results}
+
+\subsection{Final CI Chain Output}
+
+The complete five-stage CI chain produces the following output on the final
+codebase state:
+
+\begin{lstlisting}[style=shellstyle,caption={Final CI verification output (Feb 26, 2026).},label={lst:results},basicstyle=\ttfamily\scriptsize]
+$ python ci_lint_policy.py
+POLICY: 0
+
+$ python -m compileall . -q
+COMPILE: 0
+
+$ ruff check .
+All checks passed!
+RUFF: 0
+
+$ ruff format --check *.py
+3 files already formatted
+FORMAT: 0
+
+$ pytest test_parse_drc.py -v --tb=no
+::test_pad_line_outside_block_not_counted    PASSED
+::test_future_import_first_and_unique        PASSED
+::test_single_pad_line_re_definition         PASSED
+::test_docstring_immediately_after_future..  PASSED
+::test_no_f_rule_suppression_in_legacy_...   PASSED
+::test_exclude_knobs_forbidden               PASSED
+::test_basic_counts                          PASSED
+::test_net_extraction                        PASSED
+::test_unconnected_allowlist                 PASSED
+::test_signal_net_unconnected_flagged        PASSED
+::test_count_mismatch_detected               PASSED
+::test_empty_report_raises                   PASSED
+::test_whitespace_only_raises                PASSED
+::test_missing_drc_header_raises             PASSED
+::test_zero_violations                       PASSED
+::test_multiple_nets_in_one_violation        PASSED
+::test_baseline_constants_are_positive       PASSED
+::test_via_dangling_allowlist_is_frozen      PASSED
+::test_via_dangling_allowlist_is_empty       PASSED
+::test_via_dangling_non_allowlisted_detected PASSED
+::test_via_dangling_wrong_net_rejected       PASSED
+::test_lib_footprint_counted_separately      PASSED
+::test_expected_default_clearance_is_sane    PASSED
+::test_unconnected_extracts_expected_...     PASSED
+::test_unconnected_pad_line_format_drift_..  PASSED
+::test_strict_unconnected_matches_empty_..   PASSED
+::test_strict_unconnected_rejects_mutation.. PASSED
+=============== 27 passed in 0.04s ================
+PYTEST: 0
+\end{lstlisting}
+
+\subsection{Summary Metrics}
+
+\begin{table}[H]
+\centering
+\caption{Final verification summary.}
+\label{tab:summary}
+\begin{tabular}{@{}lr@{}}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+Total source lines             & 1{,}425 \\
+Policy guards                  & 5 (Guards 0a, 0b, 0c, 1, 2) \\
+Bypass vectors mitigated       & 12 \\
+Tests passing                  & 27 / 27 \\
+Ruff violations                & 0 \\
+Format drift                   & 0 files \\
+Legacy F-violations fixed      & 44 \\
+Legacy F-violations suppressed & 0 \\
+CI stages                      & 5 \\
+CI execution time              & $< 1$~s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Iterative Development Process}
+\label{sec:process}
+
+The system was developed over approximately 12 iterative rounds, each driven
+by a specific failure mode or loophole discovery:
+
+\begin{enumerate}
+    \item \textbf{Parser hardening:} Strict unconnected identity extraction with
+          block-scoped tracking. Mutation-tested with fixture injection.
+    \item \textbf{Import/header canonicalization:} Canonical header format
+          (\texttt{from \_\_future\_\_ import annotations} on line~1, docstring
+          on line~2). Enforced via AST-based test.
+    \item \textbf{Single \texttt{PAD\_LINE\_RE}:} Discovered and removed duplicate
+          definition (module-level and function-level). Enforced via
+          \texttt{re.findall} count test.
+    \item \textbf{Ruff configuration + legacy cleanup:} Installed Ruff, created
+          tiered policy. Fixed 44 F-family violations across 6 legacy files.
+    \item \textbf{Policy tightening:} Rejected initial broad F-rule suppression.
+          Restricted legacy per-file-ignores to cosmetic-only codes.
+    \item \textbf{CI policy guard (v1):} String-based TOML checking. Upgraded to
+          \texttt{tomllib}-based structural parsing.
+    \item \textbf{Global ignore/extend-ignore guard:} Closed loophole where F*
+          codes could be added to global ignore list.
+    \item \textbf{Select union check:} Fixed false rejection of valid
+          \texttt{select} + \texttt{extend-select} combinations.
+    \item \textbf{Exclude ban:} Banned all exclude variants (\texttt{exclude},
+          \texttt{extend-exclude}, \texttt{force-exclude}) under both
+          \texttt{[tool.ruff]} and \texttt{[tool.ruff.lint]}.
+    \item \textbf{Basename matching:} Fixed legacy key matching to use basename
+          of glob pattern, preventing path-prefix bypass.
+    \item \textbf{Extend-per-file-ignores ban:} Banned the key outright to
+          prevent a secondary per-file-ignores channel.
+    \item \textbf{Pytest backstop tests:} Added \texttt{test\_exclude\_knobs\_forbidden}
+          as belt-and-suspenders behind the CI policy script.
+\end{enumerate}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Conclusion}
+\label{sec:conclusion}
+
+This work demonstrates that ``green CI'' for hardware DRC pipelines requires
+not just parsing and testing, but \emph{governance of the CI configuration itself}.
+The primary contribution is a standalone policy guard (\texttt{ci\_lint\_policy.py})
+that structurally validates the linter configuration before the linter runs,
+closing 12 known bypass vectors including path-glob evasion, exclude knobs,
+global suppression, and select manipulation.
+
+The system achieves zero suppressed F-family violations across 44 previously
+hidden defects in legacy code, enforced by 27 automated tests executing in
+under one second. The five-stage CI chain is ordered such that configuration
+governance precedes all downstream checks, establishing the invariant that
+a passing pipeline reflects genuine code quality rather than configuration
+erosion.
+
+\subsection{Future Work}
+
+\begin{itemize}
+    \item Inline \texttt{\# noqa} scanning to detect per-line F-rule suppression
+    \item GitHub Actions workflow integration with branch protection rules
+    \item Coverage measurement and enforcement for \texttt{parse\_drc.py}
+    \item Extension of policy guards to additional rule families (e.g., B-family
+          from flake8-bugbear) as they are enabled
+    \item Automated DRC report generation via KiCad CLI in CI
+\end{itemize}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\appendix
+
+\section{Complete Policy Guard Source}
+\label{app:policy}
+
+\begin{lstlisting}[caption={\texttt{ci\_lint\_policy.py} (158 lines).},label={lst:policy-full}]
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+try:
+    import tomllib  # py>=3.11
+except ModuleNotFoundError:  # pragma: no cover
+    import tomli as tomllib  # type: ignore[no-redef]
+
+
+LEGACY_KEY_PREFIXES = ("gen_", "verify_")
+FORBIDDEN_PREFIX = "F"
+
+
+def _is_legacy_key(key: str) -> bool:
+    last = key.replace("\\", "/").split("/")[-1]
+    return any(last.startswith(p) for p in LEGACY_KEY_PREFIXES)
+
+
+def _iter_codes(val: object) -> tuple[list[str], bool]:
+    """Return (codes, ok_type)."""
+    if isinstance(val, str):
+        return [val], True
+    if isinstance(val, list):
+        if all(isinstance(x, str) for x in val):
+            return list(val), True
+        return [x for x in val if isinstance(x, str)], False
+    return [], False
+
+
+def _strip_code(code: str) -> str:
+    return code.strip().strip('"').strip("'")
+
+
+def main() -> int:
+    pyproject = Path(__file__).with_name("pyproject.toml")
+    if not pyproject.exists():
+        print(f"ERROR: {pyproject} not found", file=sys.stderr)
+        return 2
+
+    data = tomllib.loads(pyproject.read_text(encoding="utf-8"))
+
+    tool = data.get("tool", {})
+    ruff = tool.get("ruff", {})
+    lint = ruff.get("lint", {})
+
+    # Guard 0a: union of select + extend-select must include F (or ALL).
+    effective_select: set[str] = set()
+    for sel_field in ("select", "extend-select"):
+        sel_val = lint.get(sel_field)
+        if sel_val is None:
+            continue
+        codes, ok = _iter_codes(sel_val)
+        if not ok:
+            print(
+                f"ERROR: [tool.ruff.lint].{sel_field} must be "
+                 "str or list[str]",
+                file=sys.stderr,
+            )
+            return 2
+        effective_select |= {_strip_code(c) for c in codes}
+
+    if (effective_select
+            and "ALL" not in effective_select
+            and "F" not in effective_select):
+        print(
+            "ERROR: [tool.ruff.lint] select union does not "
+            "include 'F' (policy)",
+            file=sys.stderr,
+        )
+        return 1
+
+    # Guard 0b: all exclude variants are forbidden.
+    for exc_field, exc_table in [
+        ("exclude", ruff),
+        ("extend-exclude", ruff),
+        ("force-exclude", ruff),
+        ("exclude", lint),
+        ("extend-exclude", lint),
+    ]:
+        if exc_table.get(exc_field) is not None:
+            print(
+                f"ERROR: {exc_field} is forbidden by policy; "
+                 "use per-file-ignores instead",
+                file=sys.stderr,
+            )
+            return 1
+
+    # Guard 0c: extend-per-file-ignores is forbidden.
+    if lint.get("extend-per-file-ignores") is not None:
+        print(
+            "ERROR: extend-per-file-ignores is forbidden "
+            "by policy; use per-file-ignores instead",
+            file=sys.stderr,
+        )
+        return 1
+
+    # Guard 1: global ignore / extend-ignore cannot contain F*.
+    for field in ("ignore", "extend-ignore"):
+        val = lint.get(field)
+        if val is None:
+            continue
+        codes, ok = _iter_codes(val)
+        if not ok:
+            print(
+                f"ERROR: [tool.ruff.lint].{field} must be "
+                 "str or list[str]",
+                file=sys.stderr,
+            )
+            return 2
+        bad = [_strip_code(c) for c in codes
+               if _strip_code(c).startswith(FORBIDDEN_PREFIX)]
+        if bad:
+            print(
+                f"ERROR: global {field} contains forbidden "
+                f"F* ignores: {sorted(bad)}",
+                file=sys.stderr,
+            )
+            return 1
+
+    # Guard 2: legacy per-file-ignores cannot contain F*.
+    per_file = lint.get("per-file-ignores", {})
+    if not isinstance(per_file, dict):
+        print(
+            "ERROR: [tool.ruff.lint.per-file-ignores] "
+            "is not a table",
+            file=sys.stderr,
+        )
+        return 2
+
+    violations: list[str] = []
+    for k, v in per_file.items():
+        if not isinstance(k, str):
+            continue
+        if not _is_legacy_key(k):
+            continue
+
+        codes, ok = _iter_codes(v)
+        if not ok and not isinstance(v, (str, list)):
+            print(
+                f"ERROR: per-file-ignores under {k} "
+                 "must be str or list[str]",
+                file=sys.stderr,
+            )
+            return 2
+        if not ok:
+            print(
+                f"ERROR: per-file-ignores under {k} "
+                 "contains non-string entries",
+                file=sys.stderr,
+            )
+            return 2
+
+        for code in codes:
+            c = _strip_code(code)
+            if c.startswith(FORBIDDEN_PREFIX):
+                violations.append(f"{k}: {c}")
+
+    if violations:
+        print("ERROR: Forbidden F* per-file-ignores "
+              "in legacy bucket:")
+        for line in sorted(violations):
+            print(f"  - {line}")
+        return 1
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+\end{lstlisting}
+
+\section{Ruff Configuration}
+\label{app:ruff}
+
+\begin{lstlisting}[style=tomlstyle,caption={\texttt{pyproject.toml} (23 lines).},label={lst:pyproject-full}]
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+# E402: imports after canonical docstring.
+# E741: ambiguous var names in test helpers.
+ignore = ["E402", "E741"]
+# Keep defaults lean; do NOT globally ignore F401/F841/F541.
+
+[tool.ruff.lint.per-file-ignores]
+# CI-critical zone fill script: allow long docstrings only.
+"fill_zones.py" = ["E501"]
+# Generated/legacy utility scripts: cosmetic tolerances only.
+"gen_*.py" = ["E501", "E401", "I001"]
+"verify_*.py" = ["E501", "E401", "I001"]
+# Tests: allow long lines (fixture string literals).
+"test_*.py" = ["E501"]
+
+[tool.ruff.lint.isort]
+known-local-folder = ["parse_drc"]
+\end{lstlisting}
+
+\end{document}
