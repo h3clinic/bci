@@ -1,4 +1,4 @@
-# MODEL_CARD.md — BioGENEius Neural Signal Analysis Pipeline
+# BioGENEius Neural Signal Analysis Pipeline
 
 ## Model Details
 
