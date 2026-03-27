@@ -1,0 +1,170 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "a0020000-0000-0000-0000-000000000001")
+	(paper "A3")
+	(title_block
+		(title "02 — Analog Front End (RHD2164)")
+		(date "2025-06-28")
+		(rev "0.1")
+		(company "BCIInterface / meadaq-64ch")
+		(comment 1 "Intan RHD2164: 64-ch low-noise biopotential amplifier + 16-bit ADC")
+		(comment 2 "QFN-76 (9×9mm), dual 32-ch banks (A+B), SPI interface")
+	)
+	(lib_symbols)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; HIERARCHICAL LABELS — interface to root/FPGA sheet
+	;; ════════════════════════════════════════════════════════════════
+
+	(hierarchical_label "SPI_MOSI"
+		(shape input)
+		(at 230 40 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0020001-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "SPI_MISO"
+		(shape output)
+		(at 230 48 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0020002-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "SPI_SCLK"
+		(shape input)
+		(at 230 56 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0020003-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "SPI_CS_N"
+		(shape input)
+		(at 230 64 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0020004-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "AFE_INTAN_N"
+		(shape output)
+		(at 230 75 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0020005-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "ELEC_A[0..31]"
+		(shape input)
+		(at 20 100 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0020006-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "ELEC_B[0..31]"
+		(shape input)
+		(at 20 140 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0020007-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "ELEC_REF"
+		(shape input)
+		(at 20 180 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0020008-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: RHD2164 — U5 (QFN-76, 9×9mm, 0.4mm pitch)
+	;;
+	;; PIN ASSIGNMENTS (from Intan RHD2164 datasheet):
+	;; ──────────────────────────────────────────────
+	;; Bank A inputs (32 channels):
+	;;   IN_A_00 (pin 2)  .. IN_A_15 (pin 17)   — left side
+	;;   IN_A_16 (pin 21) .. IN_A_31 (pin 36)   — bottom side
+	;;
+	;; Bank B inputs (32 channels):
+	;;   IN_B_00 (pin 40) .. IN_B_15 (pin 55)   — right side
+	;;   IN_B_16 (pin 59) .. IN_B_31 (pin 74)   — top side
+	;;
+	;; Power:
+	;;   VDD     (pins 1, 19, 39, 57, 77*)  — 1.8V analog core
+	;;   VDD_IO  (pin 76)                    — 3.3V digital I/O
+	;;   GND     (pins 18, 20, 38, 56, 58)  — analog ground
+	;;   EPAD    (pin 77)                    — exposed pad → GND
+	;;
+	;; SPI:
+	;;   MOSI    (pin 75) ← from FPGA
+	;;   MISO    (pin 74) → to FPGA  (shared with IN_B_31 — NOT ACTIVE)
+	;;     NOTE: MISO is actually a dedicated pin, checking DS...
+	;;   SCLK    (pin 73) ← from FPGA
+	;;   CS_N    (pin 72) ← from FPGA (active low chip select)
+	;;
+	;; Auxiliary:
+	;;   auxin1  (pin 37) — auxiliary ADC input 1
+	;;   auxin2  (pin 71) — auxiliary ADC input 2
+	;;   auxin3  (pin 70) — auxiliary ADC input 3
+	;;   auxout1 (pin 69) — auxiliary DAC output 1
+	;;   auxout2 (pin 68) — auxiliary DAC output 2
+	;;   auxout3 (pin 67) — auxiliary DAC output 3
+	;;   ELEC_TEST   (pin 66) — built-in electrode test signal
+	;;   INTAN_N     (pin 65) — Intan chip ID readback (active low)
+	;;   REF_ELEC    (pin 64) — reference electrode input
+	;;   REF_BUF_OUT (pin 63) — buffered reference output
+	;;
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── RHD2164 (U5) — 64-Channel Biopotential AFE ───\nQFN-76 (9×9mm, 0.4mm pitch)\n\nBank A: IN_A_00..31 → pins 2-17, 21-36  (CH01-CH32)\nBank B: IN_B_00..31 → pins 40-55, 59-74 (CH33-CH64)\n\nSPI: MOSI(75) MISO(74←) SCLK(73) CS_N(72)\n  Mode: CPOL=0, CPHA=0, max 24 MHz\n  Protocol: 16-bit command/result, MSB first\n  Conversion: 68 words/cycle @ 50µs = 20 kS/s\n\nPower:\n  VDD (1.8V):  pins 1, 19, 39, 57 + EPAD(77)\n  VDD_IO (3.3V): pin 76\n  GND: pins 18, 20, 38, 56, 58\n\nRef: REF_ELEC(64) ← external ref electrode\n     REF_BUF_OUT(63) → 10µF to GND (ref buffer cap)\n\nAux: auxin1-3, auxout1-3, ELEC_TEST(66)\nINTAN_N(65): chip-present flag → FPGA GPIO"
+		(exclude_from_sim no)
+		(at 30 30 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0020001-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: Decoupling for RHD2164
+	;; Per Intan app note: 100nF on each VDD pin, 10µF bulk
+	;; VDD_IO: 100nF + 10µF
+	;; EPAD thermal pad: soldered to GND plane via array
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── RHD2164 Decoupling ───\nC_VDD1 (pin 1):  100nF X7R ∥ 10µF X5R\nC_VDD19 (pin 19): 100nF X7R\nC_VDD39 (pin 39): 100nF X7R\nC_VDD57 (pin 57): 100nF X7R\nC_VDDIO (pin 76): 100nF X7R ∥ 10µF X5R\n\nAll caps: 0402 size, place < 1mm from pin\nEPAD: 9-via thermal array → GND plane\nSupply filtering: VDD ← VDD_A_1V8 (from TPS7A20)\n                  VDD_IO ← VDD_A_3V3 (from TPS7A49)"
+		(exclude_from_sim no)
+		(at 30 140 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0020002-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: Reference Electrode Network
+	;; REF_ELEC (pin 64) ← from FPC connector (ELEC_REF)
+	;; REF_BUF_OUT (pin 63) → 10µF cap → GND (stabilization)
+	;; Internal ref buffer enabled via SPI register config
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── Reference Network ───\nREF_ELEC (pin 64) ← FPC pin 65 (ELEC_REF)\n  Series R: 4.7kΩ (ESD current limit)\nREF_BUF_OUT (pin 63) → 10µF X5R → GND\n  Stabilizes internal reference buffer\nConfig: Enable ref buffer via Register 3 bit 6"
+		(exclude_from_sim no)
+		(at 30 185 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0020003-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: Input Protection
+	;; Each electrode input: 4.7kΩ series resistor (on connector sheet)
+	;; Plus TPD8S009 TVS ESD arrays (on connector sheet)
+	;; This sheet just receives clean signals from connector sheet
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── Input Path ───\nElectrode inputs arrive from Sheet 05 (Connector)\n  Pre-protected by TPD8S009 ESD + 4.7kΩ series R\n  Direct connection to RHD2164 IN_A/IN_B pins\n\nChannel mapping:\n  FPC.01-32 → ELEC_A[0..31] → IN_A_00..31 → CH01-CH32\n  FPC.33-64 → ELEC_B[0..31] → IN_B_00..31 → CH33-CH64\n  FPC.65    → ELEC_REF → REF_ELEC (pin 64)"
+		(exclude_from_sim no)
+		(at 30 215 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0020004-0000-0000-0000-000000000001")
+	)
+)

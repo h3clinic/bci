@@ -1,0 +1,41 @@
+(kicad_sch
+  (version 20231120)
+  (generator "eeschema")
+  (generator_version "8.0")
+  (uuid "inputs-1-64-uuid")
+  (paper "A3")
+  (title_block
+    (title "Electrode Inputs - Channels 1-64")
+    (date "2026-02-16")
+    (rev "1.0")
+    (company "BCIInterface")
+    (comment 1 "Neural AFE Headstage - Input Stage")
+    (comment 2 "ESD + Bias network for channels 1-64")
+  )
+
+  (lib_symbols)
+
+  (text "═══════════════════════════════════════════════════════════════════════════\n                    ELECTRODE INPUT STAGE - CHANNELS 1-64\n═══════════════════════════════════════════════════════════════════════════\n\nINPUT CONNECTOR: Omnetics NPD-36 (×2 connectors for 64 channels)\n  • J1: Channels 1-32\n  • J2: Channels 33-64\n  • REF pins: Reference electrodes\n  • GND pins: Shield/ground\n\nPER-CHANNEL CIRCUIT:\n────────────────────────────────────────────────────────────────────────────\n\n                        ESD Protection      To AFE (RHD2164 U1)\n                             │                    │\n  Electrode ─────┬───────[D_ESD]───────┬──────────┼──────► IN[n]\n  (from J1/J2)   │                     │          │\n                 │                     │          │\n                 │                   [Rbias]      │\n                 │                   10MΩ         │\n                 │                     │          │\n                 │                     ▼          │\n                 │                   VBIAS        │\n                 │                  (1.65V)       │\n                 │                                │\n                 └─── Shield (if used) ──► AGND  │\n\n────────────────────────────────────────────────────────────────────────────\n\nCOMPONENT SELECTION:\n  ESD: PESD5V0S1BL (SOT-23)\n       • Leakage: <1nA\n       • Capacitance: <3pF\n       • Clamping: 9V @ 1A\n\n  Rbias: 10MΩ 0402\n       • Sets DC bias point\n       • Johnson noise contribution: ~1.3 µVrms in 6kHz BW (acceptable)\n\n  VBIAS: Mid-supply (AVDD/2 = 1.65V)\n       • Generated on AFE IC (RHD2164 provides this)\n\nLAYOUT RULES FOR INPUTS:\n  • Trace length: <10mm from connector to AFE input\n  • All traces same length ±1mm\n  • Keep away from clock traces (>2mm)\n  • Route on Layer 1 only with solid L2 ground reference\n  • No vias in input path"
+    (exclude_from_sim no)
+    (at 20 25)
+    (effects
+      (font (size 1.27 1.27))
+      (justify left)
+    )
+  )
+
+  (text "CONNECTOR J1 PINOUT - Channels 1-32 (Omnetics NPD-36)\n─────────────────────────────────────────────────────────\nPin  Signal    Pin  Signal    Pin  Signal    Pin  Signal\n─────────────────────────────────────────────────────────\n1    CH1       10   CH10      19   CH19      28   CH28\n2    CH2       11   CH11      20   CH20      29   CH29\n3    CH3       12   CH12      21   CH21      30   CH30\n4    CH4       13   CH13      22   CH22      31   CH31\n5    CH5       14   CH14      23   CH23      32   CH32\n6    CH6       15   CH15      24   CH24      33   REF1\n7    CH7       16   CH16      25   CH25      34   REF2\n8    CH8       17   CH17      26   CH26      35   GND\n9    CH9       18   CH18      27   CH27      36   SHIELD\n─────────────────────────────────────────────────────────\n\nCONNECTOR J2 PINOUT - Channels 33-64 (Omnetics NPD-36)\n─────────────────────────────────────────────────────────\nPin  Signal    Pin  Signal    Pin  Signal    Pin  Signal\n─────────────────────────────────────────────────────────\n1    CH33      10   CH42      19   CH51      28   CH60\n2    CH34      11   CH43      20   CH52      29   CH61\n3    CH35      12   CH44      21   CH53      30   CH62\n4    CH36      13   CH45      22   CH54      31   CH63\n5    CH37      14   CH46      23   CH55      32   CH64\n6    CH38      15   CH47      24   CH56      33   REF3\n7    CH39      16   CH48      25   CH57      34   REF4\n8    CH40      17   CH49      26   CH58      35   GND\n9    CH41      18   CH50      27   CH59      36   SHIELD\n─────────────────────────────────────────────────────────"
+    (exclude_from_sim no)
+    (at 20 140)
+    (effects
+      (font (size 1.1 1.1))
+      (justify left)
+    )
+  )
+
+  (sheet_instances
+    (path "/inputs_1_64"
+      (page "3")
+    )
+  )
+)

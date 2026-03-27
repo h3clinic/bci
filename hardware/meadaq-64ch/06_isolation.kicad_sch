@@ -1,0 +1,43 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "a0060000-0000-0000-0000-000000000001")
+	(paper "A4")
+	(title_block
+		(title "06 — Isolation (v2 Provision)")
+		(date "2025-06-28")
+		(rev "0.1")
+		(company "BCIInterface / meadaq-64ch")
+		(comment 1 "Si8661 digital isolator — DNP for v1, footprint provision only")
+		(comment 2 "Galvanic isolation between USB/digital domain and analog/electrode domain")
+	)
+	(lib_symbols)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; NOTE: This sheet is a PROVISION for v2
+	;; In v1, the Si8661 is DNP (Do Not Populate)
+	;; The footprint is placed to allow split-plane testing in v2
+	;; For v1, SPI and power cross directly (no isolation)
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── ISOLATION — v2 PROVISION ───\n\n*** v1: ALL COMPONENTS ON THIS SHEET ARE DNP ***\n*** Footprints placed for v2 population ***\n\n=== Si8661 Digital Isolator (U18, DNP) ===\nSOIC-16W, 6-channel, 150 Mbps\n\nIsolated signals (v2 plan):\n  SPI_SCLK   → ISO_SCLK   (FPGA→AFE, forward)\n  SPI_MOSI   → ISO_MOSI   (FPGA→AFE, forward)\n  SPI_MISO   ← ISO_MISO   (AFE→FPGA, reverse)\n  SPI_CS_N   → ISO_CS_N   (FPGA→AFE, forward)\n  AFE_INTAN_N← ISO_INTAN  (AFE→FPGA, reverse)\n  PWR_GOOD   → ISO_PG     (power→FPGA, forward)\n\nSide A (digital): VDD_D_3V3, GND_D\nSide B (analog):  VDD_A_3V3, GND_A\n\n=== Isolated Power (v2 plan) ===\nR1SE-0505/H: 5V→5V, 1W isolated DC-DC\n  Input: VBUS_5V (digital side)\n  Output: VBUS_ISO (analog side) → analog LDOs\n  Footprint: SIP-4 (DNP for v1)\n\n=== Split Plane Markers ===\nRoute keep-out zone between digital and analog ground\nPlane split line: vertical, X = 20mm (center of board)\nDigital domain: left half (USB, FPGA, FT2232H)\nAnalog domain: right half (RHD2164, FPC connector)\nv1: planes connected at single star point under FPGA\nv2: planes isolated, Si8661 bridges the gap"
+		(exclude_from_sim no)
+		(at 30 30 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0060001-0000-0000-0000-000000000001")
+	)
+
+	(text "─── v1 Bypass Configuration ───\n\nFor v1 (no isolation):\n  0Ω jumpers (R_ISO1..R_ISO6) placed across\n  isolator footprint pads.\n  These connect digital↔analog SPI directly.\n\n  R_ISO1: SPI_SCLK  (0Ω, 0402)\n  R_ISO2: SPI_MOSI  (0Ω, 0402)\n  R_ISO3: SPI_MISO  (0Ω, 0402)\n  R_ISO4: SPI_CS_N  (0Ω, 0402)\n  R_ISO5: AFE_INTAN_N (0Ω, 0402)\n  R_ISO6: PWR_GOOD  (0Ω, 0402)\n\nGround: single star-point connection\nPower: single LDO tree (no isolated DC-DC)"
+		(exclude_from_sim no)
+		(at 30 155 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0060002-0000-0000-0000-000000000001")
+	)
+)

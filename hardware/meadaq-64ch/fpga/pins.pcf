@@ -1,0 +1,40 @@
+# ============================================================================
+# MEA DAQ 64-Channel — iCE40UP5K (SG48) Pin Constraints
+# Rev 0.1 · 2025-06-28 · LOCKED — matches pin_plan.md
+# ============================================================================
+
+# --- SPI bus to RHD2164 (Bank 0) ---
+set_io spi_sclk     47   # IOB_2   → RHD2164 SCLK (pin 73)
+set_io spi_mosi     46   # IOB_3b  → RHD2164 MOSI (pin 75)
+set_io spi_miso     45   # IOB_4a  ← RHD2164 MISO (pin 74)
+set_io spi_cs_n     44   # IOB_5b  → RHD2164 CS_N (pin 72)
+set_io afe_intan_n  48   # IOB_0a  ← RHD2164 INTAN_N (pin 65)
+
+# --- Synchronous FIFO bus to FT2232H Channel A (Bank 1) ---
+set_io ft_data[0]   36   # IOT_36b ↔ FT2232H ADBUS0 (pin 16)
+set_io ft_data[1]   37   # IOT_37a ↔ FT2232H ADBUS1 (pin 17)
+set_io ft_data[2]   38   # IOT_38b ↔ FT2232H ADBUS2 (pin 18)
+set_io ft_data[3]   39   # IOT_39a ↔ FT2232H ADBUS3 (pin 19)
+set_io ft_data[4]   40   # IOT_41a ↔ FT2232H ADBUS4 (pin 21)
+set_io ft_data[5]   41   # IOT_42b ↔ FT2232H ADBUS5 (pin 22)
+set_io ft_data[6]   42   # IOT_43a ↔ FT2232H ADBUS6 (pin 23)
+set_io ft_data[7]   43   # IOT_44b ↔ FT2232H ADBUS7 (pin 24)
+set_io ft_rxf_n     34   # IOT_46b ← FT2232H ACBUS0 (pin 26) RX not empty
+set_io ft_txe_n     32   # IOT_48b ← FT2232H ACBUS1 (pin 27) TX not full
+set_io ft_wr_n      31   # IOT_49a → FT2232H ACBUS3 (pin 29) write strobe
+set_io ft_rd_n      28   # IOT_50b → FT2232H ACBUS2 (pin 28) read strobe
+set_io ft_oe_n      27   # IOT_51a → FT2232H ACBUS6 (pin 33) output enable
+set_io ft_clkout    35   # IOT_45a ← FT2232H ACBUS5 (pin 32) 60 MHz clock
+set_io ft_siwu_n    33   # IOT_34b → FT2232H ACBUS4 (pin 30) send immediate
+
+# --- UART debug to FT2232H Channel B (Bank 2) ---
+set_io uart_tx      12   # IOB_22a → FT2232H BDBUS1/RXD (pin 39)
+set_io uart_rx      11   # IOB_23b ← FT2232H BDBUS0/TXD (pin 38)
+
+# --- Status LEDs (Bank 2) ---
+set_io led_status   10   # IOB_24a → green LED (heartbeat)
+set_io led_error     9   # IOB_25b → red LED (error)
+
+# --- Debug / Misc (Bank 2) ---
+set_io dbg_tp1      13   # IOB_20a → test point (frame sync pulse)
+set_io osc_48mhz     6   # IOB_16a ← 48 MHz MEMS oscillator → PLL

@@ -1,0 +1,25 @@
+Ref,Qty,Value,Package,Description,MPN,Supplier,Notes
+U1,1,RHD2132,QFN-56 (8x8mm),32-ch neural AFE with on-chip ADC,RHD2132,Intan Technologies,0.5mm pitch; EP 4.8x4.8mm; CMOS SPI mode
+J1,1,PZN-12-AA,Omnetics PZN-12,"12-pin polarized nano, SPI cable connector",PZN-12-AA,Omnetics,Mates with Intan RHD2000 USB interface board cable
+J5,1,A79024-001,Omnetics A79024,"36-pin nano-strip, electrode connector",A79024-001,Omnetics,0.635mm pitch; dual-row SMD
+FB1,1,600R@100MHz,0402,Ferrite bead for analog supply filtering,BLM15AG601SN1D,Murata,AVDD/DVDD isolation
+C1,1,100nF,0402,+3V3 bypass (near power entry),GRM155R71C104KA88D,Murata,X7R 16V
+C2,1,1uF,0402,+3V3 bulk (near power entry),GRM155R61A105KE01D,Murata,X5R 10V
+C3,1,100nF,0402,AVDD bypass (near FB1 output),GRM155R71C104KA88D,Murata,X7R 16V
+C4,1,1uF,0402,AVDD bulk (near FB1 output),GRM155R61A105KE01D,Murata,X5R 10V
+C5,1,100nF,0402,VDD bypass near U1 pin 13,GRM155R71C104KA88D,Murata,X7R 16V; <1mm from VDD1
+C6,1,100nF,0402,VDD bypass near U1 pin 26,GRM155R71C104KA88D,Murata,X7R 16V; <1mm from VDD2
+C7,1,10nF,0402,ADC_ref decoupling,GRM155R71H103KA88D,Murata,X7R 50V; <5mm from U1 pin 28
+R1,1,10k,0402,REF electrode bias to GND,RC0402FR-0710KL,Yageo,1% tolerance
+R2,1,100R,0402,SPI series — CS line,RC0402FR-07100RL,Yageo,1%; damps cable ringing per Intan ref
+R3,1,100R,0402,SPI series — SCLK line,RC0402FR-07100RL,Yageo,1%; damps cable ringing per Intan ref
+R4,1,100R,0402,SPI series — MOSI line,RC0402FR-07100RL,Yageo,1%; damps cable ringing per Intan ref
+TP1,1,TP_VDD,1.0mm pad,Test point +3V3,5000,Keystone,Solder pad only
+TP2,1,TP_AVDD,1.0mm pad,Test point AVDD,5000,Keystone,Solder pad only
+TP3,1,TP_GND,1.0mm pad,Test point GND,5000,Keystone,Solder pad only
+TP4,1,TP_CH0,1.0mm pad,Test point CH0,5000,Keystone,Solder pad only
+TP5,1,TP_CH1,1.0mm pad,Test point CH1,5000,Keystone,Solder pad only
+TP6,1,TP_CH2,1.0mm pad,Test point CH2,5000,Keystone,Solder pad only
+TP7,1,TP_CH3,1.0mm pad,Test point CH3,5000,Keystone,Solder pad only
+TP8,1,TP_SCLK,1.0mm pad,Test point SCLK,5000,Keystone,Solder pad only
+TP9,1,TP_MISO,1.0mm pad,Test point MISO,5000,Keystone,Solder pad only

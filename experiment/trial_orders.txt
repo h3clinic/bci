@@ -1,0 +1,126 @@
+============================================================
+  PHANTOM VALIDATION — TRIAL ORDER SHEETS
+  Print this and bring to the bench.
+============================================================
+
+────────────────────────────────────────────────────────────
+  SESSION 0
+────────────────────────────────────────────────────────────
+    #  Type         Level      Filename                             Temp
+  ───  ──────────── ────────── ─────────────────────────────────── ─────
+    1  baseline     none       S0_T01_baseline_none.rhd            _____
+    2  baseline     none       S0_T02_baseline_none.rhd            _____
+    3  baseline     none       S0_T03_baseline_none.rhd            _____
+    4  baseline     none       S0_T04_baseline_none.rhd            _____
+    5  baseline     none       S0_T05_baseline_none.rhd            _____
+
+────────────────────────────────────────────────────────────
+  SESSION 1
+────────────────────────────────────────────────────────────
+    #  Type         Level      Filename                             Temp
+  ───  ──────────── ────────── ─────────────────────────────────── ─────
+    1  impedance    0.3pct     S1_T01_impedance_0.3pct.rhd         _____
+    2  impedance    0.1pct     S1_T02_impedance_0.1pct.rhd         _____
+    3  impedance    0.3pct     S1_T03_impedance_0.3pct.rhd         _____
+    4  impedance    0.3pct     S1_T04_impedance_0.3pct.rhd         _____
+    5  impedance    0.1pct     S1_T05_impedance_0.1pct.rhd         _____
+    6  impedance    0.1pct     S1_T06_impedance_0.1pct.rhd         _____
+    7  impedance    0.3pct     S1_T07_impedance_0.3pct.rhd         _____
+    8  impedance    0.9pct     S1_T08_impedance_0.9pct.rhd         _____
+    9  impedance    0.3pct     S1_T09_impedance_0.3pct.rhd         _____
+   10  impedance    0.9pct     S1_T10_impedance_0.9pct.rhd         _____
+   11  impedance    0.9pct     S1_T11_impedance_0.9pct.rhd         _____
+   12  impedance    0.1pct     S1_T12_impedance_0.1pct.rhd         _____
+   13  impedance    0.9pct     S1_T13_impedance_0.9pct.rhd         _____
+   14  impedance    0.9pct     S1_T14_impedance_0.9pct.rhd         _____
+   15  impedance    0.1pct     S1_T15_impedance_0.1pct.rhd         _____
+
+────────────────────────────────────────────────────────────
+  SESSION 2
+────────────────────────────────────────────────────────────
+    #  Type         Level      Filename                             Temp
+  ───  ──────────── ────────── ─────────────────────────────────── ─────
+    1  coupling     1M         S2_T01_coupling_1M.rhd              _____
+    2  coupling     10k        S2_T02_coupling_10k.rhd             _____
+    3  coupling     100k       S2_T03_coupling_100k.rhd            _____
+    4  coupling     100k       S2_T04_coupling_100k.rhd            _____
+    5  coupling     1M         S2_T05_coupling_1M.rhd              _____
+    6  coupling     100k       S2_T06_coupling_100k.rhd            _____
+    7  coupling     100k       S2_T07_coupling_100k.rhd            _____
+    8  coupling     10k        S2_T08_coupling_10k.rhd             _____
+    9  coupling     10k        S2_T09_coupling_10k.rhd             _____
+   10  coupling     100k       S2_T10_coupling_100k.rhd            _____
+   11  coupling     10k        S2_T11_coupling_10k.rhd             _____
+   12  coupling     1M         S2_T12_coupling_1M.rhd              _____
+   13  coupling     1M         S2_T13_coupling_1M.rhd              _____
+   14  coupling     10k        S2_T14_coupling_10k.rhd             _____
+   15  coupling     1M         S2_T15_coupling_1M.rhd              _____
+
+────────────────────────────────────────────────────────────
+  SESSION 3
+────────────────────────────────────────────────────────────
+    #  Type         Level      Filename                             Temp
+  ───  ──────────── ────────── ─────────────────────────────────── ─────
+    1  injection    50mV       S3_T01_injection_50mV.rhd           _____
+    2  injection    50mV       S3_T02_injection_50mV.rhd           _____
+    3  injection    10mV       S3_T03_injection_10mV.rhd           _____
+    4  injection    100mV      S3_T04_injection_100mV.rhd          _____
+    5  injection    100mV      S3_T05_injection_100mV.rhd          _____
+    6  injection    100mV      S3_T06_injection_100mV.rhd          _____
+    7  injection    10mV       S3_T07_injection_10mV.rhd           _____
+    8  injection    100mV      S3_T08_injection_100mV.rhd          _____
+    9  injection    50mV       S3_T09_injection_50mV.rhd           _____
+   10  injection    50mV       S3_T10_injection_50mV.rhd           _____
+   11  injection    10mV       S3_T11_injection_10mV.rhd           _____
+   12  injection    10mV       S3_T12_injection_10mV.rhd           _____
+   13  injection    100mV      S3_T13_injection_100mV.rhd          _____
+   14  injection    10mV       S3_T14_injection_10mV.rhd           _____
+   15  injection    50mV       S3_T15_injection_50mV.rhd           _____
+
+────────────────────────────────────────────────────────────
+  SESSION 4
+────────────────────────────────────────────────────────────
+    #  Type         Level      Filename                             Temp
+  ───  ──────────── ────────── ─────────────────────────────────── ─────
+    1  impedance    0.1pct     S4_T01_impedance_0.1pct.rhd         _____
+    2  impedance    0.3pct     S4_T02_impedance_0.3pct.rhd         _____
+    3  injection    10mV       S4_T03_injection_10mV.rhd           _____
+    4  impedance    0.1pct     S4_T04_impedance_0.1pct.rhd         _____
+    5  coupling     10k        S4_T05_coupling_10k.rhd             _____
+    6  injection    50mV       S4_T06_injection_50mV.rhd           _____
+    7  injection    100mV      S4_T07_injection_100mV.rhd          _____
+    8  impedance    0.9pct     S4_T08_impedance_0.9pct.rhd         _____
+    9  injection    50mV       S4_T09_injection_50mV.rhd           _____
+   10  injection    10mV       S4_T10_injection_10mV.rhd           _____
+   11  injection    50mV       S4_T11_injection_50mV.rhd           _____
+   12  impedance    0.3pct     S4_T12_impedance_0.3pct.rhd         _____
+   13  coupling     10k        S4_T13_coupling_10k.rhd             _____
+   14  coupling     1M         S4_T14_coupling_1M.rhd              _____
+   15  coupling     100k       S4_T15_coupling_100k.rhd            _____
+   16  coupling     1M         S4_T16_coupling_1M.rhd              _____
+   17  impedance    0.9pct     S4_T17_impedance_0.9pct.rhd         _____
+   18  coupling     100k       S4_T18_coupling_100k.rhd            _____
+   19  injection    100mV      S4_T19_injection_100mV.rhd          _____
+   20  coupling     10k        S4_T20_coupling_10k.rhd             _____
+   21  coupling     100k       S4_T21_coupling_100k.rhd            _____
+   22  impedance    0.9pct     S4_T22_impedance_0.9pct.rhd         _____
+   23  impedance    0.1pct     S4_T23_impedance_0.1pct.rhd         _____
+   24  injection    10mV       S4_T24_injection_10mV.rhd           _____
+   25  injection    100mV      S4_T25_injection_100mV.rhd          _____
+   26  coupling     1M         S4_T26_coupling_1M.rhd              _____
+   27  impedance    0.3pct     S4_T27_impedance_0.3pct.rhd         _____
+
+============================================================
+  SUMMARY
+============================================================
+      baseline / none      : 5 trials
+      coupling / 100k      : 8 trials
+      coupling / 10k       : 8 trials
+      coupling / 1M        : 8 trials
+     impedance / 0.1pct    : 8 trials
+     impedance / 0.3pct    : 8 trials
+     impedance / 0.9pct    : 8 trials
+     injection / 100mV     : 8 trials
+     injection / 10mV      : 8 trials
+     injection / 50mV      : 8 trials
+         TOTAL             : 77 trials

@@ -1,0 +1,266 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "a0030000-0000-0000-0000-000000000001")
+	(paper "A3")
+	(title_block
+		(title "03 — FPGA + Digital (iCE40UP5K)")
+		(date "2025-06-28")
+		(rev "0.1")
+		(company "BCIInterface / meadaq-64ch")
+		(comment 1 "Lattice iCE40UP5K: 5280 LUT4, QFN-48 (SG48)")
+		(comment 2 "SPI master → RHD2164, Sync FIFO → FT2232H, UART debug")
+	)
+	(lib_symbols)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; HIERARCHICAL LABELS — SPI bus (to AFE sheet)
+	;; ════════════════════════════════════════════════════════════════
+
+	(hierarchical_label "SPI_MOSI"
+		(shape output)
+		(at 20 40 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0030001-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "SPI_MISO"
+		(shape input)
+		(at 20 48 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0030002-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "SPI_SCLK"
+		(shape output)
+		(at 20 56 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0030003-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "SPI_CS_N"
+		(shape output)
+		(at 20 64 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0030004-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "AFE_INTAN_N"
+		(shape input)
+		(at 20 75 180)
+		(effects (font (size 1.27 1.27)) (justify right))
+		(uuid "e0030015-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; HIERARCHICAL LABELS — Sync FIFO bus (to USB sheet)
+	;; ════════════════════════════════════════════════════════════════
+
+	(hierarchical_label "FT_D[0..7]"
+		(shape bidirectional)
+		(at 280 40 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0030005-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "FT_RXF_N"
+		(shape input)
+		(at 280 48 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0030006-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "FT_TXE_N"
+		(shape input)
+		(at 280 56 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0030007-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "FT_WR_N"
+		(shape output)
+		(at 280 64 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0030008-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "FT_RD_N"
+		(shape output)
+		(at 280 72 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0030009-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "FT_OE_N"
+		(shape output)
+		(at 280 80 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0030010-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "FT_CLKOUT"
+		(shape input)
+		(at 280 88 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0030011-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "FT_SIWU_N"
+		(shape output)
+		(at 280 96 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0030012-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; HIERARCHICAL LABELS — UART debug (to USB sheet Ch B)
+	;; ════════════════════════════════════════════════════════════════
+
+	(hierarchical_label "UART_TX"
+		(shape output)
+		(at 280 110 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0030013-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "UART_RX"
+		(shape input)
+		(at 280 118 0)
+		(effects (font (size 1.27 1.27)) (justify left))
+		(uuid "e0030014-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: iCE40UP5K — U6 (QFN-48, SG48, 7×7mm)
+	;;
+	;; PIN ASSIGNMENTS (SG48 package):
+	;; ─────────────────────────────────────────────────
+	;; Power:
+	;;   VCC      (pins 5, 30)           — 1.2V core
+	;;   SPI_VCCIO1 (pin 29)             — 3.3V Bank 1 I/O
+	;;   VCCIO_0  (pin 44)               — 3.3V Bank 0 I/O
+	;;   VCCIO_2  (pin 1)                — 3.3V Bank 2 I/O
+	;;   VCCPLL   (pin 29 shared)        — 1.2V PLL core
+	;;   GND      (pins 8, 15, 25, 49)   — ground
+	;;   EPAD     (GND)                  — thermal pad
+	;;
+	;; Configuration (active-low boot):
+	;;   CRESET_B (pin 8)  ← PWR_GOOD (from power sheet)
+	;;   CDONE    (pin 7)  → LED/TP (config done indicator)
+	;;   SPI_SS   (pin 16) ← 10kΩ pullup (config flash CS)
+	;;   SPI_SCK  (pin 15) — config SPI clock
+	;;   SPI_SI   (pin 14) — config SPI MOSI
+	;;   SPI_SO   (pin 17) — config SPI MISO
+	;;
+	;; ═══ FPGA I/O PIN PLAN ═══
+	;;
+	;; --- Bank 0 (left side) — SPI to RHD2164 ---
+	;;   IOB_2    (pin 47) → SPI_SCLK   (to RHD2164 SCLK)
+	;;   IOB_3b   (pin 46) → SPI_MOSI   (to RHD2164 MOSI)
+	;;   IOB_4a   (pin 45) ← SPI_MISO   (from RHD2164 MISO)
+	;;   IOB_5b   (pin 44) → SPI_CS_N   (to RHD2164 CS_N)
+	;;   IOB_0a   (pin 48) ← AFE_INTAN_N (RHD2164 present detect)
+	;;
+	;; --- Bank 1 (right side) — Sync FIFO to FT2232H ---
+	;;   IOT_36b  (pin 36) ↔ FT_D0
+	;;   IOT_37a  (pin 37) ↔ FT_D1
+	;;   IOT_38b  (pin 38) ↔ FT_D2
+	;;   IOT_39a  (pin 39) ↔ FT_D3
+	;;   IOT_41a  (pin 40) ↔ FT_D4
+	;;   IOT_42b  (pin 41) ↔ FT_D5
+	;;   IOT_43a  (pin 42) ↔ FT_D6
+	;;   IOT_44b  (pin 43) ↔ FT_D7
+	;;   IOT_46b  (pin 34) ← FT_RXF_N
+	;;   IOT_48b  (pin 32) ← FT_TXE_N
+	;;   IOT_49a  (pin 31) → FT_WR_N
+	;;   IOT_50b  (pin 28) → FT_RD_N
+	;;   IOT_51a  (pin 27) → FT_OE_N
+	;;   IOT_45a  (pin 35) ← FT_CLKOUT  (60 MHz from FT2232H)
+	;;   IOT_34b  (pin 33) → FT_SIWU_N
+	;;
+	;; --- Bank 2 (bottom) — UART + misc ---
+	;;   IOB_22a  (pin 12) → UART_TX    (to FT2232H Ch B RXD)
+	;;   IOB_23b  (pin 11) ← UART_RX    (from FT2232H Ch B TXD)
+	;;   IOB_24a  (pin 10) → LED_STATUS (active-high, green LED)
+	;;   IOB_25b  (pin 9)  → LED_ERROR  (active-high, red LED)
+	;;   IOB_20a  (pin 13) → DBG_TP1    (debug test point)
+	;;   IOB_16a  (pin 6)  ← 48MHz_OSC  (to PLL input)
+	;;
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── iCE40UP5K (U6) — FPGA ───\nQFN-48 (SG48), 7×7mm, 5280 LUT4\n\n=== Bank 0 → SPI to RHD2164 ===\n  pin 47 (IOB_2)   → SPI_SCLK    24 MHz\n  pin 46 (IOB_3b)  → SPI_MOSI\n  pin 45 (IOB_4a)  ← SPI_MISO\n  pin 44 (IOB_5b)  → SPI_CS_N\n  pin 48 (IOB_0a)  ← AFE_INTAN_N\n\n=== Bank 1 → Sync FIFO to FT2232H ===\n  pin 36-43 (IOT)  ↔ FT_D[0:7]   8-bit data bus\n  pin 34 (IOT_46b) ← FT_RXF_N\n  pin 32 (IOT_48b) ← FT_TXE_N\n  pin 31 (IOT_49a) → FT_WR_N\n  pin 28 (IOT_50b) → FT_RD_N\n  pin 27 (IOT_51a) → FT_OE_N\n  pin 35 (IOT_45a) ← FT_CLKOUT   60 MHz\n  pin 33 (IOT_34b) → FT_SIWU_N\n\n=== Bank 2 → UART + misc ===\n  pin 12 (IOB_22a) → UART_TX\n  pin 11 (IOB_23b) ← UART_RX\n  pin 10 (IOB_24a) → LED_STATUS\n  pin 9  (IOB_25b) → LED_ERROR\n  pin 13 (IOB_20a) → DBG_TP1\n  pin 6  (IOB_16a) ← 48MHz_OSC (PLL in)"
+		(exclude_from_sim no)
+		(at 30 30 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0030001-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: Configuration Flash — W25Q32JV (U7)
+	;; 32Mbit SPI NOR flash, SOIC-8
+	;; Connected to FPGA config SPI pins
+	;; Hold in reset until CRESET_B released
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── Config Flash — W25Q32JV (U7) ───\nSOIC-8, 32Mbit SPI NOR\n\nPin map:\n  CS#  (pin 1) ← FPGA SPI_SS (pin 16)\n  DO   (pin 2) → FPGA SPI_SO (pin 17)\n  WP#  (pin 3) → VDD_D_3V3 (write-enable)\n  GND  (pin 4) → GND\n  DI   (pin 5) ← FPGA SPI_SI (pin 14)\n  CLK  (pin 6) ← FPGA SPI_SCK (pin 15)\n  HOLD#(pin 7) → VDD_D_3V3\n  VCC  (pin 8) → VDD_D_3V3\n\nDecoupling: 100nF on VCC\nProgramming: via FPGA SPI bus or JTAG"
+		(exclude_from_sim no)
+		(at 30 145 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0030002-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: 48 MHz Oscillator — SiT1533 or DSC1001 (Y1)
+	;; 2.5×2.0mm MEMS oscillator, 3.3V
+	;; Output → FPGA pin 6 (IOB_16a) → internal PLL
+	;; PLL generates: 24 MHz (SPI SCLK), internal 48 MHz system clk
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── 48 MHz Oscillator (Y1) ───\n2.5×2.0mm MEMS, 3.3V, ±25ppm\n\nOutput → pin 6 (IOB_16a) → PLL input\nPLL output 1: 24 MHz → SPI_SCLK (÷2)\nPLL output 2: 48 MHz → system clock\n\nDecoupling: 100nF on VDD\nEnable: tied to VDD_D_3V3 (always-on)"
+		(exclude_from_sim no)
+		(at 30 195 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0030003-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: JTAG Header (J2) — 2×5 1.27mm
+	;; For FPGA programming and debug
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── JTAG Header (J2) ───\n2×5 pin, 1.27mm pitch, shrouded\n\nPin 1: TCK    Pin 2: GND\nPin 3: TDO    Pin 4: VDD_D_3V3\nPin 5: TMS    Pin 6: nRST (→ CRESET_B)\nPin 7: NC     Pin 8: NC\nPin 9: TDI    Pin 10: GND\n\niCE40 JTAG mapping:\n  TCK → SPI_SCK  (shared with config)\n  TDO → SPI_SO   (shared)\n  TMS → SPI_SS   (shared)\n  TDI → SPI_SI   (shared)"
+		(exclude_from_sim no)
+		(at 30 230 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0030004-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: FPGA Decoupling
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── FPGA Decoupling ───\nVCC (1.2V): 100nF × 2 (pins 5, 30) + 10µF bulk\nVCCIO_0 (3.3V): 100nF (pin 44) + 10µF bulk\nVCCIO_1 (3.3V): 100nF (pin 29)\nVCCIO_2 (3.3V): 100nF (pin 1)\nVCCPLL: 100nF + 10nF (close to PLL)\n\nCRESET_B: 10kΩ to VDD + 100nF to GND (RC=1ms)\nCDONE: 10kΩ pullup to VDD\n\nAll caps: 0402 X7R, < 1mm from pin\nEPAD: via array to GND plane"
+		(exclude_from_sim no)
+		(at 30 270 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0030005-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: Status LEDs
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── Status LEDs ───\nLED1 (green): pin 10 → 330Ω → LED → GND  (STATUS)\nLED2 (red):   pin 9  → 330Ω → LED → GND  (ERROR)\n0402 LEDs, ~5mA each\nBehavior defined in RTL:\n  STATUS: heartbeat blink (1 Hz) when streaming\n  ERROR:  solid when FIFO overflow or SPI timeout"
+		(exclude_from_sim no)
+		(at 30 310 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0030006-0000-0000-0000-000000000001")
+	)
+)

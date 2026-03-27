@@ -1,0 +1,14 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-02-28T17:06:05-0500",
+    "kicad_version": "9.0.7",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/a0e842b4-9cc2-4645-90af-ec84bbc37f14",
+            "violations": []
+        }
+    ],
+    "source": "afe-headstage-real.kicad_sch"
+}

@@ -1,0 +1,210 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "a0010000-0000-0000-0000-000000000001")
+	(paper "A4")
+	(title_block
+		(title "01 — Power Supply")
+		(date "2025-06-28")
+		(rev "0.1")
+		(company "BCIInterface / meadaq-64ch")
+		(comment 1 "USB-C UFP → 5V VBUS → LDOs → analog 1.8V/3.3V + digital 3.3V/1.2V")
+		(comment 2 "Budget: 125 mA total from USB 5V")
+	)
+	(lib_symbols)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; HIERARCHICAL LABELS — interface to root sheet
+	;; ════════════════════════════════════════════════════════════════
+
+	(hierarchical_label "VBUS_5V"
+		(shape output)
+		(at 200 40 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "e0010001-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "VDD_A_1V8"
+		(shape output)
+		(at 200 55 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "e0010002-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "VDD_A_3V3"
+		(shape output)
+		(at 200 70 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "e0010003-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "VDD_D_3V3"
+		(shape output)
+		(at 200 85 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "e0010004-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "VDD_D_1V2"
+		(shape output)
+		(at 200 100 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "e0010005-0000-0000-0000-000000000001")
+	)
+	(hierarchical_label "PWR_GOOD"
+		(shape output)
+		(at 200 115 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "e0010006-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: USB-C Connector (UFP, USB 2.0 only)
+	;; J1: USB-C 16-pin mid-mount receptacle
+	;; CC1/CC2 → 5.1kΩ to GND (UFP role)
+	;; VBUS → fuse → bulk cap → power tree
+	;; SHIELD → ferrite → chassis GND
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── USB-C Connector (J1) ───\nUSB-C 16-pin, UFP mode\nCC1/CC2: 5.1kΩ to GND\nVBUS: 500mA fuse + 10µF bulk\nD+/D- → Sheet 04 (USB Bridge)\nSHIELD: FB → GND via 1MΩ||100pF"
+		(exclude_from_sim no)
+		(at 30 30 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0010001-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: Analog LDO — TPS7A20 (1.8V, 300mA, ultra-low-noise)
+	;; U1: SOT-23-5
+	;; IN ← VBUS_5V (via ferrite bead FB1)
+	;; OUT → VDD_A_1V8 (22µF + 100nF output caps)
+	;; EN ← VBUS_5V (always on)
+	;; NR ← 1µF noise-reduction cap
+	;; Supplies: RHD2164 analog core (VDD)
+	;; Budget: ~35 mA
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── TPS7A20 — Analog 1.8V LDO (U1) ───\nSOT-23-5, ultra-low-noise 200nV/√Hz\nIN: VBUS via FB1 (ferrite, analog rail)\nOUT: VDD_A_1V8 → RHD2164 VDD\nEN: tied to IN (always-on)\nNR: 1µF cap for noise filtering\nCout: 22µF MLCC + 100nF\nCin: 10µF MLCC\nBudget: 35 mA"
+		(exclude_from_sim no)
+		(at 30 70 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0010002-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: Analog LDO — TPS7A49 (3.3V, 150mA, ultra-low-noise)
+	;; U2: SOT-23-5
+	;; IN ← VBUS_5V (via FB1 shared ferrite)
+	;; OUT → VDD_A_3V3 (22µF + 100nF)
+	;; EN ← VBUS_5V
+	;; NR ← 1µF
+	;; Supplies: RHD2164 VDD_IO, RHD2164 analog bias
+	;; Budget: ~15 mA
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── TPS7A49 — Analog 3.3V LDO (U2) ───\nSOT-23-5, ultra-low-noise\nIN: VBUS via FB1 (analog rail)\nOUT: VDD_A_3V3 → RHD2164 VDD_IO\nEN: tied to IN\nNR: 1µF\nCout: 22µF + 100nF\nCin: 10µF\nBudget: 15 mA"
+		(exclude_from_sim no)
+		(at 30 110 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0010003-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: Digital LDO — AP2112K-3.3 (3.3V, 600mA)
+	;; U3: SOT-23-5
+	;; IN ← VBUS_5V (direct, digital rail)
+	;; OUT → VDD_D_3V3 (10µF + 100nF)
+	;; EN ← VBUS_5V
+	;; Supplies: iCE40UP5K VCCIO, FT2232H VCCIO, FT2232H VCORE
+	;; Budget: ~60 mA
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── AP2112K-3.3 — Digital 3.3V LDO (U3) ───\nSOT-23-5, 600mA\nIN: VBUS_5V direct (digital rail)\nOUT: VDD_D_3V3 → FPGA VCCIO + FT2232H\nEN: tied to IN\nCout: 10µF + 100nF\nCin: 10µF\nBudget: 60 mA\nNote: separate ground pour from analog LDOs"
+		(exclude_from_sim no)
+		(at 30 148 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0010004-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: FPGA Core LDO — AP2112K-1.2 or TLV733P (1.2V)
+	;; U4: SOT-23-5
+	;; IN ← VDD_D_3V3 (cascaded from U3)
+	;; OUT → VDD_D_1V2 (10µF + 100nF)
+	;; Supplies: iCE40UP5K VCC core (1.2V, ~20 mA)
+	;; Budget: ~20 mA
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── 1.2V Core LDO (U4) ───\nSOT-23-5, 300mA\nIN: VDD_D_3V3 (cascaded from U3)\nOUT: VDD_D_1V2 → iCE40UP5K VCC\nEN: tied to IN\nCout: 10µF + 100nF\nCin: 1µF\nBudget: 20 mA"
+		(exclude_from_sim no)
+		(at 30 185 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0010005-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: Power Sequencing / PWR_GOOD
+	;; PWR_GOOD: open-drain from U4 (1.2V LDO) — last rail to come up
+	;; 10kΩ pull-up to VDD_D_3V3
+	;; Connected to FPGA CRESET_B (active-low reset)
+	;; Ensures FPGA only starts after all rails stable
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── Power Sequencing ───\nSequence: 5V → 3.3V_A/3.3V_D (parallel) → 1.8V_A → 1.2V_D\n1.2V LDO PG → 10kΩ pull-up → FPGA CRESET_B\nRC delay: 10kΩ × 100nF = 1ms on CRESET_B\nNo supervisor IC needed — LDO PG chain sufficient"
+		(exclude_from_sim no)
+		(at 30 218 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0010006-0000-0000-0000-000000000001")
+	)
+
+	;; ════════════════════════════════════════════════════════════════
+	;; SECTION: Decoupling Summary
+	;; Each LDO: Cin 10µF (X5R, 10V) + Cout 22µF (X5R, 6.3V) + 100nF
+	;; Analog LDOs: additional 1µF NR cap
+	;; Ferrite bead FB1: 600Ω@100MHz, 300mA, separates analog VBUS
+	;; Test points: TP_5V, TP_1V8A, TP_3V3A, TP_3V3D, TP_1V2D, TP_GND
+	;; ════════════════════════════════════════════════════════════════
+
+	(text "─── Decoupling & Test Points ───\nFB1: 600Ω@100MHz ferrite, analog VBUS isolation\nAll caps: X5R dielectric, rated ≥2× operating V\nTest points: TP_5V, TP_1V8A, TP_3V3A, TP_3V3D, TP_1V2D, TP_GND\nPlacement: caps < 2mm from LDO pins"
+		(exclude_from_sim no)
+		(at 30 245 0)
+		(effects
+			(font (size 1.27 1.27))
+			(justify left)
+		)
+		(uuid "f0010007-0000-0000-0000-000000000001")
+	)
+)

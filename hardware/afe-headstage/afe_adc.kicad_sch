@@ -1,0 +1,181 @@
+(kicad_sch
+  (version 20231120)
+  (generator "eeschema")
+  (generator_version "8.0")
+  (uuid "afe-adc-uuid")
+  (paper "A3")
+  (title_block
+    (title "AFE/ADC - RHD2164 x2 (SPI to B2B)")
+    (date "2026-02-17")
+    (rev "2.0")
+    (company "BCIInterface")
+    (comment 1 "Neural AFE Headstage - Acquisition Core")
+    (comment 2 "DDR SPI passthrough to carrier FPGA via B2B connector")
+  )
+
+  (lib_symbols)
+
+  (text "═══════════════════════════════════════════════════════════════════════════════════
+                        AFE/ADC CORE - 2× RHD2164 (Rev 2.0)
+═══════════════════════════════════════════════════════════════════════════════════
+
+ARCHITECTURE CHANGE (Rev 2.0):
+──────────────────────────────────────────────────────────────────────────────────
+  Rev 1.0: SPI bus → STM32G431 MCU → LVDS serializer → carrier
+  Rev 2.0: SPI bus → B2B connector → carrier FPGA (direct passthrough)
+
+  The carrier FPGA drives SCLK/MOSI/CS and captures MISO_A/MISO_B directly.
+  No MCU, no serializer, no intermediate logic on headstage.
+
+  CRITICAL: RHD2164 uses DDR SPI (dual MISO output).
+    • MISO_A: channels 0–31 data (active on SCLK rising edge)
+    • MISO_B: channels 32–63 data (active on SCLK rising edge)
+    • Both MISO lines are active simultaneously during each SPI command
+
+──────────────────────────────────────────────────────────────────────────────────
+
+IC SELECTION: Intan RHD2164
+  • 64 channels per IC (128 total with 2 ICs)
+  • Integrated amplifiers + 16-bit ADC
+  • 30 kS/s max per channel
+  • Input-referred noise: 2.4 µVrms (typical, 300–6000 Hz BW)
+  • DDR SPI interface (MISO_A + MISO_B / MOSI / SCLK / CS)
+  • Supply: VDD = 3.3V (analog), VDDD = 3.3V (digital)
+  • Digital I/O logic levels: 3.3V LVCMOS
+
+SPI BUS ARCHITECTURE:
+──────────────────────────────────────────────────────────────────────────────────
+
+                  Carrier FPGA (via B2B connector J5)
+                         │  │  │  │  │  │  │  │  │
+                    SCLK ▼  ▼ MOSI  ▼CS1 ▼CS2  │  │  │  │
+                    (in)   (in)   (in) (in)     │  │  │  │
+  ┌──────────┐       │      │      │            │  │  │  │
+  │ RHD2164  │       │      │      │            │  │  │  │
+  │    U1    │◄──────┤◄─────┤◄─────┘            │  │  │  │
+  │ CH1-64   │       │      │                   │  │  │  │
+  │          │───MISO1_A──────────────────────►──┘  │  │  │
+  │          │───MISO1_B──────────────────────────►─┘  │  │
+  └──────────┘       │      │                          │  │
+                     │      │                          │  │
+  ┌──────────┐       │      │                          │  │
+  │ RHD2164  │       │      │                          │  │
+  │    U2    │◄──────┤◄─────┤◄── CS2                   │  │
+  │ CH65-128 │       │      │                          │  │
+  │          │───MISO2_A───────────────────────────────┘  │
+  │          │───MISO2_B──────────────────────────────────┘
+  └──────────┘
+
+  Shared bus: SCLK, MOSI (directly from B2B to both U1/U2)
+  Separate:   CS1 (U1 only), CS2 (U2 only)
+  Separate:   MISO1_A, MISO1_B (from U1), MISO2_A, MISO2_B (from U2)
+
+  TOTAL SIGNAL COUNT (headstage → carrier SPI):
+    Carrier → Headstage: SCLK, MOSI, CS1, CS2 = 4 signals
+    Headstage → Carrier: MISO1_A, MISO1_B, MISO2_A, MISO2_B = 4 signals
+    Total SPI signals: 8
+
+──────────────────────────────────────────────────────────────────────────────────
+
+SERIES DAMPING RESISTORS (at driver side):
+──────────────────────────────────────────────────────────────────────────────────
+  Signal     Driver Side     Resistor    Value    Notes
+  ──────────────────────────────────────────────────────────────────────
+  SCLK       Carrier FPGA    R_D1        33Ω      Place on CARRIER board
+  MOSI       Carrier FPGA    R_D2        33Ω      Place on CARRIER board
+  CS1        Carrier FPGA    R_D3        33Ω      Place on CARRIER board
+  CS2        Carrier FPGA    R_D4        33Ω      Place on CARRIER board
+  MISO1_A    RHD2164 U1      R_D5        33Ω      Place on HEADSTAGE
+  MISO1_B    RHD2164 U1      R_D6        33Ω      Place on HEADSTAGE
+  MISO2_A    RHD2164 U2      R_D7        33Ω      Place on HEADSTAGE
+  MISO2_B    RHD2164 U2      R_D8        33Ω      Place on HEADSTAGE
+  ──────────────────────────────────────────────────────────────────────
+  All headstage-side damping resistors: 0402, DNI by default.
+  Place footprints regardless. Populate if ringing observed.
+
+══════════════════════════════════════════════════════════════════════════════════="
+    (exclude_from_sim no)
+    (at 20 25)
+    (effects
+      (font (size 1.27 1.27))
+      (justify left)
+    )
+  )
+
+  (text "RHD2164 DECOUPLING (PER IC) - CRITICAL
+──────────────────────────────────────────────────────────────────────────────
+
+Pin         Cap Value    Package   Rail         Placement
+──────────────────────────────────────────────────────────────────────────────
+VDD1        100nF        0402      AVDD         <2mm from pin, via to L3 plane
+VDD2        100nF        0402      AVDD         <2mm from pin, via to L3 plane
+VDD3        100nF        0402      AVDD         <2mm from pin, via to L3 plane
+VDD_bulk    10µF         0603      AVDD         Near IC, shared for all VDD
+
+VDDD1       100nF        0402      DVDD_AFE     <2mm from pin, via to L5 plane
+VDDD2       100nF        0402      DVDD_AFE     <2mm from pin, via to L5 plane
+VDDD_bulk   10µF         0603      DVDD_AFE     Near IC, shared for all VDDD
+
+VREF        10µF         0603      (output)     Reference output, low ESR
+AUXIN       NC           -         -            Not used
+
+──────────────────────────────────────────────────────────────────────────────
+NOTE: Place decoupling caps on BOTTOM layer directly under IC.
+      Via to ground plane adjacent to each cap.
+      Do NOT share ground vias between analog and digital caps.
+──────────────────────────────────────────────────────────────────────────────"
+    (exclude_from_sim no)
+    (at 20 140)
+    (effects
+      (font (size 1.1 1.1))
+      (justify left)
+    )
+  )
+
+  (text "RHD2164 REGISTER CONFIGURATION (Firmware Reference)
+──────────────────────────────────────────────────────────────────────────────
+
+Register  Value   Description
+──────────────────────────────────────────────────────────────────────────────
+0         0xDE    ADC config: 30 kS/s, normal operation
+1-2       ---     Bandwidth: 300 Hz HPF, 6000 Hz LPF (spike band)
+3         0x00    MUX load, temp sensor, digital output
+4         0x80    weakMiso=1 (MISO weakly driven when CS inactive)
+5         0x00    Impedance check disabled
+7         0x00    Impedance check channel select
+8-13      ---     Bandwidth resistor DAC values (set by firmware)
+14-17     0xFF    On-chip amps enabled (all 64 channels)
+18-21     0xFF    Amps 32-63 power (visible on MISO_B only)
+
+IDENTIFICATION (ROM registers, read-only):
+  Reg 59: 53 on MISO_A, 58 on MISO_B (identifies RHD2164)
+  Reg 60: Intan chip ID
+  Reg 63: Intan company ID (should return 0x49 = 'I')
+
+SAMPLE TIMING (DDR SPI — corrected from Rev 1.0):
+  • 33.33 µs per sample (30 kS/s)
+  • 35 SPI commands per sample period (32 CONVERT + 3 AUX)
+  • Each command: 16 bits on MOSI, 16 bits on each MISO
+  • At 20 MHz SCLK: 35 × 16/20MHz = 28.0 µs per chip
+  • With parallel CS (2 buses): both chips read in 28.0 µs ✅
+  • Margin: 33.33 - 28.0 = 5.33 µs (16% idle)
+
+DATA FORMAT:
+  • 16-bit unsigned offset (default) or two's complement
+  • LSB = 0.195 µV (with default gain)
+  • Full scale: ±6.4 mV
+──────────────────────────────────────────────────────────────────────────────"
+    (exclude_from_sim no)
+    (at 20 200)
+    (effects
+      (font (size 1.1 1.1))
+      (justify left)
+    )
+  )
+
+  (sheet_instances
+    (path "/afe_adc"
+      (page "5")
+    )
+  )
+)

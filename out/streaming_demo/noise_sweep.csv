@@ -1,0 +1,17 @@
+noise_type,severity,n_alerts,n_neurotox,n_artifact,false_alarms,latency_median_s,latency_p90_s,confidence_mean,processing_time_s
+baseline,0.0,1,1,0,0,,,0.736,0.034
+sixty_hz,0.3,1,1,0,0,,,0.512,0.034
+sixty_hz,0.6,1,1,0,0,,,0.501,0.034
+sixty_hz,0.9,1,0,1,0,,,0.193,0.034
+dc_drift,0.3,1,1,0,0,5.000,5.000,0.979,0.034
+dc_drift,0.6,1,1,0,0,3.000,3.000,0.934,0.034
+dc_drift,0.9,1,1,0,0,2.000,2.000,0.933,0.034
+channel_dropout,0.3,1,1,0,0,1.000,1.000,0.931,0.037
+channel_dropout,0.6,1,1,0,0,,,0.990,0.036
+channel_dropout,0.9,1,1,0,0,,,0.990,0.034
+spike_suppression,0.3,1,1,0,0,1.000,1.000,0.979,0.034
+spike_suppression,0.6,1,1,0,0,,,0.994,0.034
+spike_suppression,0.9,1,1,0,0,,,0.992,0.035
+rate_decrease,0.3,1,1,0,0,8.000,8.000,0.709,0.034
+rate_decrease,0.6,1,1,0,0,,,0.892,0.034
+rate_decrease,0.9,1,1,0,0,1.000,1.000,0.866,0.034

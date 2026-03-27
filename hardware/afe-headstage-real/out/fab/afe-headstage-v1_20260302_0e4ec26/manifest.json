@@ -1,0 +1,36 @@
+{
+  "git_sha": "0e4ec26",
+  "build_timestamp_utc": "2026-03-03T02:36:16.675964+00:00",
+  "kicad_cli_version": "9.0.7",
+  "build_inputs": {
+    "board_sha256": "9011a86f375dd34dc371cc6d6b3eeb89fd81d0f37e019f8a6f8f5a89877417ce",
+    "make_fab_package_sha256": "8139c77e266485c35b48993c49c00a5331b3d96cc8b2b90a7ff1ab7e165fff7c",
+    "fab_profile_sha256": "a359f7a28f2cf54edeab4c0cbb1e11a63664a8520c113ce662cea90c150d0e4b",
+    "fab_notes_sha256": "c73538ee711b27c1103058d02a5c8fc8b82eeeee4981fa252a918da07cb1641b",
+    "gen_bundle_c_route_sha256": "9910ea21ebe289fd9f61967a674bf8b3b00a4d9e1b9fd184af99b0371710d2f9"
+  },
+  "files": {
+    "README_FAB.md": "332e8b4a4c65072f3eb4e656fde3552bf569587dd308ac68d7f39aec1f059411",
+    "assembly_constraints.txt": "f5ff9f90944b0cd1c6a0b011f48fa0d76896138914baab59673fa8a190d3b313",
+    "bringup_checklist.txt": "574d38512e28e5560efe74750c16c156d319840e0154fc451c4aa894c3d2e60c",
+    "dfm_feedback_loop.txt": "3a40c5b9f279aba7e10696403ed2b5d55e4e2247fa3f004f6b71f973b81bc973",
+    "fab_notes.txt": "c73538ee711b27c1103058d02a5c8fc8b82eeeee4981fa252a918da07cb1641b",
+    "fab_profile.yaml": "a359f7a28f2cf54edeab4c0cbb1e11a63664a8520c113ce662cea90c150d0e4b",
+    "order_checklist.txt": "4bc358014a5bbbcb342fd405a4791db4da88e54255539b5c467c55db91325628",
+    "vip_vias.csv": "3627aa7c6ca54a9b2191483104b8b1bf6284ebc9d2769bc00dcb88d3cdc8d7a7",
+    "drill/afe-headstage-v1-NPTH-drl_map.pdf": "2409ed65a3d3eb050501ccfbdd15f304af63083065ea22c73a61daa00d2fb8cc",
+    "drill/afe-headstage-v1-NPTH.drl": "d8de40dace3101ec621b08147e9c1091bf7f79b6733653c63ab4d148394a8f81",
+    "drill/afe-headstage-v1-PTH-drl_map.pdf": "5941f9e1493f39443e741798a1f739cecc9db2864c330cd7b45f894929e659b2",
+    "drill/afe-headstage-v1-PTH.drl": "18dc5d204a857d1e3bd3a9fe6e3e1508b26e5ec8ba8c06772278767d36d4dfa7",
+    "gerbers/afe-headstage-v1-B_Cu.gbl": "ee5fe292f9692c1e767cb0652410edc6f2642c29059905290b7027d575eadb74",
+    "gerbers/afe-headstage-v1-B_Mask.gbs": "7e57ceccf83383682b0c7d723b9331f76ec826eb2e9380c8bfa76d207e2c829c",
+    "gerbers/afe-headstage-v1-B_Silkscreen.gbo": "4344ad1240e6215fd7a5c809de1d84a399e5654750b962bdd52fe90373423081",
+    "gerbers/afe-headstage-v1-Edge_Cuts.gm1": "5e188ad5644328955176954419d180709d688fbd3815652bbb52f79943c56971",
+    "gerbers/afe-headstage-v1-F_Cu.gtl": "951ea53dcc5dc1cae5c67a6c87d04e435351d65f559ff6e938759ee812998627",
+    "gerbers/afe-headstage-v1-F_Mask.gts": "bd9ccd43c1f4ffeb61af1f1cd057962edd3dfaa8084c31f966bb1aa059259674",
+    "gerbers/afe-headstage-v1-F_Silkscreen.gto": "c60bc54e9fdaebee7be804c6db7dbe4b29279258490c99bbd9f3f10d19dd5dbc",
+    "gerbers/afe-headstage-v1-In1_Cu.g1": "c4facaf50ce72cf271f955176e845f6233372f922a3f73c2ec30684a9113940f",
+    "gerbers/afe-headstage-v1-In2_Cu.g2": "1d9e22f32ecc84ecf849a3ee0ed537fa7ac62d889a5287a117d8777a9c42ed24",
+    "gerbers/afe-headstage-v1-job.gbrjob": "44ad54ef4b9317dc85f11a006e192af953931b72f09f0aded3129b078af06fdf"
+  }
+}

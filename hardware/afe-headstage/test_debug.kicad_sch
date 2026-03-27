@@ -1,0 +1,147 @@
+(kicad_sch
+  (version 20231120)
+  (generator "eeschema")
+  (generator_version "8.0")
+  (uuid "test-debug-uuid")
+  (paper "A4")
+  (title_block
+    (title "Test & Debug Infrastructure (AFE-Only)")
+    (date "2026-02-17")
+    (rev "2.0")
+    (company "BCIInterface")
+    (comment 1 "Neural AFE Headstage - Testability")
+    (comment 2 "Input shorting, cal injection, power isolation — no MCU debug")
+  )
+
+  (lib_symbols)
+
+  (text "═══════════════════════════════════════════════════════════════════════════════════
+                       TEST & DEBUG INFRASTRUCTURE (Rev 2.0)
+═══════════════════════════════════════════════════════════════════════════════════
+
+ARCHITECTURE CHANGE (Rev 2.0):
+──────────────────────────────────────────────────────────────────────────────────
+  DELETED (no MCU on headstage):
+    • J_DEBUG (TC2030-IDC) — SWD debug header removed
+    • SWDIO, SWCLK, SWO signals — removed
+    • RESET_N via debug header — removed (RESET still on B2B)
+    • TP_LVDS0 — LVDS test point removed (no LVDS on headstage)
+
+  KEPT (essential for analog debug):
+    • Input shorting via ADG1414 switches
+    • Calibration injection circuit
+    • Power isolation resistors
+    • Power rail test points
+    • SPI signal test points (updated for DDR MISO)
+
+──────────────────────────────────────────────────────────────────────────────────
+1. INPUT SHORTING (Noise Floor Measurement)
+──────────────────────────────────────────────────────────────────────────────────
+
+  TEST_SHORT_EN (from carrier FPGA via B2B connector)
+         │
+         ▼
+  ┌─────────────────────────────────────┐
+  │      CMOS Switch Array              │
+  │      ADG1414 (×16 for 128ch)        │
+  │                                     │
+  CH1 ───┤IN1                      COM ├───► VREF (1.65V)
+  CH2 ───┤IN2                          │
+  ...    │                             │
+  CH8 ───┤IN8                          │
+  │      └─────────────────────────────┘
+  │
+  └──► When TEST_SHORT_EN = HIGH, all inputs shorted to VREF
+       Measure noise floor with known zero-signal condition
+
+COMPONENT:
+  ADG1414: 8-channel SPST switch, <1Ω Ron, <1nA leakage
+  Need 16× ADG1414 for 128 channels
+  Power: VDD = VIN (3.3–5V), logic input from B2B control line
+  Control: Single TEST_SHORT_EN line controls all 16 ICs
+           (directly connected, no MCU GPIO needed)
+
+──────────────────────────────────────────────────────────────────────────────────
+2. CALIBRATION INJECTION (Gain/BW/Mapping Verification)
+──────────────────────────────────────────────────────────────────────────────────
+
+  CAL_SRC (from carrier FPGA via B2B — square wave or sine)
+         │
+         ▼
+  R_ATTEN (100kΩ) ──┬── R_DIV (100Ω) ──► CAL_OUT
+                     │
+                    GND
+
+  Attenuation: 1000:1
+  If carrier outputs 1Vpp square wave → CAL_OUT = 1mVpp
+  Realistic spike-like amplitude for testing
+
+  CAL_OUT routed to injection point via:
+  • Dedicated AUX_IN on RHD2164 (preferred path)
+  • Or capacitively coupled to selected channels
+
+  CAL_EN (from carrier via B2B) enables injection circuit
+  via series analog switch (ADG1419 or similar SPST)
+
+──────────────────────────────────────────────────────────────────────────────────
+3. POWER ISOLATION (Analog/Digital Debug Separation)
+──────────────────────────────────────────────────────────────────────────────────
+
+  VIN ──[R_ISO1 0Ω]──► To ADP151 LDO ──► AVDD
+
+  Remove R_ISO1 to disconnect analog supply for isolated testing.
+  (DVDD_AFE is derived from VIN via ferrite, not a separate LDO,
+   so it is also disabled when R_ISO1 is removed.)
+
+  NOTE: Rev 1.0 had R_ISO2 for separate DVDD isolation.
+        With the simplified power tree (no MCU LDO), a single
+        isolation point at VIN is sufficient.
+
+═══════════════════════════════════════════════════════════════════════════════════"
+    (exclude_from_sim no)
+    (at 20 20)
+    (effects
+      (font (size 1.2 1.2))
+      (justify left)
+    )
+  )
+
+  (text "TEST POINT TABLE (Rev 2.0)
+───────────────────────────────────────────────────────────────────────────────
+Ref         Net           Location          Purpose
+───────────────────────────────────────────────────────────────────────────────
+TP_VIN      VIN           Near B2B conn     Input voltage from carrier
+TP_AVDD     AVDD          Near LDO output   Analog rail, noise measurement
+TP_DVDD_AFE DVDD_AFE      After ferrite     Filtered digital rail for AFE
+TP_VREF     VREF          Near RHD2164      Reference voltage (1.225V)
+TP_GND      GND           Near B2B conn     Ground reference for probes
+TP_SCLK     SCLK          At fan-out node   SPI clock from carrier
+TP_MISO1A   MISO1_A       Near U1           DDR MISO A from RHD2164 #1
+TP_MISO1B   MISO1_B       Near U1           DDR MISO B from RHD2164 #1
+TP_MISO2A   MISO2_A       Near U2           DDR MISO A from RHD2164 #2
+TP_CAL      CAL_OUT       After attenuator  Cal injection verification
+───────────────────────────────────────────────────────────────────────────────
+
+DELETED from Rev 1.0:
+  TP_DVDD   — replaced by TP_DVDD_AFE (no MCU DVDD rail)
+  TP_MISO1  — split into TP_MISO1A + TP_MISO1B (DDR dual MISO)
+  TP_MISO2  — split into TP_MISO2A + TP_MISO2B (only A shown, B optional)
+  TP_LVDS0  — removed (no LVDS on headstage)
+
+Test points: 1mm pads, plated, no soldermask
+             Accessible from top layer, not under components
+───────────────────────────────────────────────────────────────────────────────"
+    (exclude_from_sim no)
+    (at 20 175)
+    (effects
+      (font (size 1.1 1.1))
+      (justify left)
+    )
+  )
+
+  (sheet_instances
+    (path "/test_debug"
+      (page "7")
+    )
+  )
+)

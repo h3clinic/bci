@@ -1,0 +1,107 @@
+{
+  "config_hash": "7bed58df5159",
+  "timestamp": "2026-03-04T02:44:46.705608+00:00",
+  "training_mode": "demo",
+  "data_source": "synthetic",
+  "n_shifts": 13,
+  "n_severities": 3,
+  "domain_a_mean_auroc": {
+    "Deep": 0.5555555555555556
+  },
+  "domain_b_mean_auroc": {
+    "Deep": 0.5972222222222222
+  },
+  "domain_drop": {
+    "Deep": -0.04166666666666663
+  },
+  "metrics": [
+    {
+      "model": "Deep",
+      "shift": "sixty_hz",
+      "severity": 0.6,
+      "domain": "A",
+      "fpr_at_tpr90": 1.0,
+      "detection_rate": 0.0,
+      "detection_ci": [
+        0.0,
+        1.0
+      ],
+      "auroc": 0.5555555555555556,
+      "binary_accuracy": 0.5,
+      "latency_median_s": NaN,
+      "latency_iqr_lo": NaN,
+      "latency_iqr_hi": NaN,
+      "ece": 0.04025475960224867,
+      "holdout_accuracy": 0.0,
+      "n_train": 27,
+      "n_test": 27,
+      "status": "ok"
+    },
+    {
+      "model": "Deep",
+      "shift": "sixty_hz",
+      "severity": 0.6,
+      "domain": "B",
+      "fpr_at_tpr90": 1.0,
+      "detection_rate": 0.0,
+      "detection_ci": [
+        0.0,
+        1.0
+      ],
+      "auroc": 0.673611111111111,
+      "binary_accuracy": 0.5,
+      "latency_median_s": NaN,
+      "latency_iqr_lo": NaN,
+      "latency_iqr_hi": NaN,
+      "ece": 0.013666603714227676,
+      "holdout_accuracy": 0.0,
+      "n_train": 27,
+      "n_test": 27,
+      "status": "ok"
+    },
+    {
+      "model": "Deep",
+      "shift": "rate_decrease",
+      "severity": 0.6,
+      "domain": "A",
+      "fpr_at_tpr90": 1.0,
+      "detection_rate": 0.0,
+      "detection_ci": [
+        0.0,
+        1.0
+      ],
+      "auroc": 0.5555555555555556,
+      "binary_accuracy": 0.5,
+      "latency_median_s": NaN,
+      "latency_iqr_lo": NaN,
+      "latency_iqr_hi": NaN,
+      "ece": 0.04025475960224867,
+      "holdout_accuracy": 0.0,
+      "n_train": 27,
+      "n_test": 27,
+      "status": "ok"
+    },
+    {
+      "model": "Deep",
+      "shift": "rate_decrease",
+      "severity": 0.6,
+      "domain": "B",
+      "fpr_at_tpr90": 1.0,
+      "detection_rate": 0.0,
+      "detection_ci": [
+        0.0,
+        1.0
+      ],
+      "auroc": 0.5208333333333334,
+      "binary_accuracy": 0.5,
+      "latency_median_s": NaN,
+      "latency_iqr_lo": NaN,
+      "latency_iqr_hi": NaN,
+      "ece": 0.04073340569933254,
+      "holdout_accuracy": 0.0,
+      "n_train": 27,
+      "n_test": 27,
+      "status": "ok"
+    }
+  ]
+}

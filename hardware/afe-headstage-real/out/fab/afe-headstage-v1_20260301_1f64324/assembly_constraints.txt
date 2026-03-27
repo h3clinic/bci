@@ -1,0 +1,151 @@
+================================================================================
+ ASSEMBLY CONSTRAINTS & PROCESS NOTES
+ Board:    AFE Headstage v1 (afe-headstage-v1)
+ Revision: 1.0
+ Date:     2026-03-01
+ Contact:  [engineer email]
+================================================================================
+
+1. SCOPE
+--------
+  This document specifies assembly constraints for the AFE Headstage v1.
+  It applies to all assembly vendors and in-house assembly.
+  Read fab_notes.txt first — it covers bare-board fabrication.
+
+2. COMPONENT PLACEMENT
+-----------------------
+  All components are on the FRONT side (F.Cu) only.
+  No bottom-side components.
+
+  Critical components:
+    U1 — RHD2132 QFN-56 (7×7 mm), center of board
+    J5 — Omnetics A79024-001 (36-pin nano-strip), south of U1
+
+3. STENCIL SPECIFICATION
+-------------------------
+  Stencil thickness:  0.10 mm (100 µm) — recommended for fine-pitch QFN
+  Stencil material:   Laser-cut stainless steel
+  Aperture shape:     Match pad geometry in F.Paste layer from Gerbers
+
+  J5 VIP Pads:
+    J5 pads have via-in-pad (VIPPO).  After VIPPO processing, pads are
+    flat and solderable.  Baseline: use Gerber apertures as-is (1:1).
+
+    PASTE VOLUME NOTE (0.635 mm pitch on ENIG + VIPPO):
+    The default Gerber apertures assume planarized VIP pads and Type 4
+    paste (20–38 µm).  If bridging is observed during first-article
+    reflow inspection, apply a controlled aperture reduction of 5–15%
+    in the X-axis (width) only — do not reduce Y-axis (length).
+    This maintains adequate paste volume for wetting while reducing
+    bridge risk at 0.635 mm pitch.
+    If no bridging is observed at 1:1 aperture, do not reduce.
+
+  U1 QFN Exposed Pad:
+    Stencil aperture for U1 thermal pad: use windowed pattern
+    (e.g., 4×4 or 5×5 sub-apertures at 50–60% coverage).
+    Full-area paste on QFN thermal pad causes voiding and tombstoning.
+
+  Do not modify Gerber paste layer apertures without written approval.
+
+4. SOLDER PASTE
+----------------
+  Type:          SAC305 (Sn96.5/Ag3.0/Cu0.5), no-clean flux
+  Mesh:          Type 4 (20–38 µm particle) or finer — required for
+                 0.635 mm pitch at J5 and 0.50 mm QFN pitch at U1
+  Shelf life:    Verify paste is within expiration date
+  Storage:       Refrigerated, bring to room temperature ≥ 2 hours
+                 before use
+
+5. REFLOW PROFILE
+------------------
+  Profile: lead-free SAC305 per paste manufacturer datasheet.
+  Typical parameters (verify with paste data sheet):
+
+    Zone             | Temperature        | Duration
+    -----------------+--------------------+---------
+    Preheat          | 150–200 °C         | 60–90 s
+    Soak             | 200–220 °C         | 30–60 s
+    Reflow peak      | 245 ± 5 °C         | —
+    Time above 217°C | —                  | 40–80 s
+    Cooling rate     | < 4 °C/s           | —
+
+  Single-sided reflow only (all components on F.Cu).
+  Do not exceed 260 °C peak temperature.
+
+  J5 CONNECTOR NOTE:
+    Omnetics A79024 connector body is rated to 260 °C reflow.
+    Verify with Omnetics datasheet for your specific lot.
+    If hand-soldering J5: use 300 °C tip, < 3 s dwell per pad.
+
+6. J5 CONNECTOR ASSEMBLY
+--------------------------
+  J5 pads are SMD (not through-hole).  Solder mask opens over pads.
+  VIP vias under pads are VIPPO-filled and flush — treat as normal SMD.
+
+  Placement:
+    Use pick-and-place with vision alignment if available.
+    J5 has asymmetric pin count — verify orientation before placement.
+    Pin 1 indicator on silkscreen.
+
+  Inspection after reflow:
+    All 36 pads shall show visible solder fillets.
+    No bridging between adjacent pads (0.635 mm pitch).
+    No cold joints, no insufficient solder.
+
+  Rework:
+    If rework is needed on J5, use hot-air at 280 °C with nozzle
+    sized to J5 footprint.  Do not exceed 3 rework cycles on VIP pads.
+
+7. U1 QFN-56 ASSEMBLY
+-----------------------
+  U1 is QFN-56 (7×7 mm, 0.50 mm pitch, exposed thermal pad).
+
+  Placement:
+    Center pad alignment is critical.  Use vision-aligned P&P.
+    Verify no rotation error — pin 1 dot on silkscreen.
+
+  Thermal pad:
+    9 thermal vias (0.30 mm drill) connect exposed pad to inner GND.
+    Stencil uses windowed sub-apertures per Section 3.
+    Thermal vias are soldermask tented on the component side (F.Cu)
+    per fab_notes.txt CLAUSE SM-2.  Mask tenting prevents gross
+    solder wicking through the barrel.  Minor solder migration
+    into via barrels through imperfect tenting is expected and
+    acceptable — this is a thermal path, not a signal path.
+    If excessive voiding (>25% area) is observed at X-ray,
+    verify tenting integrity before re-profiling.
+
+  Inspection:
+    X-ray recommended to verify QFN pad voiding < 25% area.
+    Side fillets visible on QFN perimeter leads.
+
+8. CLEANING
+-----------
+  No-clean flux: board cleaning is optional.
+  If cleaning is performed: use IPA or aqueous cleaner safe for
+  Omnetics connector body material (LCP).
+  Do not use ultrasonic cleaning — may damage fine-pitch connectors.
+
+9. ESD PRECAUTIONS
+-------------------
+  U1 (RHD2132) is ESD-sensitive (HBM Class 1C, CDM Class C3).
+  J5 electrode inputs connect directly to U1 analog front-end inputs.
+
+  Requirements:
+    Assembly and handling at ESD-safe workstation (< 100 V HBM).
+    Wrist straps and grounded mats mandatory.
+    Store assembled boards in ESD-safe packaging.
+
+10. MARKING & TRACEABILITY
+----------------------------
+  Each assembled board shall be marked with:
+    - Lot number (vendor-assigned or customer-specified)
+    - Date code
+    - Board revision (1.0)
+
+  If laser-marking: mark on B.Cu side silkscreen area only.
+  Do not mark over component pads or solder joints.
+
+================================================================================
+ END OF ASSEMBLY CONSTRAINTS
+================================================================================

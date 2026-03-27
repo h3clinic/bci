@@ -1,0 +1,76 @@
+** Drc report for filled.kicad_pcb **
+** Created on 2026-02-28T17:06:05-0500 **
+
+** Found 22 DRC violations **
+[lib_footprint_issues]: Footprint 'L_0402_1005Metric' not found in library 'afe_footprints'.
+    Local override; warning
+    @(123.0000 mm, 87.0000 mm): Footprint FB1
+[lib_footprint_issues]: Footprint 'C_0402_1005Metric' not found in library 'afe_footprints'.
+    Local override; warning
+    @(122.0000 mm, 102.5000 mm): Footprint C5
+[lib_footprint_issues]: Footprint 'TSOT-23-5' not found in library 'afe_footprints'.
+    Local override; warning
+    @(110.0000 mm, 87.0000 mm): Footprint U2
+[lib_footprint_issues]: Footprint 'TestPoint_Pad_D1.0mm' not found in library 'afe_footprints'.
+    Local override; warning
+    @(110.0000 mm, 96.0000 mm): Footprint TP6
+[lib_footprint_issues]: Footprint 'C_0402_1005Metric' not found in library 'afe_footprints'.
+    Local override; warning
+    @(106.0000 mm, 87.0000 mm): Footprint C1
+[lib_footprint_issues]: Footprint 'R_0402_1005Metric' not found in library 'afe_footprints'.
+    Local override; warning
+    @(123.0000 mm, 93.0000 mm): Footprint R5
+[lib_footprint_issues]: Footprint 'TestPoint_Pad_D1.0mm' not found in library 'afe_footprints'.
+    Local override; warning
+    @(110.0000 mm, 93.5000 mm): Footprint TP5
+[lib_footprint_issues]: Footprint 'TestPoint_Pad_D1.0mm' not found in library 'afe_footprints'.
+    Local override; warning
+    @(118.0000 mm, 83.0000 mm): Footprint TP3
+[lib_footprint_issues]: Footprint 'TestPoint_Pad_D1.0mm' not found in library 'afe_footprints'.
+    Local override; warning
+    @(128.0000 mm, 83.0000 mm): Footprint TP2
+[lib_footprint_issues]: Footprint 'TestPoint_Pad_D1.0mm' not found in library 'afe_footprints'.
+    Local override; warning
+    @(110.0000 mm, 91.0000 mm): Footprint TP4
+[lib_footprint_issues]: Footprint 'R_0402_1005Metric' not found in library 'afe_footprints'.
+    Local override; warning
+    @(113.0000 mm, 97.5000 mm): Footprint R4
+[lib_footprint_issues]: Footprint 'TestPoint_Pad_D1.0mm' not found in library 'afe_footprints'.
+    Local override; warning
+    @(126.0000 mm, 93.0000 mm): Footprint TP8
+[lib_footprint_issues]: Footprint 'C_0402_1005Metric' not found in library 'afe_footprints'.
+    Local override; warning
+    @(118.0000 mm, 102.5000 mm): Footprint C3
+[lib_footprint_issues]: Footprint 'TestPoint_Pad_D1.0mm' not found in library 'afe_footprints'.
+    Local override; warning
+    @(108.0000 mm, 83.0000 mm): Footprint TP1
+[lib_footprint_issues]: Footprint 'QSH-030-01-L-D-A' not found in library 'afe_footprints'.
+    Local override; warning
+    @(108.0000 mm, 118.0000 mm): Footprint J5
+[lib_footprint_issues]: Footprint 'C_0402_1005Metric' not found in library 'afe_footprints'.
+    Local override; warning
+    @(114.0000 mm, 87.0000 mm): Footprint C2
+[lib_footprint_issues]: Footprint 'R_0402_1005Metric' not found in library 'afe_footprints'.
+    Local override; warning
+    @(113.0000 mm, 96.0000 mm): Footprint R3
+[lib_footprint_issues]: Footprint 'RHD2164_BGA_104' not found in library 'afe_footprints'.
+    Local override; warning
+    @(120.0000 mm, 98.0000 mm): Footprint U1
+[lib_footprint_issues]: Footprint 'C_0402_1005Metric' not found in library 'afe_footprints'.
+    Local override; warning
+    @(126.0000 mm, 102.5000 mm): Footprint C4
+[lib_footprint_issues]: Footprint 'R_0402_1005Metric' not found in library 'afe_footprints'.
+    Local override; warning
+    @(113.0000 mm, 94.5000 mm): Footprint R2
+[lib_footprint_issues]: Footprint 'TestPoint_Pad_D1.0mm' not found in library 'afe_footprints'.
+    Local override; warning
+    @(110.0000 mm, 98.5000 mm): Footprint TP7
+[lib_footprint_issues]: Footprint 'R_0402_1005Metric' not found in library 'afe_footprints'.
+    Local override; warning
+    @(113.0000 mm, 93.0000 mm): Footprint R1
+
+** Found 0 unconnected pads **
+
+** Found 0 Footprint errors **
+
+** End of Report **

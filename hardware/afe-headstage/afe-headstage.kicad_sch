@@ -1,0 +1,177 @@
+(kicad_sch
+  (version 20231120)
+  (generator "eeschema")
+  (generator_version "8.0")
+  (uuid "e63e39d7-6ac0-4ffd-8aa3-1841a4541b3a")
+  (paper "A3")
+  (title_block
+    (title "Neural AFE Headstage - Top Level")
+    (date "2026-02-16")
+    (rev "1.0")
+    (company "BCIInterface")
+    (comment 1 "128-Channel Neural Analog Front-End")
+    (comment 2 "fs=30kS/s | 16-bit | DDR SPI passthrough to Carrier FPGA")
+    (comment 3 "AFE: 2x RHD2164 | No MCU on headstage")
+    (comment 4 "For in-vitro instrumentation only | Rev 2.0")
+  )
+
+  (lib_symbols)
+
+  ;; Sheet instances - Hierarchical structure
+  (sheet
+    (at 25 40)
+    (size 30 10)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+      (color 132 0 0 1)
+    )
+    (fill
+      (color 255 255 194 1)
+    )
+    (uuid "power")
+    (property "Sheetname" "Power" (at 25 39 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+    (property "Sheetfile" "power.kicad_sch" (at 25 51 0) (effects (font (size 1.27 1.27)) (justify left top)))
+    (instances
+      (project "afe-headstage"
+        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b3a" (page "2"))
+      )
+    )
+  )
+
+  (sheet
+    (at 25 60)
+    (size 30 10)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+      (color 0 100 0 1)
+    )
+    (fill
+      (color 194 255 194 1)
+    )
+    (uuid "inputs_1_64")
+    (property "Sheetname" "Inputs_1_64" (at 25 59 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+    (property "Sheetfile" "inputs_1_64.kicad_sch" (at 25 71 0) (effects (font (size 1.27 1.27)) (justify left top)))
+    (instances
+      (project "afe-headstage"
+        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b3a" (page "3"))
+      )
+    )
+  )
+
+  (sheet
+    (at 25 80)
+    (size 30 10)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+      (color 0 100 0 1)
+    )
+    (fill
+      (color 194 255 194 1)
+    )
+    (uuid "inputs_65_128")
+    (property "Sheetname" "Inputs_65_128" (at 25 79 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+    (property "Sheetfile" "inputs_65_128.kicad_sch" (at 25 91 0) (effects (font (size 1.27 1.27)) (justify left top)))
+    (instances
+      (project "afe-headstage"
+        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b3a" (page "4"))
+      )
+    )
+  )
+
+  (sheet
+    (at 70 60)
+    (size 30 10)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+      (color 0 0 132 1)
+    )
+    (fill
+      (color 194 194 255 1)
+    )
+    (uuid "afe_adc")
+    (property "Sheetname" "AFE_ADC" (at 70 59 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+    (property "Sheetfile" "afe_adc.kicad_sch" (at 70 71 0) (effects (font (size 1.27 1.27)) (justify left top)))
+    (instances
+      (project "afe-headstage"
+        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b3a" (page "5"))
+      )
+    )
+  )
+
+  (sheet
+    (at 70 40)
+    (size 30 10)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+      (color 132 0 132 1)
+    )
+    (fill
+      (color 255 194 255 1)
+    )
+    (uuid "clock")
+    (property "Sheetname" "Clock" (at 70 39 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+    (property "Sheetfile" "clock.kicad_sch" (at 70 51 0) (effects (font (size 1.27 1.27)) (justify left top)))
+    (instances
+      (project "afe-headstage"
+        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b3a" (page "6"))
+      )
+    )
+  )
+
+  (sheet
+    (at 115 60)
+    (size 30 10)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid)
+      (color 100 100 0 1)
+    )
+    (fill
+      (color 255 255 194 1)
+    )
+    (uuid "test_debug")
+    (property "Sheetname" "Test_Debug" (at 115 59 0) (effects (font (size 1.27 1.27)) (justify left bottom)))
+    (property "Sheetfile" "test_debug.kicad_sch" (at 115 71 0) (effects (font (size 1.27 1.27)) (justify left top)))
+    (instances
+      (project "afe-headstage"
+        (path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b3a" (page "7"))
+      )
+    )
+  )
+
+  ;; Text annotations for top-level block diagram
+  (text "NEURAL AFE HEADSTAGE - SYSTEM BLOCK DIAGRAM (Rev 2.0)\n\nConfiguration:\n  • 128 channels (2× RHD2164)\n  • fs = 30 kS/s per channel\n  • 16-bit resolution\n  • Throughput: 7.68 MB/s raw\n  • Egress: DDR SPI passthrough to carrier FPGA\n  • No MCU on headstage — pure analog front-end\n\nSignal Flow:\n  Electrodes → Inputs → AFE/ADC → SPI → B2B Connector → Carrier FPGA"
+    (exclude_from_sim no)
+    (at 25 25)
+    (effects
+      (font (size 1.5 1.5))
+      (justify left)
+    )
+  )
+
+  (text "POWER RAILS:\n  VIN: 3.3–5V (from carrier via B2B)\n  AVDD: 3.3V (low-noise LDO, analog)\n  DVDD_AFE: 3.3V (ferrite-filtered, RHD digital I/O)\n  VREF: 1.225V (internal to RHD2164)"
+    (exclude_from_sim no)
+    (at 60 40)
+    (effects
+      (font (size 1.2 1.2))
+      (justify left)
+    )
+  )
+
+  (sheet_instances
+    (path "/"
+      (page "1")
+    )
+  )
+)

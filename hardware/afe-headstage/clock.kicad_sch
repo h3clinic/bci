@@ -1,0 +1,98 @@
+(kicad_sch
+  (version 20231120)
+  (generator "eeschema")
+  (generator_version "8.0")
+  (uuid "clock-uuid")
+  (paper "A4")
+  (title_block
+    (title "Clock Distribution (Receive Only)")
+    (date "2026-02-17")
+    (rev "2.0")
+    (company "BCIInterface")
+    (comment 1 "Neural AFE Headstage - Clock Input from Carrier")
+    (comment 2 "No local oscillator — SCLK generated on carrier FPGA")
+  )
+
+  (lib_symbols)
+
+  (text "═══════════════════════════════════════════════════════════════════════════
+                       CLOCK DISTRIBUTION (RECEIVE ONLY)
+═══════════════════════════════════════════════════════════════════════════
+
+ARCHITECTURE CHANGE (Rev 2.0):
+──────────────────────────────────────────────────────────────────────────
+  Rev 1.0: Local 20 MHz TCXO (DSC1001DI2-020) + NC7SZ125 buffer
+  Rev 2.0: SCLK provided by carrier FPGA over B2B connector
+
+  DELETED:
+    • Y1 (DSC1001DI2-020 TCXO) — removed
+    • U_CLK (NC7SZ125 buffer) — removed
+    • R_TERM (22Ω series termination) — removed
+    • C_CLK1, C_CLK2 (oscillator decoupling) — removed
+    • TP_CLK (clock test point at buffer output) — removed
+
+RATIONALE:
+  The carrier FPGA generates SCLK for deterministic timing of both
+  RHD2164 chips. A single clock source eliminates skew between
+  headstage and carrier, and removes a digital switching noise source
+  from the analog headstage.
+
+──────────────────────────────────────────────────────────────────────────
+
+CLOCK PATH (Rev 2.0):
+──────────────────────────────────────────────────────────────────────────
+
+  Carrier FPGA ──► B2B Connector (J5) ──► SCLK net on headstage
+                                     │
+                                     ├──► RHD2164 U1 SCLK pin
+                                     │
+                                     └──► RHD2164 U2 SCLK pin
+
+  Carrier-side responsibilities:
+    • Generate 20 MHz SCLK (or variable, per sample rate setting)
+    • Series termination at FPGA output (22–47Ω, carrier-side)
+    • Clock jitter spec: <5 ps RMS (adequate for 30 kS/s)
+
+  Headstage-side:
+    • Clean routing from B2B connector to both AFE chips
+    • Route on Layer 4 (digital signals) over solid Layer 5 DGND
+    • Keep ≥3 mm separation from electrode/analog traces on Layer 1
+    • No layer transitions in SCLK path on headstage
+    • TP_SCLK test point at fan-out node (1 mm pad)
+
+  OPTIONAL: If signal integrity requires it, place a single-gate
+  buffer (NC7SZ125 or 74LVC1G125) on headstage to re-drive SCLK.
+  Footprint reserved but DNI by default.
+
+──────────────────────────────────────────────────────────────────────────
+
+CLOCK BOM (Rev 2.0 — headstage only):
+──────────────────────────────────────────────────────────────────────────
+Ref       Value       Package      Part Number       Notes
+──────────────────────────────────────────────────────────────────────────
+R_SCLK    33Ω         0402         -                 Optional damping at
+                                                     RHD2164 input (DNI)
+TP_SCLK   Test point  1mm pad      -                 Clock verification
+──────────────────────────────────────────────────────────────────────────
+
+LAYOUT NOTES:
+  • SCLK trace: controlled impedance 50Ω microstrip on L4
+  • Length-match SCLK to U1 and U2 within ±2 mm
+  • Guard with GND vias along SCLK route if crossing near analog
+  • No stubs — star topology from B2B pin to U1/U2
+
+═══════════════════════════════════════════════════════════════════════════"
+    (exclude_from_sim no)
+    (at 20 25)
+    (effects
+      (font (size 1.27 1.27))
+      (justify left)
+    )
+  )
+
+  (sheet_instances
+    (path "/clock"
+      (page "6")
+    )
+  )
+)

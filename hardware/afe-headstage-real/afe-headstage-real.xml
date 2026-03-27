@@ -1,0 +1,690 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>/Users/aharshi/BCIInterface/hardware/afe-headstage-real/afe-headstage-real.kicad_sch</source>
+    <date>2026-02-23T21:34:54-0500</date>
+    <tool>Eeschema 9.0.7</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>Neural AFE Headstage</title>
+        <company>BCIInterface</company>
+        <rev>0.1</rev>
+        <date>2025-02-17</date>
+        <source>afe-headstage-real.kicad_sch</source>
+        <comment number="1" value="128-ch Neural AFE (partial: 4ch + 1x RHD2164)"/>
+        <comment number="2" value="DDR SPI passthrough to FPGA carrier | 3.3V LVCMOS"/>
+        <comment number="3" value="B2B: Samtec QSH-030 | fs=30kS/s | 16-bit"/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="C1">
+      <value>1uF</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>227f915c-e22a-4561-bc0c-4dbdd270acb7</tstamps>
+    </comp>
+    <comp ref="C2">
+      <value>1uF</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>8c59f175-e86d-4477-bea7-63d8e16ea116</tstamps>
+    </comp>
+    <comp ref="C3">
+      <value>100nF</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>53d2178e-c3de-4530-b58a-298add6ea1b1</tstamps>
+    </comp>
+    <comp ref="C4">
+      <value>10nF</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>262e17d2-35aa-43f3-8218-700a3eb0b514</tstamps>
+    </comp>
+    <comp ref="C5">
+      <value>100nF</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>17e447e9-9e9b-4c6c-bb0a-568e57a6530d</tstamps>
+    </comp>
+    <comp ref="FB1">
+      <value>600R@100MHz</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="FerriteBead" description="Ferrite bead"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="L ferrite bead inductor filter"/>
+      <property name="ki_fp_filters" value="Inductor_* L_* *Ferrite*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>64cf8034-9324-456d-8725-f399f84e65e6</tstamps>
+    </comp>
+    <comp ref="J5">
+      <value>QSH-030</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="afe" part="B2B_30" description="Samtec QSH-030-01-L-D-A, 30-pin B2B connector"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>153edf0e-ba24-490e-8a53-8c042f85610d</tstamps>
+    </comp>
+    <comp ref="R1">
+      <value>10M</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>f9884ca3-a979-4538-ae59-a142cccda6b1</tstamps>
+    </comp>
+    <comp ref="R2">
+      <value>10M</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>338d4dc3-96ee-4e8f-965c-c29fa9501a9e</tstamps>
+    </comp>
+    <comp ref="R3">
+      <value>10M</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>954cc597-f73b-4948-a627-ea5b6b34a26d</tstamps>
+    </comp>
+    <comp ref="R4">
+      <value>10M</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0b7d734c-a3da-4640-ba93-fa8c68295f1a</tstamps>
+    </comp>
+    <comp ref="R5">
+      <value>0R</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>2801802a-52d5-43e7-a0c0-bc18551e7665</tstamps>
+    </comp>
+    <comp ref="TP1">
+      <value>TP_AVDD</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>ab3b7a2a-8bfc-4a1e-86a1-8e81a45aafd4</tstamps>
+    </comp>
+    <comp ref="TP2">
+      <value>TP_DVDD</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>63eac407-9ce3-4f5f-8f2b-6afc703792ad</tstamps>
+    </comp>
+    <comp ref="TP3">
+      <value>TP_GND</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>61fd5e28-dd7e-4c5c-add6-ac27e41f8a79</tstamps>
+    </comp>
+    <comp ref="TP4">
+      <value>TP_CH0</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0078c04b-44b5-488d-9430-03dfe9276ccf</tstamps>
+    </comp>
+    <comp ref="TP5">
+      <value>TP_CH1</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>6c932edd-4ff2-4122-804c-1281be8bc949</tstamps>
+    </comp>
+    <comp ref="TP6">
+      <value>TP_CH2</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>6b3d34b3-eff0-44a9-bd1a-95f8394a48f3</tstamps>
+    </comp>
+    <comp ref="TP7">
+      <value>TP_CH3</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>74c08e2a-f1b2-45af-8d90-b8aa81fee9b0</tstamps>
+    </comp>
+    <comp ref="TP8">
+      <value>TP_REF</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="Connector" part="TestPoint" description="test point"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <property name="ki_keywords" value="test point tp"/>
+      <property name="ki_fp_filters" value="Pin* Test*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>b1a92ce4-5000-4ec3-b5d0-3bfcf9ecff61</tstamps>
+    </comp>
+    <comp ref="U1">
+      <value>RHD2164</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="afe" part="RHD2164" description="64-ch digital electrophysiology interface, DDR SPI, BGA"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c30121fa-5edf-4a37-afcf-4971a68993d8</tstamps>
+    </comp>
+    <comp ref="U2">
+      <value>ADP151-3.3</value>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description"/>
+      </fields>
+      <libsource lib="afe" part="ADP151" description="200mA ultralow noise CMOS LDO, 3.3V"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="afe-headstage-real.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>bea2e71b-9911-4b92-b9a8-200ec49ba8d6</tstamps>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Connector" part="TestPoint">
+      <description>test point</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Pin*</fp>
+        <fp>Test*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">TP</field>
+        <field name="Value">TestPoint</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">~</field>
+        <field name="Description">test point</field>
+      </fields>
+      <pins>
+        <pin num="1" name="1" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="C">
+      <description>Unpolarized capacitor</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>C_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">~</field>
+        <field name="Description">Unpolarized capacitor</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="FerriteBead">
+      <description>Ferrite bead</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Inductor_*</fp>
+        <fp>L_*</fp>
+        <fp>*Ferrite*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">FB</field>
+        <field name="Value">FerriteBead</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">~</field>
+        <field name="Description">Ferrite bead</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="R">
+      <description>Resistor</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>R_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">~</field>
+        <field name="Description">Resistor</field>
+      </fields>
+      <pins>
+        <pin num="1" name="" type="passive"/>
+        <pin num="2" name="" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="afe" part="ADP151">
+      <description>200mA ultralow noise CMOS LDO, 3.3V</description>
+      <docs>~</docs>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">ADP151-3.3</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">~</field>
+        <field name="Description">200mA ultralow noise CMOS LDO, 3.3V</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VIN" type="power_in"/>
+        <pin num="2" name="GND" type="power_in"/>
+        <pin num="3" name="EN" type="input"/>
+        <pin num="5" name="VOUT" type="power_out"/>
+      </pins>
+    </libpart>
+    <libpart lib="afe" part="B2B_30">
+      <description>Samtec QSH-030-01-L-D-A, 30-pin B2B connector</description>
+      <docs>~</docs>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">QSH-030</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">~</field>
+        <field name="Description">Samtec QSH-030-01-L-D-A, 30-pin B2B connector</field>
+      </fields>
+      <pins>
+        <pin num="1" name="GND" type="passive"/>
+        <pin num="2" name="GND" type="passive"/>
+        <pin num="3" name="SCLK" type="passive"/>
+        <pin num="4" name="GND" type="passive"/>
+        <pin num="5" name="MOSI" type="passive"/>
+        <pin num="6" name="GND" type="passive"/>
+        <pin num="7" name="CS1" type="passive"/>
+        <pin num="8" name="GND" type="passive"/>
+        <pin num="9" name="CS2" type="passive"/>
+        <pin num="10" name="GND" type="passive"/>
+        <pin num="11" name="MISO1_A" type="passive"/>
+        <pin num="12" name="MISO1_B" type="passive"/>
+        <pin num="13" name="GND" type="passive"/>
+        <pin num="14" name="GND" type="passive"/>
+        <pin num="15" name="MISO2_A" type="passive"/>
+        <pin num="16" name="MISO2_B" type="passive"/>
+        <pin num="17" name="GND" type="passive"/>
+        <pin num="18" name="GND" type="passive"/>
+        <pin num="19" name="VIN" type="passive"/>
+        <pin num="20" name="VIN" type="passive"/>
+        <pin num="21" name="GND" type="passive"/>
+        <pin num="22" name="GND" type="passive"/>
+        <pin num="23" name="VIN" type="passive"/>
+        <pin num="24" name="VIN" type="passive"/>
+        <pin num="25" name="GND" type="passive"/>
+        <pin num="26" name="GND" type="passive"/>
+        <pin num="27" name="TEST_SHORT_EN" type="passive"/>
+        <pin num="28" name="CAL_EN" type="passive"/>
+        <pin num="29" name="SPARE" type="passive"/>
+        <pin num="30" name="GND" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="afe" part="RHD2164">
+      <description>64-ch digital electrophysiology interface, DDR SPI, BGA</description>
+      <docs>https://intantech.com/files/Intan_RHD2164_datasheet.pdf</docs>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">RHD2164</field>
+        <field name="Footprint"/>
+        <field name="Datasheet">https://intantech.com/files/Intan_RHD2164_datasheet.pdf</field>
+        <field name="Description">64-ch digital electrophysiology interface, DDR SPI, BGA</field>
+      </fields>
+      <pins>
+        <pin num="A1" name="in0" type="passive"/>
+        <pin num="A2" name="in1" type="passive"/>
+        <pin num="A3" name="in2" type="passive"/>
+        <pin num="A4" name="in3" type="passive"/>
+        <pin num="A17" name="ref_elec" type="passive"/>
+        <pin num="H1" name="in32" type="passive"/>
+        <pin num="H2" name="in33" type="passive"/>
+        <pin num="H3" name="in34" type="passive"/>
+        <pin num="H4" name="in35" type="passive"/>
+        <pin num="L1" name="VESD" type="passive"/>
+        <pin num="M15" name="VDD_1" type="power_in"/>
+        <pin num="M16" name="LVDS_en" type="input"/>
+        <pin num="M17" name="GND_1" type="power_in"/>
+        <pin num="N1" name="GND_2" type="power_in"/>
+        <pin num="N2" name="VDD_2" type="power_in"/>
+        <pin num="N3" name="auxin1" type="input"/>
+        <pin num="N4" name="auxin2" type="input"/>
+        <pin num="N5" name="auxin3" type="input"/>
+        <pin num="N6" name="GND_3" type="power_in"/>
+        <pin num="N7" name="MISO_B" type="output"/>
+        <pin num="N8" name="CS" type="input"/>
+        <pin num="N10" name="SCLK" type="input"/>
+        <pin num="N12" name="MOSI" type="input"/>
+        <pin num="N14" name="MISO_A" type="output"/>
+        <pin num="N15" name="VDD_3" type="power_in"/>
+        <pin num="N16" name="auxout" type="output"/>
+        <pin num="N17" name="ADC_ref" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Connector">
+      <uri>/Applications/KiCad/KiCad.app/Contents/SharedSupport/symbols/Connector.kicad_sym</uri>
+    </library>
+    <library logical="Device">
+      <uri>/Applications/KiCad/KiCad.app/Contents/SharedSupport/symbols/Device.kicad_sym</uri>
+    </library>
+    <library logical="afe">
+      <uri>/Users/aharshi/BCIInterface/hardware/afe-headstage-real/afe_symbols.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="+3V3" class="Default">
+      <node ref="C2" pin="1" pintype="passive"/>
+      <node ref="C5" pin="1" pintype="passive"/>
+      <node ref="FB1" pin="2" pintype="passive"/>
+      <node ref="TP1" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U2" pin="5" pinfunction="VOUT" pintype="power_out"/>
+    </net>
+    <net code="2" name="/CH0" class="Default">
+      <node ref="R1" pin="1" pintype="passive"/>
+      <node ref="TP4" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U1" pin="A1" pinfunction="in0" pintype="passive"/>
+    </net>
+    <net code="3" name="/CH1" class="Default">
+      <node ref="R2" pin="1" pintype="passive"/>
+      <node ref="TP5" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U1" pin="A2" pinfunction="in1" pintype="passive"/>
+    </net>
+    <net code="4" name="/CH2" class="Default">
+      <node ref="R3" pin="1" pintype="passive"/>
+      <node ref="TP6" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U1" pin="A3" pinfunction="in2" pintype="passive"/>
+    </net>
+    <net code="5" name="/CH3" class="Default">
+      <node ref="R4" pin="1" pintype="passive"/>
+      <node ref="TP7" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U1" pin="A4" pinfunction="in3" pintype="passive"/>
+    </net>
+    <net code="6" name="/REF_ELEC" class="Default">
+      <node ref="R5" pin="2" pintype="passive"/>
+      <node ref="TP8" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U1" pin="A17" pinfunction="ref_elec" pintype="passive"/>
+    </net>
+    <net code="7" name="/VDD_AFE_FILT" class="Default">
+      <node ref="C3" pin="1" pintype="passive"/>
+      <node ref="FB1" pin="1" pintype="passive"/>
+      <node ref="TP2" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U1" pin="M15" pinfunction="VDD_1" pintype="power_in"/>
+      <node ref="U1" pin="N15" pinfunction="VDD_3" pintype="power_in"/>
+      <node ref="U1" pin="N2" pinfunction="VDD_2" pintype="power_in"/>
+    </net>
+    <net code="8" name="CS1" class="Default">
+      <node ref="J5" pin="7" pinfunction="CS1" pintype="passive"/>
+      <node ref="U1" pin="N8" pinfunction="CS" pintype="input"/>
+    </net>
+    <net code="9" name="GND" class="Default">
+      <node ref="C1" pin="2" pintype="passive"/>
+      <node ref="C2" pin="2" pintype="passive"/>
+      <node ref="C3" pin="2" pintype="passive"/>
+      <node ref="C4" pin="2" pintype="passive"/>
+      <node ref="C5" pin="2" pintype="passive"/>
+      <node ref="J5" pin="1" pinfunction="GND" pintype="passive"/>
+      <node ref="J5" pin="10" pinfunction="GND" pintype="passive"/>
+      <node ref="J5" pin="13" pinfunction="GND" pintype="passive"/>
+      <node ref="J5" pin="14" pinfunction="GND" pintype="passive"/>
+      <node ref="J5" pin="17" pinfunction="GND" pintype="passive"/>
+      <node ref="J5" pin="18" pinfunction="GND" pintype="passive"/>
+      <node ref="J5" pin="2" pinfunction="GND" pintype="passive"/>
+      <node ref="J5" pin="21" pinfunction="GND" pintype="passive"/>
+      <node ref="J5" pin="22" pinfunction="GND" pintype="passive"/>
+      <node ref="J5" pin="25" pinfunction="GND" pintype="passive"/>
+      <node ref="J5" pin="26" pinfunction="GND" pintype="passive"/>
+      <node ref="J5" pin="30" pinfunction="GND" pintype="passive"/>
+      <node ref="J5" pin="4" pinfunction="GND" pintype="passive"/>
+      <node ref="J5" pin="6" pinfunction="GND" pintype="passive"/>
+      <node ref="J5" pin="8" pinfunction="GND" pintype="passive"/>
+      <node ref="R1" pin="2" pintype="passive"/>
+      <node ref="R2" pin="2" pintype="passive"/>
+      <node ref="R3" pin="2" pintype="passive"/>
+      <node ref="R4" pin="2" pintype="passive"/>
+      <node ref="R5" pin="1" pintype="passive"/>
+      <node ref="TP3" pin="1" pinfunction="1" pintype="passive"/>
+      <node ref="U1" pin="L1" pinfunction="VESD" pintype="passive"/>
+      <node ref="U1" pin="M16" pinfunction="LVDS_en" pintype="input"/>
+      <node ref="U1" pin="M17" pinfunction="GND_1" pintype="power_in"/>
+      <node ref="U1" pin="N1" pinfunction="GND_2" pintype="power_in"/>
+      <node ref="U1" pin="N6" pinfunction="GND_3" pintype="power_in"/>
+      <node ref="U2" pin="2" pinfunction="GND" pintype="power_in"/>
+    </net>
+    <net code="10" name="MISO1_A" class="Default">
+      <node ref="J5" pin="11" pinfunction="MISO1_A" pintype="passive"/>
+      <node ref="U1" pin="N14" pinfunction="MISO_A" pintype="output"/>
+    </net>
+    <net code="11" name="MISO1_B" class="Default">
+      <node ref="J5" pin="12" pinfunction="MISO1_B" pintype="passive"/>
+      <node ref="U1" pin="N7" pinfunction="MISO_B" pintype="output"/>
+    </net>
+    <net code="12" name="MOSI" class="Default">
+      <node ref="J5" pin="5" pinfunction="MOSI" pintype="passive"/>
+      <node ref="U1" pin="N12" pinfunction="MOSI" pintype="input"/>
+    </net>
+    <net code="13" name="Net-(U1-ADC_ref)" class="Default">
+      <node ref="C4" pin="1" pintype="passive"/>
+      <node ref="U1" pin="N17" pinfunction="ADC_ref" pintype="passive"/>
+    </net>
+    <net code="14" name="SCLK" class="Default">
+      <node ref="J5" pin="3" pinfunction="SCLK" pintype="passive"/>
+      <node ref="U1" pin="N10" pinfunction="SCLK" pintype="input"/>
+    </net>
+    <net code="15" name="VCC" class="Default">
+      <node ref="C1" pin="1" pintype="passive"/>
+      <node ref="J5" pin="19" pinfunction="VIN" pintype="passive"/>
+      <node ref="J5" pin="20" pinfunction="VIN" pintype="passive"/>
+      <node ref="J5" pin="23" pinfunction="VIN" pintype="passive"/>
+      <node ref="J5" pin="24" pinfunction="VIN" pintype="passive"/>
+      <node ref="U2" pin="1" pinfunction="VIN" pintype="power_in"/>
+      <node ref="U2" pin="3" pinfunction="EN" pintype="input"/>
+    </net>
+    <net code="16" name="unconnected-(J5-CAL_EN-Pad28)" class="Default">
+      <node ref="J5" pin="28" pinfunction="CAL_EN" pintype="passive+no_connect"/>
+    </net>
+    <net code="17" name="unconnected-(J5-CS2-Pad9)" class="Default">
+      <node ref="J5" pin="9" pinfunction="CS2" pintype="passive+no_connect"/>
+    </net>
+    <net code="18" name="unconnected-(J5-MISO2_A-Pad15)" class="Default">
+      <node ref="J5" pin="15" pinfunction="MISO2_A" pintype="passive+no_connect"/>
+    </net>
+    <net code="19" name="unconnected-(J5-MISO2_B-Pad16)" class="Default">
+      <node ref="J5" pin="16" pinfunction="MISO2_B" pintype="passive+no_connect"/>
+    </net>
+    <net code="20" name="unconnected-(J5-SPARE-Pad29)" class="Default">
+      <node ref="J5" pin="29" pinfunction="SPARE" pintype="passive+no_connect"/>
+    </net>
+    <net code="21" name="unconnected-(J5-TEST_SHORT_EN-Pad27)" class="Default">
+      <node ref="J5" pin="27" pinfunction="TEST_SHORT_EN" pintype="passive+no_connect"/>
+    </net>
+    <net code="22" name="unconnected-(U1-auxin1-PadN3)" class="Default">
+      <node ref="U1" pin="N3" pinfunction="auxin1" pintype="input+no_connect"/>
+    </net>
+    <net code="23" name="unconnected-(U1-auxin2-PadN4)" class="Default">
+      <node ref="U1" pin="N4" pinfunction="auxin2" pintype="input+no_connect"/>
+    </net>
+    <net code="24" name="unconnected-(U1-auxin3-PadN5)" class="Default">
+      <node ref="U1" pin="N5" pinfunction="auxin3" pintype="input+no_connect"/>
+    </net>
+    <net code="25" name="unconnected-(U1-auxout-PadN16)" class="Default">
+      <node ref="U1" pin="N16" pinfunction="auxout" pintype="output+no_connect"/>
+    </net>
+    <net code="26" name="unconnected-(U1-in32-PadH1)" class="Default">
+      <node ref="U1" pin="H1" pinfunction="in32" pintype="passive+no_connect"/>
+    </net>
+    <net code="27" name="unconnected-(U1-in33-PadH2)" class="Default">
+      <node ref="U1" pin="H2" pinfunction="in33" pintype="passive+no_connect"/>
+    </net>
+    <net code="28" name="unconnected-(U1-in34-PadH3)" class="Default">
+      <node ref="U1" pin="H3" pinfunction="in34" pintype="passive+no_connect"/>
+    </net>
+    <net code="29" name="unconnected-(U1-in35-PadH4)" class="Default">
+      <node ref="U1" pin="H4" pinfunction="in35" pintype="passive+no_connect"/>
+    </net>
+  </nets>
+</export>

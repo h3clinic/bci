@@ -1,0 +1,8 @@
+afe-headstage-real-filled.kicad_pcb
+*.kicad_pro
+*.kicad_prl
+.tmp.*
+drc-v7b.rpt
+
+# allow CI-only minimal project file for kicad-cli DRC context
+!drc.kicad_pro

@@ -1,0 +1,35 @@
+
+=== tb_async_fifo: Async FIFO Unit TB ===
+  ADDR_BITS=4 DEPTH=16 PTR_BITS=5
+
+--- TEST 1: Pointer wrap boundary ---
+  T1: fill-drain cycle 0 (base=00)
+  T1: fill-drain cycle 1 (base=10)
+  T1: fill-drain cycle 2 (base=20)
+  T1: fill-drain cycle 3 (base=30)
+  TEST 1 PASSED: 4 fill-drain cycles across pointer wrap.
+--- TEST 1b: Simultaneous R/W near full/empty ---
+  T1b: writer pushed 4 extra bytes during drain
+  TEST 1b PASSED: simultaneous R/W at boundaries.
+--- TEST 2a: Reset skew (wr_rst_n deasserts first) ---
+  T2a: wr_rst_n deasserted at t=6427000
+  T2a: rd_rst_n deasserted at t=8725000 (100+ wr_clk cycles later)
+  TEST 2a PASSED: wr_rst_n early, data survives skew.
+--- TEST 2b: Reset skew (rd_rst_n deasserts first) ---
+  T2b: rd_rst_n deasserted at t=9158000
+  T2b: wr_rst_n deasserted at t=10947000 (100+ rd_clk cycles later)
+  TEST 2b PASSED: rd_rst_n early, no spurious reads.
+--- TEST 3: Clock drift (1ns jitter every 7/11 edges) ---
+  TEST 3 PASSED: 8 fill-drain cycles with clock drift.
+--- TEST 4: Sustained concurrent R/W with drift ---
+  T4: writer done at t=42706000, wrote 1024 bytes
+  T4: reader done at t=42900000, read 1024 bytes
+  TEST 4 PASSED: 1024 bytes concurrent R/W with aggressive drift.
+--- TEST 5: Overflow detection ---
+  TEST 5 PASSED: overflow detection and stickiness.
+--- TEST 6: Reset clears overflow ---
+  TEST 6 PASSED: reset clears overflow.
+
+=== tb_async_fifo: ALL 8 TESTS PASSED ===
+
+/Users/aharshi/BCIInterface/hardware/meadaq-64ch/fpga/sim/tb_async_fifo.v:928: $finish called at 44637344 (1ps)

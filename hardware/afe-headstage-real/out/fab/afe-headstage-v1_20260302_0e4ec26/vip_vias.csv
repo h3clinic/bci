@@ -1,0 +1,15 @@
+net,x_mm,y_mm,size_mm,drill_mm,pad_ref,pad_pin,pad_size_x_mm,pad_size_y_mm,layer_set,mask_state
+CH10,112.7775,99.341,0.4,0.2,J5,11,0.9,0.25,F.Cu|F.Paste|F.Mask,mask_open
+CH11,112.7775,100.484,0.4,0.2,J5,12,0.9,0.25,F.Cu|F.Paste|F.Mask,mask_open
+CH12,113.4125,99.341,0.4,0.2,J5,13,0.9,0.25,F.Cu|F.Paste|F.Mask,mask_open
+CH13,113.4125,100.484,0.4,0.2,J5,14,0.9,0.25,F.Cu|F.Paste|F.Mask,mask_open
+CH14,114.0475,99.341,0.4,0.2,J5,15,0.25,0.9,F.Cu|F.Paste|F.Mask,mask_open
+CH15,114.0475,100.484,0.4,0.2,J5,16,0.25,0.9,F.Cu|F.Paste|F.Mask,mask_open
+CH16,114.6825,99.341,0.4,0.2,J5,17,0.25,0.9,F.Cu|F.Paste|F.Mask,mask_open
+CH17,114.6825,100.484,0.4,0.2,J5,18,0.25,0.9,F.Cu|F.Paste|F.Mask,mask_open
+CH18,115.3175,99.341,0.4,0.2,J5,19,0.25,0.9,F.Cu|F.Paste|F.Mask,mask_open
+CH19,115.3175,100.484,0.4,0.2,J5,20,0.25,0.9,F.Cu|F.Paste|F.Mask,mask_open
+CH20,115.9525,99.341,0.4,0.2,J5,21,0.25,0.9,F.Cu|F.Paste|F.Mask,mask_open
+CH21,115.9525,100.484,0.4,0.2,J5,22,0.25,0.9,F.Cu|F.Paste|F.Mask,mask_open
+CH22,116.5875,99.341,0.4,0.2,J5,23,0.25,0.9,F.Cu|F.Paste|F.Mask,mask_open
+CH9,112.1425,100.484,0.4,0.2,J5,10,0.9,0.25,F.Cu|F.Paste|F.Mask,mask_open

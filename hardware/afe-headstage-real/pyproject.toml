@@ -1,0 +1,23 @@
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+# E402: imports after canonical docstring — intentional header pattern.
+# E741: ambiguous var names in test helpers (e.g. 'l' in comprehensions).
+ignore = ["E402", "E741"]
+# Keep defaults lean; do NOT globally ignore F401/F841/F541.
+
+[tool.ruff.lint.per-file-ignores]
+# CI-critical zone fill script: allow long docstrings/prints only.
+"fill_zones.py" = ["E501"]
+# Generated/legacy utility scripts: only cosmetic tolerances.
+# TODO: clean these up and remove the ignores.
+"gen_*.py" = ["E501", "E401", "I001"]
+"verify_*.py" = ["E501", "E401", "I001"]
+# Tests with fixtures: allow long lines (fixture string literals).
+"test_*.py" = ["E501"]
+
+[tool.ruff.lint.isort]
+known-local-folder = ["parse_drc"]
